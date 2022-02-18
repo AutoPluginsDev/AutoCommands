@@ -1,0 +1,52 @@
+name: _AutoCommands_
+version: 1.0.3
+main: fr.lumi.Main
+api-version: 1.15
+authors:
+  - Lumi_
+  - Adi_
+prefix: AutoCommands 1.0.3
+load: STARTUP
+
+permissions:
+  acmd.*:
+    description: give acces to all the plugin
+    children:
+      plugin.reload: true
+      plugin.admin: true
+  acmd.reload:
+    description: allow to reload the plugin
+  acmd.admin:
+    description: allow to create and manage the commands
+
+commands:
+
+  acmdreload :
+    description:
+      reload the Time table of the command execution
+      (must be done after every command added)
+    usage : /acmdreload
+    permission: acmd.reload
+    permission-message: Sorry, you dont are not allowed to do this
+
+  acmdhelp:
+    description:
+      main command of the plugin
+    usage:
+      /acmd [args]
+
+  acmdconf:
+    description:
+      main command of the plugin
+    usage:
+      /acmd [args]
+    permission: acmd.admin
+    permission-message: Sorry, you dont are not allowed to do this
+
+  acmd:
+    usage:
+      /acmd [args]
+    description:
+      main command of the plugin
+    permission: acmd.admin
+    permission-message: Sorry, you dont are not allowed to do this

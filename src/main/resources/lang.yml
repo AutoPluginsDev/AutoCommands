@@ -1,0 +1,2 @@
+onEnablAcmd:  '&c %acmdName enable'
+onDisableAcmd: '&c %acmdName disable'
