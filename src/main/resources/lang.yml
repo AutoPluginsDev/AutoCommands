@@ -1,2 +1,3 @@
-onEnablAcmd:  '&c %acmdName enable'
-onDisableAcmd: '&c %acmdName disable'
+onEnablAcmd: '&6%acmdName &aenable'
+onDisableAcmd: '&6%acmdName &c&ldisable'
+onDisableAcmd: '&6%acmdName &c&ldisable'
