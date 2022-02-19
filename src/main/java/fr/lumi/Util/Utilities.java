@@ -27,8 +27,8 @@ public class Utilities {
 
 
         if (cmd.getCycleInSec()<10){
-            s = s.replace("%acmdCycleTick","&c"+cmd.getCycle());
-            s = s.replace("%acmdCycleSec","&c"+cmd.getCycleInSec());
+            s = s.replace("%acmdCycleTick","&c"+cmd.getCycle()+"(short cycle)");
+            s = s.replace("%acmdCycleSec","&c"+cmd.getCycleInSec()+"(short cycle)");
         }
         else{
             s = s.replace("%acmdCycleTick","&a"+cmd.getCycle());

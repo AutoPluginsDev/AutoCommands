@@ -8,7 +8,7 @@ AlertShortCycle: '&c%acmdName has a cycle of %acmdCycleSec seconds, this is shor
 onAddingANewCommand : 'command %acmdName succesfully added'
 
 CommandListTop: '--Running acmds : %acmdFound--'
-CommandListBottom: '-----------------------------'
+CommandListBottom: ' '
 
 OnReload: 'reloaded %acmdFound acmds'
 
@@ -17,10 +17,10 @@ OnRepetitionEnd: '&cstopping executing %acmdName'
 ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter the  command&a->&6 %acmdCommand'
 
 onDysplayingAcmd:
- '0': '->acmd : %acmdName '
- '1': 'ID : %acmdID , Active : %acmdIsActive'
- '2': 'every : %acmdCycleSec seconds, delay : %acmdDelaySec'
- '3': 'Executing -> &6%acmdCommand'
- '4': 'displaying message : %acmdMessage'
- '5': 'Repeting task %acmdRepetition times'
- '6': '- - - - - - - - - - - - - - - '
+ '0': '&6>acmd : %acmdName '
+ '1': '   &dID : %acmdID &e, Active : %acmdIsActive'
+ '2': '   &eevery : %acmdCycleSec seconds&e,&9 delay : %acmdDelaySec'
+ '3': '   &eExecuting -> &6%acmdCommand'
+ '4': '   &eRepeting task &8%acmdRepetition&e times'
+ '5': '   &edisplaying message : %acmdMessage'
+ '6': '&e- - - - - - - - - - - - - - - - - - -'
