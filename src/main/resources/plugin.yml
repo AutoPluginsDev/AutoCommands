@@ -35,14 +35,6 @@ commands:
     usage:
       /acmd [args]
 
-  acmdconf:
-    description:
-      main command of the plugin
-    usage:
-      /acmd [args]
-    permission: acmd.admin
-    permission-message: Sorry, you dont are not allowed to do this
-
   acmd:
     usage:
       /acmd [args]

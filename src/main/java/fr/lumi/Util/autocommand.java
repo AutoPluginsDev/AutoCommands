@@ -16,11 +16,14 @@ public class autocommand implements Runnable {
     private long m_cycle=0;
     private String m_commande="";
     private int ID = 0;
-    private boolean m_active=true;
+    private boolean m_active=false;
     private String m_message="";
     private long m_delay = 0;
     private int shedulerId=0;
-    public autocommand(){}
+    private int m_Repetition=-1;
+    private int m_RepetitionCounter=0;
+    Main plugin;
+    public autocommand(Main plg){plugin = plg;}
 
 
     public void setActive(boolean state, FileConfiguration config,Main plg) throws IOException {
@@ -58,15 +61,25 @@ public class autocommand implements Runnable {
     public void setID(int id){ID = id;}
     public int getID(){return ID;}
 
+    public void setRepetition(int rep){m_Repetition = rep;}
+    public int getRepetition(){return m_Repetition;}
+
+    public void setRepetitionCounter(int rep){m_RepetitionCounter = rep;}
+    public int getRepetitionCounter(){return m_RepetitionCounter;}
+
     public void setShedulerId(int id){shedulerId = id;}
     public int getsetShedulerId(){return shedulerId;}
 
-public void addToScheduler(Main plg){
+public void addToScheduler(Main plg) throws IOException {
 
-    if(m_active)
+    if(m_active){
+        if(getRepetition() != -1) setRepetitionCounter(0);
         shedulerId = plg.getServer().getScheduler().scheduleSyncRepeatingTask(plg, this, getDelay(), getCycle());
+    }
     else
         plg.getServer().getScheduler().cancelTask(shedulerId);
+
+
 
 }
 
@@ -74,10 +87,21 @@ public void addToScheduler(Main plg){
 
     @Override
     public void run() {
-
         if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',"&eExecuting -> "+m_commande));
+        Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),getCommande());
+        setRepetitionCounter(getRepetitionCounter()+1);
+        if(getRepetition() != -1){
+            if (getRepetitionCounter() == getRepetition()) {
+                Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnRepetitionEnd"),this));
+                plugin.getServer().getScheduler().cancelTask(shedulerId);
+                try {
+                    setActive(false,plugin.getCommandsConfig(),plugin);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 
@@ -87,9 +111,11 @@ public void addToScheduler(Main plg){
         config.set(ID+".name",m_name);
         config.set(ID+".cycle",m_cycle);
         config.set(ID+".delay",m_delay);
+        config.set(ID+".repetition",m_Repetition);
         config.set(ID+".command",m_commande);
         config.set(ID+".active",m_active);
         config.set(ID+".message",m_message);
+
         config.save(plg.getCommandsFile());
         return true;
     }
@@ -102,6 +128,7 @@ public void addToScheduler(Main plg){
                     m_name = config.getString(+ID+".name");
                     m_cycle = config.getLong(ID+".cycle");
                     m_delay= config.getLong(ID+".delay");
+                    m_Repetition = config.getInt(ID+".repetition");
                     m_commande = config.getString(ID+".command");
                     m_active = config.getBoolean(ID+".active");
                     m_message = config.getString(ID+".message");
@@ -121,20 +148,18 @@ public void addToScheduler(Main plg){
         return true;
     }
     public void printToPlayer(Player player,Main plugin){
-        if(isActive()) player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §aActive acmd -");
-        else player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §cInactive acmd -");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §eID : " +getID()+" §a"+getName()+"§e every §c"+getCycleInSec()+" sec");
-        if(getmessage() != "") player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §eDisplay message : "+ChatColor.translateAlternateColorCodes('&',getmessage()));
-        else player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §eNo message displayed when executed ");
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+"      §ecmd: -> §6"+getCommande());
+        for(int i=0;plugin.getLangConfig().isSet("onDysplayingAcmd."+i);i++){
+
+            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDysplayingAcmd."+i),this));
+        }
+
     }
+
     public void printToConsole(Main plugin){
-        if(isActive()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+" §aActive acmd -");
-        else Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+" §cInactive acmd -");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+" §eID : " +getID()+" §a"+getName()+"§e every §c"+getCycleInSec()+" sec");
-        if(getmessage() != "") Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+" §eDisplay message : "+ChatColor.translateAlternateColorCodes('&',getmessage()));
-        else Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+" §eNo message displayed when executed ");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+"      §ecmd: -> §6"+getCommande());
+        for(int i=0;plugin.getLangConfig().isSet("onDysplayingAcmd."+i);i++){
+
+            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("onDysplayingAcmd."+i),this));
+        }
     }
 
 }

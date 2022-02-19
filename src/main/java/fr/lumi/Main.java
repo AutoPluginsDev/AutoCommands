@@ -52,6 +52,11 @@ public final class Main extends JavaPlugin {
 
     private Utilities m_ut;
 
+    public Utilities getUt(){
+        return m_ut;
+    }
+
+
     private List<autocommand> commandList = new ArrayList<autocommand>();
     public List<autocommand> getcommandList(){
         return commandList;
@@ -63,55 +68,45 @@ public final class Main extends JavaPlugin {
         m_ut = new Utilities(this);
 
         saveDefaultConfig();
-        if(!getCommandsFile().exists()){
-            saveResource("commands.yml",false);
-            try {
-                getCommandsConfig().save(getCommandsFile());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
 
 
         getRessourceFile(getLangFile(),"lang.yml",this);
-
+        getRessourceFile(getCommandsFile(),"commands.yml",this);
 
         try {
             Load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"On"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn"));
     }
 
     @Override
     public void onDisable() {
         Unload();
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"Off"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cOff"));
     }
 
     public void Load() throws IOException {
         reloadConfig();
         config = getConfig();
-        //getCommandsConfig().save(getCommandsFile());
 
-        Objects.requireNonNull(this.getCommand("acmdconf")).setExecutor(new CommandRunnerConf(this));
-        Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this,m_ut));
-        Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this,m_ut));
-        Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this,m_ut));
+        Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
+        Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this));
+        Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+ "---------------Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands---------------");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+ "&e---------------Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands---------------"));
 
-        if(!loadCommandsTimeTable()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+"No AutoComands to execute");
+        if(!loadCommandsTimeTable()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"&6No AutoComands to execute"));
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+" -------------------------------------------------");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+" Loaded");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aLoaded"));
 
     }
 
     public void Unload(){
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+" Unloaded");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cUnloaded"));
     }
 
     public boolean loadCommandsTimeTable() throws IOException {
@@ -122,16 +117,13 @@ public final class Main extends JavaPlugin {
         BukkitScheduler scheduler = this.getServer().getScheduler();
 
         for(int i = 0;i< getCommandsConfig().getKeys(false).size();i++){
-            autocommand cmd = new autocommand();
+            autocommand cmd = new autocommand(this);
             if(cmd.getInConfig(getCommandsConfig(),this,i)){
 
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+"  >>AutoCommand §a"+cmd.getName()+"§e succesfully loaded");
                 cmd.printToConsole(this);
-
                 cmd.addToScheduler(this);
                 commandList.add(cmd);
-
-                Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+" | -------------------------------------------------");
+                cmd.saveInConfig(commandsConfig,this);
             }
         }
         return true;
@@ -139,6 +131,7 @@ public final class Main extends JavaPlugin {
     public long convertToTick(long seconds){
         return (long) seconds*20;
     }
+
     public static YamlConfiguration getRessourceFile(File file, String resource, Main plugin) {
         try {
             if (!file.exists()) {

@@ -16,9 +16,8 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
 
     Main plugin;
-    Utilities m_ut;
-    public CommandRunnerHelp(Main plg, Utilities ut) {
-        m_ut = ut;
+    public CommandRunnerHelp(Main plg ) {
+
         plugin = plg;
     }
 

@@ -20,11 +20,9 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
 
     Main plugin;
-    Utilities m_ut;
-    public CommandRunnerCommand(Main plg, Utilities ut)
+    public CommandRunnerCommand(Main plg)
 
     {
-        m_ut =ut;
         plugin = plg;
     }
 
@@ -37,7 +35,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 if (args.length == 1){
                     l.add("list");
                     l.add("new");
-                    l.add("delete");
+                    //l.add("delete");
                     l.add("enable");
                     l.add("disable");
                     l.add("setMessage");
@@ -54,8 +52,9 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     if (args.length == 2 ) l.add("NAME");
                     if (args.length == 3 ) l.add("Loop Time (tick) 20tick->1second");
                     if (args.length == 4 ) l.add("Delay At Start (tick) 20tick->1second");
-                    if (args.length == 5 ) l.add("YOUR COMMAND");
-                    if (args.length == 5 ) l.add("If you need to display a message, use /acmd setMessage ID [message]");
+                    if (args.length == 5 ) l.add("Repetitions(-1 = no limit)");
+                    if (args.length == 6 ) l.add("YOUR COMMAND");
+                    if (args.length == 6 ) l.add("If you need to display a message, use /acmd setMessage ID [message]");
                 }
             }
         }
@@ -70,12 +69,12 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                 if(Objects.equals(args[0], "list")){
 
-                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandListTop"),new autocommand()));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandListTop"),new autocommand(plugin)));
                     for(int i = 0;i< plugin.getcommandList().size();i++){
                         autocommand cmd = plugin.getcommandList().get(i);
                         cmd.printToPlayer(player,plugin);
                     }
-                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandListBottom"),new autocommand()));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandListBottom"),new autocommand(plugin)));
                 }
             }
             if(args.length == 2 ){
@@ -91,7 +90,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                             e.printStackTrace();
                         }
 
-                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onEnablAcmd"),cmd));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onEnablAcmd"),cmd));
                 }
 
                 if(Objects.equals(args[0], "disable")) {
@@ -105,7 +104,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDisableAcmd"),cmd));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDisableAcmd"),cmd));
                     //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
                 }
 
@@ -139,19 +138,19 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
             if(args.length >= 4 ){
                 if(Objects.equals(args[0], "new")){
-                    autocommand cmd = new autocommand();
+                    autocommand cmd = new autocommand(plugin);
                     cmd.setName(args[1]);
 
                     cmd.setCycle((long) Float.parseFloat(args[2]) );
                     if(cmd.getCycle() < 200) {
-                        player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"),cmd));
+                        player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"),cmd));
 
                     }
 
                     cmd.setDelay((long) Float.parseFloat(args[3]));
-
+                    cmd.setRepetition(Integer.parseInt(args[4]));
                     StringBuilder s = new StringBuilder();
-                    for (int i=4;i<=args.length-1;i++){
+                    for (int i=5;i<=args.length-1;i++){
                         s.append(args[i]+" ");
                     }
 
@@ -159,7 +158,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                     cmd.setID(plugin.getcommandList().size());
 
-                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"),cmd));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"),cmd));
                     //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
 
 

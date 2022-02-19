@@ -1,0 +1,23 @@
+################################################
+#This command will run every 200 ticks(10 seconds) with 0 delay between the activation.
+#you will have the same result executing this command on your minecraft server :
+#/acmd new myAcmdTest 200 0 say Hello world
+################################################
+'0':
+  name: myAcmdTest
+  cycle: 200 # the cycle in ticks your command will follow
+  delay: 0 # delay after the activating of the acmd
+  repetition: -1 # Number of repetition of the command before disable, (-1 = no limit )
+  command: 'say Hello world ' # this is the command wich will run on your server
+  active: false # if true, the command will be executed by the server
+  message: '&aThis is a &6test &a! go in the commands.yml to delet this test or diasable it with the command : &6/acmd disable 0' # message is the message to display at the execution of the acmd.
+
+#another example :
+'1':
+  name: doNothingCommand
+  cycle: 200
+  delay: 0
+  repetition: 2
+  command: ''
+  active: false
+  message: ''

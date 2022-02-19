@@ -6,6 +6,21 @@ AlertShortCycle: '&c%acmdName has a cycle of %acmdCycleSec seconds, this is shor
 
 # On new command
 onAddingANewCommand : 'command %acmdName succesfully added'
+
 CommandListTop: '--Running acmds : %acmdFound--'
 CommandListBottom: '-----------------------------'
+
 OnReload: 'reloaded %acmdFound acmds'
+
+OnRepetitionEnd: '&cstopping executing %acmdName'
+
+ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter the  command&a->&6 %acmdCommand'
+
+onDysplayingAcmd:
+ '0': '->acmd : %acmdName '
+ '1': 'ID : %acmdID , Active : %acmdIsActive'
+ '2': 'every : %acmdCycleSec seconds, delay : %acmdDelaySec'
+ '3': 'Executing -> &6%acmdCommand'
+ '4': 'displaying message : %acmdMessage'
+ '5': 'Repeting task %acmdRepetition times'
+ '6': '- - - - - - - - - - - - - - - '

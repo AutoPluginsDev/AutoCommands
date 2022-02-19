@@ -15,9 +15,32 @@ public class Utilities {
     public String replacePlaceHolders(String s,autocommand cmd ){
 
         s = s.replace("%acmdName",cmd.getName());
-        s = s.replace("%acmdCycleTick",cmd.getCycle()+"");
-        s = s.replace("%acmdCycleSec",cmd.getCycleInSec()+"");
+        s = s.replace("%acmdRepetition",cmd.getRepetition()+"");
+        s = s.replace("%acmdRepCounter",cmd.getRepetitionCounter()+"");
         s = s.replace("%acmdMessage",cmd.getmessage()+"");
+        s = s.replace("%acmdDelayTick",cmd.getDelay()+"");
+        s = s.replace("%acmdDelaySec",cmd.getDelay()/20+"");
+        if (cmd.isActive()){
+            s = s.replace("%acmdIsActive","&aEnable");
+        }
+        else s = s.replace("%acmdIsActive","&cDisable");
+
+
+        if (cmd.getCycleInSec()<10){
+            s = s.replace("%acmdCycleTick","&c"+cmd.getCycle());
+            s = s.replace("%acmdCycleSec","&c"+cmd.getCycleInSec());
+        }
+        else{
+            s = s.replace("%acmdCycleTick","&a"+cmd.getCycle());
+            s = s.replace("%acmdCycleSec","&a"+cmd.getCycleInSec());
+        }
+
+
+
+
+
+        s = s.replace("%acmdID",cmd.getID()+"");
+
         s = s.replace("%acmdCommand",cmd.getCommande()+"");
         s = s.replace("%acmdRunningCount",plugin.getcommandList().size()+"");
 

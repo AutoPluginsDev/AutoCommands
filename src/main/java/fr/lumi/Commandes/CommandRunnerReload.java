@@ -15,10 +15,9 @@ import java.io.IOException;
 public class CommandRunnerReload implements CommandExecutor {
 
     Main plugin;
-    Utilities m_ut;
-    public CommandRunnerReload(Main plg,Utilities ut) {
 
-        m_ut = ut;
+    public CommandRunnerReload(Main plg) {
+
         plugin = plg;
     }
 
@@ -31,8 +30,8 @@ public class CommandRunnerReload implements CommandExecutor {
                 e.printStackTrace();
             }
 
-            Bukkit.getConsoleSender().sendMessage(m_ut.replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnReload"),new autocommand()));
-            sender.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("OnReload"),new autocommand()));
+            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnReload"),new autocommand(plugin)));
+            sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("OnReload"),new autocommand(plugin)));
         }
         return true;
     }
