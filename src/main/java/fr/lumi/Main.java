@@ -97,9 +97,9 @@ public final class Main extends JavaPlugin {
         //getCommandsConfig().save(getCommandsFile());
 
         Objects.requireNonNull(this.getCommand("acmdconf")).setExecutor(new CommandRunnerConf(this));
-        Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
+        Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this,m_ut));
         Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this,m_ut));
-        Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
+        Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this,m_ut));
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix"))+ "---------------Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands---------------");
 

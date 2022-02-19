@@ -1,6 +1,8 @@
 package fr.lumi.Commandes;
 
 import fr.lumi.Main;
+import fr.lumi.Util.Utilities;
+import fr.lumi.Util.autocommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +15,10 @@ import java.io.IOException;
 public class CommandRunnerReload implements CommandExecutor {
 
     Main plugin;
-    public CommandRunnerReload(Main plg) {
+    Utilities m_ut;
+    public CommandRunnerReload(Main plg,Utilities ut) {
+
+        m_ut = ut;
         plugin = plg;
     }
 
@@ -26,8 +31,8 @@ public class CommandRunnerReload implements CommandExecutor {
                 e.printStackTrace();
             }
 
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix"))+" ReLoaded");
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+"succesfully reloaded");
+            Bukkit.getConsoleSender().sendMessage(m_ut.replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnReload"),new autocommand()));
+            sender.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("OnReload"),new autocommand()));
         }
         return true;
     }

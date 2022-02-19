@@ -12,7 +12,7 @@ public class Utilities {
         plugin = plg;
     }
 
-    public String replacePlaceHolders(String s,autocommand cmd){
+    public String replacePlaceHolders(String s,autocommand cmd ){
 
         s = s.replace("%acmdName",cmd.getName());
         s = s.replace("%acmdCycleTick",cmd.getCycle()+"");

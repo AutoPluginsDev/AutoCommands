@@ -1,6 +1,8 @@
 package fr.lumi.Commandes;
 
 import fr.lumi.Main;
+import fr.lumi.Util.Utilities;
+import fr.lumi.Util.autocommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,7 +16,9 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
 
     Main plugin;
-    public CommandRunnerHelp(Main plg) {
+    Utilities m_ut;
+    public CommandRunnerHelp(Main plg, Utilities ut) {
+        m_ut = ut;
         plugin = plg;
     }
 
@@ -22,7 +26,6 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> l = new ArrayList<>();
-
         if(cmd.getName().equalsIgnoreCase("acmdhelp")){
             if(sender instanceof Player){
                 List<String> list = new ArrayList<>();

@@ -1,3 +1,11 @@
 onEnablAcmd: '&6%acmdName &aenable'
 onDisableAcmd: '&6%acmdName &c&ldisable'
-onDisableAcmd: '&6%acmdName &c&ldisable'
+
+#Time warning
+AlertShortCycle: '&c%acmdName has a cycle of %acmdCycleSec seconds, this is short and it can cause lag on your server'
+
+# On new command
+onAddingANewCommand : 'command %acmdName succesfully added'
+CommandListTop: '--Running acmds : %acmdFound--'
+CommandListBottom: '-----------------------------'
+OnReload: 'reloaded %acmdFound acmds'

@@ -12,9 +12,9 @@ import java.util.Objects;
 
 public class autocommand implements Runnable {
 
-    private String m_name;
-    private long m_cycle;
-    private String m_commande;
+    private String m_name="";
+    private long m_cycle=0;
+    private String m_commande="";
     private int ID = 0;
     private boolean m_active=true;
     private String m_message="";

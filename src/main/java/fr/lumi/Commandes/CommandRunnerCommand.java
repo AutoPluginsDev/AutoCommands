@@ -70,12 +70,12 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                 if(Objects.equals(args[0], "list")){
 
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" ---§6 acmd running : "+plugin.getcommandList().size()+"---");
+                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandListTop"),new autocommand()));
                     for(int i = 0;i< plugin.getcommandList().size();i++){
                         autocommand cmd = plugin.getcommandList().get(i);
                         cmd.printToPlayer(player,plugin);
                     }
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" ---------------------");
+                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandListBottom"),new autocommand()));
                 }
             }
             if(args.length == 2 ){
@@ -144,8 +144,8 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                     cmd.setCycle((long) Float.parseFloat(args[2]) );
                     if(cmd.getCycle() < 200) {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §a"+cmd.getName()+"§e will be executed every §c"+(float)cmd.getCycle()/20+" seconds.");
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" §c§l"+(float)cmd.getCycle()/20+" seconds is verry short and may cause lag when frequently used.");
+                        player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"),cmd));
+
                     }
 
                     cmd.setDelay((long) Float.parseFloat(args[3]));
@@ -159,7 +159,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                     cmd.setID(plugin.getcommandList().size());
 
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix"))+" Command "+cmd.getName()+" succesfully saved !");
+                    player.sendMessage(m_ut.replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"),cmd));
                     //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
 
 
