@@ -42,24 +42,13 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     l.add("delete");
                 }
 
-                if (args.length == 2 && Objects.equals(args[0], "delete") ){
+                if (args.length == 2 ){
                     if(Objects.equals(args[0], "delete") ||(Objects.equals(args[0], "enable")|| Objects.equals(args[0], "disable"))){
                         for(autocommand acmd : plugin.getcommandList()){
                             l.add(acmd.getID());
                         }
                     }
-
                 }
-                if(Objects.equals(args[0], "enable") || Objects.equals(args[0], "disable")){
-                    if (args.length == 2 ){
-                        for(autocommand acmd : plugin.getcommandList()){
-                            l.add(acmd.getID());
-                        }
-                    }
-                }
-
-
-
 
                 if(Objects.equals(args[0], "edit")){
                     if (args.length == 2 ){
@@ -92,8 +81,6 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
 
                 }
-
-
 
 
                 if(Objects.equals(args[0], "new")){

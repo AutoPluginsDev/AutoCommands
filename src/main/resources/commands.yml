@@ -10,10 +10,10 @@
     name: myAcmdTest
     cycle: 200 # the cycle in ticks your command will follow
     delay: 0 # delay after the activating of the acmd
-    repetition: 5 # Number of repetition of the command before disable, (-1 = no limit )
+    repetition: 2 # Number of repetition of the command before disable, (-1 = no limit )
     commands: #add many command as you want
       - say Hello World
       - say dlroW olleH
     message: '&aThis is a &6test &a! '
   DaylySchedulerParameters:
-    time : '10H58' #if empty, the acmd will not be a dayly task.
+    time : '18H1' #if empty, the acmd will not be a dayly task.

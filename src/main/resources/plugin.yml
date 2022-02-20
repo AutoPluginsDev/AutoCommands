@@ -1,4 +1,4 @@
-name: _AutoCommands_
+name: AutoCommands
 version: 1.0.3
 main: fr.lumi.Main
 api-version: 1.15
