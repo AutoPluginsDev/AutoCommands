@@ -16,7 +16,8 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
 
     Main plugin;
-    public CommandRunnerHelp(Main plg ) {
+
+    public CommandRunnerHelp(Main plg) {
 
         plugin = plg;
     }
@@ -25,8 +26,8 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> l = new ArrayList<>();
-        if(cmd.getName().equalsIgnoreCase("acmdhelp")){
-            if(sender instanceof Player){
+        if (cmd.getName().equalsIgnoreCase("acmdhelp")) {
+            if (sender instanceof Player) {
                 List<String> list = new ArrayList<>();
 
             }
@@ -36,18 +37,16 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if(args.length >= 0 ){
-                player.sendMessage("§e-----------§aAutoCommands-Help§e--------------");
-                player.sendMessage("§6ACMD Version : 1.0");
-                player.sendMessage("§6/acmd -> §aget the list or write new AutoCommands");
-                player.sendMessage("§6/acmdconfig -> §amodification of the plugin's parameters");
-                player.sendMessage("§6/acmdreload -> §areload the plugin and the autocomands");
-                player.sendMessage("§e------------------------------------------");
+        if (args.length >= 0) {
+            sender.sendMessage("§e-----------§aAutoCommands-Help§e--------------");
+            sender.sendMessage("§6ACMD Version : 1.0");
+            sender.sendMessage("§6/acmd [new|enable|disable|delete|list|edit] -> §aMain commands");
+            sender.sendMessage("§6/acmdconfig -> §amodification of the plugin's parameters");
+            sender.sendMessage("§6/acmdreload -> §areload the plugin and the autocomands");
+            sender.sendMessage("§e------------------------------------------");
 
-            }
         }
+
         return true;
     }
 }

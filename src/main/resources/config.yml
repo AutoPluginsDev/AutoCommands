@@ -1,2 +1,5 @@
 ConsolePrefix : '&eAUTOCOMMANDS |'
+
 Prefix : '&eacmd | '
+
+ConfigVersion : 1 # DONT TOUCH AT THIS LINE

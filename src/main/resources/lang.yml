@@ -26,10 +26,11 @@ onDisableAcmd: '&6%acmdName &c&ldisable'
 #Time warning
 AlertShortCycle: '&c%acmdName has a cycle of %acmdCycleSec seconds, this is short and it can cause lag on your server'
 
-# On new command
-onAddingANewCommand : 'command %acmdName succesfully added'
+onAddingANewCommand : 'command %acmdName successfully added'
 
-CommandListTop: '--%acmdRunning running out of %acmdFound found--'
+onDeleteAcmd: 'Command %acmdName successfully deleted'
+
+CommandListTop: '-----[&6%acmdRunning running out of %acmdFound found]&e-----'
 CommandListBottom: ''
 
 OnReload: 'reloaded %acmdFound acmds'
@@ -38,16 +39,16 @@ OnRepetitionEnd: '&cstopping executing %acmdName'
 
 ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter the  command&a->&6 %acmdCommand'
 
-CommandEdited: '&6command succesfully modifed'
+CommandEdited: '&6command successfully modified'
 
 onDysplayingAcmd:
- - '&6>acmd : %acmdName '
- - '   &dID : %acmdID &e, Active : %acmdIsActive'
- - '   &eevery : %acmdCycleSec seconds&e,&9 delay : %acmdDelaySec'
+ - '   &eName : &6%acmdName '
+ - '   &eID : &d%acmdID &e, Active : %acmdIsActive'
+ - '   &eEvery : %acmdCycleSec seconds&e, delay : &9%acmdDelaySec'
  - '   &eDaly execution hour : &a&l%acmdDaylyTime'
  - '   &6List of the commands : '
  - '   &6%acmdCommand'
  - ' '
- - '   &eRepeting task &8%acmdRepetition&e times'
+ - '   &eRepeating task &8%acmdRepetition&e times'
  - '   &edisplaying message : %acmdMessage'
- - '&e- - - - - - - - - - - - - - - - - - -'
+ - '&e- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -'
