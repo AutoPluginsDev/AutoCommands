@@ -72,9 +72,6 @@ public class autocommand implements Runnable {
     }
 
 
-
-
-
     public void addCommand(String cmd){
         m_commands.add(cmd);
     }
@@ -95,7 +92,7 @@ public class autocommand implements Runnable {
         int i =0;
         StringBuilder s = new StringBuilder();
         for(String cmd :m_commands){
-            String cmd_ = "\n-ID : "+i+"-" + cmd ;
+            String cmd_ = "\n"+plugin.getConfig().getString("Prefix")+"&6"+"-ID : "+i+"-" + cmd ;
             s.append(cmd_);
             i++;
         }
