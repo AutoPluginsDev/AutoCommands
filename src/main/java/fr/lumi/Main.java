@@ -1,13 +1,12 @@
 package fr.lumi;
 
 import fr.lumi.Commandes.CommandRunnerCommand;
-import fr.lumi.Commandes.CommandRunnerConf;
 import fr.lumi.Commandes.CommandRunnerHelp;
 
 import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.Util.Utilities;
 import fr.lumi.Util.autocommand;
-import fr.lumi.Util.daylyCommandExecuter;
+import fr.lumi.Util.dailyCommandExecuter;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,17 +15,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.*;
-import java.time.format.ResolverStyle;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public final class Main extends JavaPlugin {
 
     FileConfiguration config = getConfig();
 
-    daylyCommandExecuter executer;
+    dailyCommandExecuter executer;
 
 
     //command file creation
@@ -105,8 +102,8 @@ public final class Main extends JavaPlugin {
 
         if(!loadCommandsTimeTable()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"&6No AutoComands to execute"));
 
-        //dayly executor enable
-        executer = new daylyCommandExecuter(this,getcommandList());
+        //daily executor enable
+        executer = new dailyCommandExecuter(this,getcommandList());
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, executer, 0, executer.getrefreshRate());
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));

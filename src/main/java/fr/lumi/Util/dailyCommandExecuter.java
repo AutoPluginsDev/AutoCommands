@@ -1,7 +1,6 @@
 package fr.lumi.Util;
 
 import fr.lumi.Main;
-import org.bukkit.Bukkit;
 
 import java.io.IOException;
 import java.time.ZoneId;
@@ -9,12 +8,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class daylyCommandExecuter implements Runnable{
+public class dailyCommandExecuter implements Runnable{
 
     List<autocommand> m_commandList;
     Main plugin;
 
-    public daylyCommandExecuter(Main plg, List<autocommand> acmds){
+    public dailyCommandExecuter(Main plg, List<autocommand> acmds){
         m_commandList = acmds;
         plugin = plg;
     }

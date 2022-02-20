@@ -1,3 +1,25 @@
+###############################
+# Custom plugin message here  #
+###############################
+
+# Avaliable placehoders :
+#
+#   %acmdName  (the name te ACMD)
+#   %acmdCycleTick  (cycle)
+#   %acmdCycleSec (cycle in seconds)
+#   %acmdDelayTick (Delay in tick)
+#   %acmdDelaySec (Delay in seconds)
+#   %acmdMessage
+#   %acmdCommand
+#   %acmdFound  (number of command found in the config)
+#   %acmdRepetition (Number of repetition of the command before disable, -1 = no limit )
+#   %acmdRepCounter (actual number of time the command has executed)
+#   %acmdIsActive (command active or not)
+#   %acmdID (id in the commands.yml)
+#   %acmdRunning (number of running command)
+#   %acmdDaylyTime (hour and minuts with format "hh H mm" when the command will be executed everyday)
+
+
 onEnablAcmd: '&6%acmdName &aenable'
 onDisableAcmd: '&6%acmdName &c&ldisable'
 

@@ -1,19 +1,37 @@
-################################################
-#This command will run every 200 ticks(10 seconds) with 0 delay between the activation.
-#you will have the same result executing this command on your minecraft server :
-#/acmd new myAcmdTest 200 0 say Hello world
-################################################
+#######################
+# EDIT YOUR ACMD HERE #
+#######################
 
-'command1':
-  active: false # if true, the command will be executed by the server
-  TaskParameters:
-    name: myAcmdTest
-    cycle: 200 # the cycle in ticks your command will follow
-    delay: 0 # delay after the activating of the acmd
-    repetition: 2 # Number of repetition of the command before disable, (-1 = no limit )
-    commands: #add many command as you want
-      - say Hello World
-      - say dlroW olleH
-    message: '&aThis is a &6test &a! '
-  DaylySchedulerParameters:
-    time : '18H1' #if empty, the acmd will not be a dayly task.
+
+# This command will run every 200 ticks(10 seconds) with 0 delay between the activation.
+# you will have the same result executing this command on your minecraft server :
+# /acmd new myAcmdTest 200 0 say Hello world
+
+#'example1':
+#  active: false # if true, the command will be executed by the server
+#  TaskParameters:
+#    name: AcmdExample1
+#    cycle: 200 # the cycle in ticks your command will follow
+#    delay: 0 # delay after the activating of the acmd
+#    repetition: 2 # Number of repetition of the command before disable, (-1 = no limit )
+#    commands: #add many command as you want
+#      - say Hello World
+#      - say dlroW olleH
+#    message: '&aThis is a &6test &a! '
+#  DailySchedulerParameters:
+#    time : '18H42' #if empty, the acmd will not be a dayly task.
+
+# # This one will say a message every 5 min forever if enable
+
+#'example2':
+#  active: false
+#  TaskParameters:
+#    name: AcmdExample2
+#    cycle: 6000 # 5 min
+#    delay: 200 #wait 10s (20*10) before start cycle
+#    repetiton: -1 #infini
+#    commands:
+#      - say Dont forget to join our Discord !
+#    message: '' #no message
+#  DailySchedulerParameters:
+#    time: ''

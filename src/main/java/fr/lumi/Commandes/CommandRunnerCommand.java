@@ -59,7 +59,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     if (args.length == 3 ) l.add("setMessage");
                     if (args.length == 3 ) l.add("addCommand");
                     if (args.length == 3 ) l.add("removeCommand");
-                    if (args.length == 3 ) l.add("setDaylyExecutionTime");
+                    if (args.length == 3 ) l.add("setDailyExecutionTime");
 
                     if(args.length == 4){
                         if(Objects.equals(args[2], "setMessage"))
@@ -75,7 +75,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                                     i++;
                                 }
                             }
-                        if(Objects.equals(args[2], "setDaylyExecutionTime"))
+                        if(Objects.equals(args[2], "setDailyExecutionTime"))
                             l.add("hhHmm (h->hour,m->minutes");
                     }
 
@@ -205,7 +205,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                }
            }
 
-           if(Objects.equals(args[2], "setDaylyExecutionTime")) {
+           if(Objects.equals(args[2], "setDailyExecutionTime")) {
 
 
                if(args.length == 3){

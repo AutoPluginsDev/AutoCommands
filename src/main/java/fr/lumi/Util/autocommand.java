@@ -171,8 +171,8 @@ public void addToScheduler(Main plg) throws IOException {
 
         config.set(ID+".TaskParameters.message",m_message);
 
-        config.set(ID+".DaylySchedulerParameters","");
-        config.set(ID+".DaylySchedulerParameters.time",m_time);
+        config.set(ID+".DailySchedulerParameters","");
+        config.set(ID+".DailySchedulerParameters.time",m_time);
 
         config.save(plg.getCommandsFile());
         return true;
@@ -190,7 +190,7 @@ public void addToScheduler(Main plg) throws IOException {
             m_delay= config.getLong(ID+".TaskParameters.delay");
             m_Repetition = config.getInt(ID+".TaskParameters.repetition");
             m_message = config.getString(ID+".TaskParameters.message");
-            m_time = config.getString(ID+".DaylySchedulerParameters.time");
+            m_time = config.getString(ID+".DailySchedulerParameters.time");
             m_commands =  config.getStringList(ID+".TaskParameters.commands");
 
             return true;
@@ -213,7 +213,7 @@ public void addToScheduler(Main plg) throws IOException {
 
     public boolean isConforme(){
         if(m_Repetition == -1 && m_time != ""){
-            setError("infinite repetition but dayly routine given");
+            setError("infinite repetition but daily routine given");
             return false;
         }
         setError(m_error = "");
