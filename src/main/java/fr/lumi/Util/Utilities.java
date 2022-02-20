@@ -15,11 +15,16 @@ public class Utilities {
     public String replacePlaceHolders(String s,autocommand cmd ){
 
         s = s.replace("%acmdName",cmd.getName());
-        s = s.replace("%acmdRepetition",cmd.getRepetition()+"");
+
+        if(cmd.getRepetition() == -1) s = s.replace("%acmdRepetition","∞");
+        else s = s.replace("%acmdRepetition",cmd.getRepetition()+"");
+
+
         s = s.replace("%acmdRepCounter",cmd.getRepetitionCounter()+"");
         s = s.replace("%acmdMessage",cmd.getmessage()+"");
         s = s.replace("%acmdDelayTick",cmd.getDelay()+"");
         s = s.replace("%acmdDelaySec",cmd.getDelay()/20+"");
+
         if (cmd.isActive()){
             s = s.replace("%acmdIsActive","&aEnable");
         }
@@ -35,14 +40,12 @@ public class Utilities {
             s = s.replace("%acmdCycleSec","&a"+cmd.getCycleInSec());
         }
 
-
-
-
-
         s = s.replace("%acmdID",cmd.getID()+"");
-
-        s = s.replace("%acmdCommand",cmd.getCommande()+"");
-        s = s.replace("%acmdRunningCount",plugin.getcommandList().size()+"");
+        s = s.replace("%acmdCommand",cmd.getStringFormatCommands()+"");
+        s = s.replace("%acmdFound",plugin.getcommandList().size()+"");
+        s = s.replace("%acmdRunning",plugin.getEnbaledCommand()+"");
+        if(cmd.getTime() != "") s = s.replace("%acmdDaylyTime",cmd.getTime()+"");
+        else s = s.replace("%acmdDaylyTime","&cX");
 
         return s;
     }

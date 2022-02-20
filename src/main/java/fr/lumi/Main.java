@@ -7,6 +7,7 @@ import fr.lumi.Commandes.CommandRunnerHelp;
 import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.Util.Utilities;
 import fr.lumi.Util.autocommand;
+import fr.lumi.Util.daylyCommandExecuter;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,6 +25,9 @@ import java.util.ResourceBundle;
 public final class Main extends JavaPlugin {
 
     FileConfiguration config = getConfig();
+
+    daylyCommandExecuter executer;
+
 
     //command file creation
     private File commandsFile = new File(getDataFolder(),"commands.yml");
@@ -68,8 +72,6 @@ public final class Main extends JavaPlugin {
         m_ut = new Utilities(this);
 
         saveDefaultConfig();
-
-
         getRessourceFile(getLangFile(),"lang.yml",this);
         getRessourceFile(getCommandsFile(),"commands.yml",this);
 
@@ -78,6 +80,9 @@ public final class Main extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn"));
     }
 
@@ -100,6 +105,10 @@ public final class Main extends JavaPlugin {
 
         if(!loadCommandsTimeTable()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"&6No AutoComands to execute"));
 
+        //dayly executor enable
+        executer = new daylyCommandExecuter(this,getcommandList());
+        Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, executer, 0, executer.getrefreshRate());
+
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aLoaded"));
 
@@ -109,17 +118,40 @@ public final class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cUnloaded"));
     }
 
-    public boolean loadCommandsTimeTable() throws IOException {
 
+    public autocommand getacmdInList(String idRequested){
+        int index = 0;
+        for(String idInConfig : getCommandsConfig().getKeys(false)){
+            if(Objects.equals(idInConfig, idRequested)){
+                return getcommandList().get(index);
+            }
+            index++;
+        }
+        return null;
+    }
+
+    public boolean acmdIdExist(String idRequested){
+
+        for(String idInConfig : getCommandsConfig().getKeys(false)){
+            autocommand cmd = new autocommand(this);
+            if(Objects.equals(idInConfig, idRequested)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public boolean loadCommandsTimeTable() throws IOException {
         commandList.clear();
         getServer().getScheduler().cancelTasks(this);
-
         BukkitScheduler scheduler = this.getServer().getScheduler();
 
-        for(int i = 0;i< getCommandsConfig().getKeys(false).size();i++){
+
+
+        for(String i : getCommandsConfig().getKeys(false)){
             autocommand cmd = new autocommand(this);
             if(cmd.getInConfig(getCommandsConfig(),this,i)){
-
                 cmd.printToConsole(this);
                 cmd.addToScheduler(this);
                 commandList.add(cmd);
@@ -128,6 +160,16 @@ public final class Main extends JavaPlugin {
         }
         return true;
     }
+
+    public int getEnbaledCommand(){
+        int count=0;
+        for(autocommand a:getcommandList()){
+            if (a.isActive()) count++;
+        }
+        return count;
+    }
+
+
     public long convertToTick(long seconds){
         return (long) seconds*20;
     }

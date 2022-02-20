@@ -33,11 +33,11 @@ commands:
     description:
       main command of the plugin
     usage:
-      /acmd [args]
+      Bad usage of this command, please verify your command ID or your syntax.
 
   acmd:
     usage:
-      /acmd [args]
+      Bad usage of this command, please verify your command ID or your syntax.
     description:
       main command of the plugin
     permission: acmd.admin

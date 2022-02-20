@@ -23,16 +23,16 @@ public class CommandRunnerReload implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            try {
-                plugin.Load();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnReload"),new autocommand(plugin)));
-            sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("OnReload"),new autocommand(plugin)));
+        try {
+            plugin.Load();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnReload"),new autocommand(plugin)));
+        sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("OnReload"),new autocommand(plugin)));
+
         return true;
     }
 }

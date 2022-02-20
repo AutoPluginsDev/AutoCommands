@@ -3,10 +3,13 @@ package fr.lumi.Util;
 import fr.lumi.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -14,14 +17,17 @@ public class autocommand implements Runnable {
 
     private String m_name="";
     private long m_cycle=0;
-    private String m_commande="";
-    private int ID = 0;
+    private List<String> m_commands = new ArrayList<String>();
+
+    private String ID ="";
     private boolean m_active=false;
     private String m_message="";
     private long m_delay = 0;
     private int shedulerId=0;
     private int m_Repetition=-1;
     private int m_RepetitionCounter=0;
+    private String m_time = "";
+    private String m_error = "";
     Main plugin;
     public autocommand(Main plg){plugin = plg;}
 
@@ -39,10 +45,11 @@ public class autocommand implements Runnable {
     public String getName(){return m_name;}
     public void setName(String name){m_name = name;}
 
+    public String getTime(){return m_time;}
+    public void setTime(String time){m_time = time;}
+
     public String getmessage(){return m_message;}
     public void setmessage(String mess){m_message = mess;}
-
-
 
     public long getCycle() {return m_cycle;}
     public void setCycle(long cycle) {m_cycle = cycle;}
@@ -50,16 +57,57 @@ public class autocommand implements Runnable {
     public void setDelay(long delay){m_delay = delay;}
     public long getDelay() {return m_delay ;}
 
-
     public float getCycleInSec(){
         return (float)getCycle()/20;
     }
 
-    public String getCommande() {return m_commande;}
-    public void setCommande(String commande) {m_commande = commande;}
+    public boolean delete(FileConfiguration config, Main plg) throws IOException {
 
-    public void setID(int id){ID = id;}
-    public int getID(){return ID;}
+
+        config.set(ID+"",null);
+
+        plugin.getcommandList().remove(this);
+        config.save(plg.getCommandsFile());
+        return true;
+    }
+
+
+
+
+
+    public void addCommand(String cmd){
+        m_commands.add(cmd);
+    }
+
+    public void removeCommand(int commandID){
+        m_commands.remove(m_commands.get(commandID));
+    }
+
+    public int getCommandCount(){
+        return m_commands.size();
+    }
+
+    public List<String> getCommands(){
+        return m_commands;
+    }
+
+    public String getStringFormatCommands(){
+        int i =0;
+        StringBuilder s = new StringBuilder();
+        for(String cmd :m_commands){
+            String cmd_ = "\n-ID : "+i+"-" + cmd ;
+            s.append(cmd_);
+            i++;
+        }
+        return s.toString();
+    }
+
+
+    public String getError() {return m_error;}
+    public void setError(String error) {m_error = error;}
+
+    public void setID(String id){ID = id;}
+    public String getID(){return ID;}
 
     public void setRepetition(int rep){m_Repetition = rep;}
     public int getRepetition(){return m_Repetition;}
@@ -78,18 +126,20 @@ public void addToScheduler(Main plg) throws IOException {
     }
     else
         plg.getServer().getScheduler().cancelTask(shedulerId);
-
-
-
 }
-
-
 
     @Override
     public void run() {
         if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
         Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),getCommande());
+
+
+        for(String command : m_commands ){
+            Bukkit.getConsoleSender().sendMessage(command);
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),command);
+        }
+
+
         setRepetitionCounter(getRepetitionCounter()+1);
         if(getRepetition() != -1){
             if (getRepetitionCounter() == getRepetition()) {
@@ -102,64 +152,73 @@ public void addToScheduler(Main plg) throws IOException {
                 }
             }
         }
-
     }
 
     public boolean saveInConfig(FileConfiguration config, Main plg) throws IOException {
 
+
         config.set(ID+"","");
-        config.set(ID+".name",m_name);
-        config.set(ID+".cycle",m_cycle);
-        config.set(ID+".delay",m_delay);
-        config.set(ID+".repetition",m_Repetition);
-        config.set(ID+".command",m_commande);
+
         config.set(ID+".active",m_active);
-        config.set(ID+".message",m_message);
+        config.set(ID+".TaskParameters","");
+        config.set(ID+".TaskParameters.name",m_name);
+        config.set(ID+".TaskParameters.cycle",m_cycle);
+        config.set(ID+".TaskParameters.delay",m_delay);
+        config.set(ID+".TaskParameters.repetition",m_Repetition);
+
+        if(!m_commands.isEmpty())config.set(ID+".TaskParameters.commands",m_commands);
+        else config.set(ID+".TaskParameters.commands","");
+
+        config.set(ID+".TaskParameters.message",m_message);
+
+        config.set(ID+".DaylySchedulerParameters","");
+        config.set(ID+".DaylySchedulerParameters.time",m_time);
 
         config.save(plg.getCommandsFile());
         return true;
     }
 
-    public boolean getInConfig(FileConfiguration config,Main plg,int id){
+    public boolean getInConfig(FileConfiguration config,Main plg,String id){
 
-            for(int i =0;i< plg.getCommandsConfig().getKeys(false).size();i++){
-                if(id == i){
-                    ID = id ;
-                    m_name = config.getString(+ID+".name");
-                    m_cycle = config.getLong(ID+".cycle");
-                    m_delay= config.getLong(ID+".delay");
-                    m_Repetition = config.getInt(ID+".repetition");
-                    m_commande = config.getString(ID+".command");
-                    m_active = config.getBoolean(ID+".active");
-                    m_message = config.getString(ID+".message");
-                }
-            }
+
+            ID = id ;
+
+            m_active = config.getBoolean(ID+".active");
+
+            m_name = config.getString(ID+".TaskParameters.name");
+            m_cycle = config.getLong(ID+".TaskParameters.cycle");
+            m_delay= config.getLong(ID+".TaskParameters.delay");
+            m_Repetition = config.getInt(ID+".TaskParameters.repetition");
+            m_message = config.getString(ID+".TaskParameters.message");
+            m_time = config.getString(ID+".DaylySchedulerParameters.time");
+            m_commands =  config.getStringList(ID+".TaskParameters.commands");
+
             return true;
         }
 
+    public void printToPlayer(CommandSender player, Main plugin){
 
-    public boolean eraseInConfig(FileConfiguration config,Main plg,int id){
+        for(String line : plugin.getLangConfig().getStringList("onDysplayingAcmd")){
+            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(line,this));
 
-        for(int i =0;i< plg.getCommandsConfig().getKeys(false).size();i++){
-            if(id == i){
-                config.set(ID+"","");
-            }
         }
-        return true;
-    }
-    public void printToPlayer(Player player,Main plugin){
-        for(int i=0;plugin.getLangConfig().isSet("onDysplayingAcmd."+i);i++){
-
-            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDysplayingAcmd."+i),this));
-        }
-
     }
 
     public void printToConsole(Main plugin){
-        for(int i=0;plugin.getLangConfig().isSet("onDysplayingAcmd."+i);i++){
+        for(String line : plugin.getLangConfig().getStringList("onDysplayingAcmd")){
+            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(line,this));
 
-            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("onDysplayingAcmd."+i),this));
         }
     }
+
+    public boolean isConforme(){
+        if(m_Repetition == -1 && m_time != ""){
+            setError("infinite repetition but dayly routine given");
+            return false;
+        }
+        setError(m_error = "");
+        return true;
+    }
+
 
 }

@@ -7,8 +7,8 @@ AlertShortCycle: '&c%acmdName has a cycle of %acmdCycleSec seconds, this is shor
 # On new command
 onAddingANewCommand : 'command %acmdName succesfully added'
 
-CommandListTop: '--Running acmds : %acmdFound--'
-CommandListBottom: ' '
+CommandListTop: '--%acmdRunning running out of %acmdFound found--'
+CommandListBottom: ''
 
 OnReload: 'reloaded %acmdFound acmds'
 
@@ -16,11 +16,15 @@ OnRepetitionEnd: '&cstopping executing %acmdName'
 
 ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter the  command&a->&6 %acmdCommand'
 
+CommandEdited: '&6command succesfully modifed'
+
 onDysplayingAcmd:
- '0': '&6>acmd : %acmdName '
- '1': '   &dID : %acmdID &e, Active : %acmdIsActive'
- '2': '   &eevery : %acmdCycleSec seconds&e,&9 delay : %acmdDelaySec'
- '3': '   &eExecuting -> &6%acmdCommand'
- '4': '   &eRepeting task &8%acmdRepetition&e times'
- '5': '   &edisplaying message : %acmdMessage'
- '6': '&e- - - - - - - - - - - - - - - - - - -'
+ - '&6>acmd : %acmdName '
+ - '   &dID : %acmdID &e, Active : %acmdIsActive'
+ - '   &eevery : %acmdCycleSec seconds&e,&9 delay : %acmdDelaySec'
+ - '   &eDaly execution hour : &a&l%acmdDaylyTime'
+ - '   &eList of the commands : '
+ - '   &6%acmdCommand'
+ - '   &eRepeting task &8%acmdRepetition&e times'
+ - '   &edisplaying message : %acmdMessage'
+ - '&e- - - - - - - - - - - - - - - - - - -'
