@@ -15,13 +15,21 @@
 #   %acmdRepetition (Number of repetition of the command before disable, -1 = no limit )
 #   %acmdRepCounter (actual number of time the command has executed)
 #   %acmdIsActive (command active or not)
+#   %acmdIsRunning (command running or not)
 #   %acmdID (id in the commands.yml)
-#   %acmdRunning (number of running command)
+#   %acmdCurrentlyRunning (number of running command)
+#   %acmdCurrentlyEnabled
 #   %acmdDaylyTime (hour and minuts with format "hh H mm" when the command will be executed everyday)
+#   %acmdNumberOfListPage
+#   %acmdCurrentPageOfList
 
 
+# Enable and disable the ACMD
 onEnablAcmd: '&6%acmdName &aenable'
 onDisableAcmd: '&6%acmdName &c&ldisable'
+
+onRunAcmd: '&6%acmdName &aRunning'
+onStopAcmd: '&6%acmdName &c&lStopped'
 
 #Time warning
 AlertShortCycle: '&c%acmdName has a cycle of %acmdCycleSec seconds, this is short and it can cause lag on your server'
@@ -30,8 +38,8 @@ onAddingANewCommand : 'command %acmdName successfully added'
 
 onDeleteAcmd: 'Command %acmdName successfully deleted'
 
-CommandListTop: '-----[&6%acmdRunning running out of %acmdFound found]&e-----'
-CommandListBottom: ''
+CommandListTop: '---------[&6%acmdcurrentlyRunning running out of %acmdFound found&e]---------'
+CommandListBottom: ' ---Page--(%acmdCurrentPageOfList / %acmdNumberOfListPage&e)---------'
 
 OnReload: 'reloaded %acmdFound acmds'
 
@@ -43,12 +51,12 @@ CommandEdited: '&6command successfully modified'
 
 onDysplayingAcmd:
  - '   &eName : &6%acmdName '
- - '   &eID : &d%acmdID &e, Active : %acmdIsActive'
+ - '   &eID : &d%acmdID &e, Active : %acmdIsActive&e, running : %acmdIsRunning'
  - '   &eEvery : %acmdCycleSec seconds&e, delay : &9%acmdDelaySec'
- - '   &eDaly execution hour : &a&l%acmdDaylyTime'
+ - '   &eDaily execution hour : &a&l%acmdDaylyTime'
  - '   &6List of the commands : '
  - '   &6%acmdCommand'
  - ' '
  - '   &eRepeating task &8%acmdRepetition&e times'
  - '   &edisplaying message : %acmdMessage'
- - '&e- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -'
+ - '&e--------------------------------------------------'

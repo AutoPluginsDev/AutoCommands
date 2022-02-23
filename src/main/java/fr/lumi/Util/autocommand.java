@@ -5,7 +5,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +19,8 @@ public class autocommand implements Runnable {
     private List<String> m_commands = new ArrayList<String>();
 
     private String ID ="";
-    private boolean m_active=false;
+    private boolean m_running=false;
+    private boolean m_Active = true;
     private String m_message="";
     private long m_delay = 0;
     private int shedulerId=0;
@@ -28,19 +28,27 @@ public class autocommand implements Runnable {
     private int m_RepetitionCounter=0;
     private String m_time = "";
     private String m_error = "";
+
     Main plugin;
     public autocommand(Main plg){plugin = plg;}
 
 
-    public void setActive(boolean state, FileConfiguration config,Main plg) throws IOException {
-        m_active=state;
-        config.set(ID+".active",m_active);
 
-        config.save(plg.getCommandsFile());
-        addToScheduler(plg);
+
+    public void setRunning(boolean state, FileConfiguration config,Main plg) {
+        m_running=state;
+        config.set(ID+".active",m_running);
+
+        saveInConfig(config);
+        addToScheduler();
     }
 
-    public boolean isActive() {return m_active;}
+    public boolean isActive() {return m_Active;}
+    public void setActive(boolean state){
+        m_Active = state;
+    }
+
+    public boolean isRunning(){return m_running;}
 
     public String getName(){return m_name;}
     public void setName(String name){m_name = name;}
@@ -61,14 +69,17 @@ public class autocommand implements Runnable {
         return (float)getCycle()/20;
     }
 
-    public boolean delete(FileConfiguration config, Main plg) throws IOException {
-
-
+    public void delete(FileConfiguration config) {
         config.set(ID+"",null);
-
         plugin.getcommandList().remove(this);
-        config.save(plg.getCommandsFile());
-        return true;
+        saveInConfig(config);
+    }
+
+    public void saveInConfig(FileConfiguration cfg){
+        try{
+            cfg.save(plugin.getCommandsFile());
+        }catch(IOException ignored){
+        }
     }
 
 
@@ -115,54 +126,55 @@ public class autocommand implements Runnable {
     public void setShedulerId(int id){shedulerId = id;}
     public int getsetShedulerId(){return shedulerId;}
 
-public void addToScheduler(Main plg) throws IOException {
+public void addToScheduler(){
 
-    if(m_active){
+    if(m_running){
         if(getRepetition() != -1) setRepetitionCounter(0);
-        shedulerId = plg.getServer().getScheduler().scheduleSyncRepeatingTask(plg, this, getDelay(), getCycle());
+        shedulerId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this, getDelay(), getCycle());
     }
     else
-        plg.getServer().getScheduler().cancelTask(shedulerId);
+        plugin.getServer().getScheduler().cancelTask(shedulerId);
 }
 
     @Override
     public void run() {
-        if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
-        Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
+        if(m_Active){
+            if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
+            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
 
 
-        for(String command : m_commands ){
-            Bukkit.getConsoleSender().sendMessage(command);
-            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),command);
-        }
+            for(String command : m_commands ){
+                Bukkit.getConsoleSender().sendMessage(command);
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),command);
+            }
 
 
-        setRepetitionCounter(getRepetitionCounter()+1);
-        if(getRepetition() != -1){
-            if (getRepetitionCounter() == getRepetition()) {
-                Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnRepetitionEnd"),this));
-                plugin.getServer().getScheduler().cancelTask(shedulerId);
-                try {
-                    setActive(false,plugin.getCommandsConfig(),plugin);
-                } catch (IOException e) {
-                    e.printStackTrace();
+            setRepetitionCounter(getRepetitionCounter()+1);
+            if(getRepetition() != -1){
+                if (getRepetitionCounter() == getRepetition()) {
+                    Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnRepetitionEnd"),this));
+                    plugin.getServer().getScheduler().cancelTask(shedulerId);
+
+                    setRunning(false,plugin.getCommandsConfig(),plugin);
+
                 }
             }
         }
+
     }
 
-    public boolean saveInConfig(FileConfiguration config, Main plg) throws IOException {
+    public void saveInConfig(FileConfiguration config, Main plg)  {
 
 
         config.set(ID+"","");
 
-        config.set(ID+".active",m_active);
+        config.set(ID+".active",m_Active);
         config.set(ID+".TaskParameters","");
         config.set(ID+".TaskParameters.name",m_name);
         config.set(ID+".TaskParameters.cycle",m_cycle);
         config.set(ID+".TaskParameters.delay",m_delay);
         config.set(ID+".TaskParameters.repetition",m_Repetition);
-
+        config.set(ID+".TaskParameters.running",m_running);
         if(!m_commands.isEmpty())config.set(ID+".TaskParameters.commands",m_commands);
         else config.set(ID+".TaskParameters.commands","");
 
@@ -171,16 +183,17 @@ public void addToScheduler(Main plg) throws IOException {
         config.set(ID+".DailySchedulerParameters","");
         config.set(ID+".DailySchedulerParameters.time",m_time);
 
-        config.save(plg.getCommandsFile());
-        return true;
+        saveInConfig(config);
+
+
     }
 
     public boolean getInConfig(FileConfiguration config,Main plg,String id){
 
 
             ID = id ;
-
-            m_active = config.getBoolean(ID+".active");
+            m_Active = config.getBoolean(ID+".active");
+            m_running = config.getBoolean(ID+".TaskParameters.running");
 
             m_name = config.getString(ID+".TaskParameters.name");
             m_cycle = config.getLong(ID+".TaskParameters.cycle");
@@ -189,11 +202,10 @@ public void addToScheduler(Main plg) throws IOException {
             m_message = config.getString(ID+".TaskParameters.message");
             m_time = config.getString(ID+".DailySchedulerParameters.time");
             m_commands =  config.getStringList(ID+".TaskParameters.commands");
-
             return true;
         }
 
-    public void printToPlayer(CommandSender player, Main plugin){
+    public void printToPlayer(CommandSender player){
 
         for(String line : plugin.getLangConfig().getStringList("onDysplayingAcmd")){
             player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(line,this));
@@ -201,7 +213,7 @@ public void addToScheduler(Main plg) throws IOException {
         }
     }
 
-    public void printToConsole(Main plugin){
+    public void printToConsole(){
         for(String line : plugin.getLangConfig().getStringList("onDysplayingAcmd")){
             Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(line,this));
 

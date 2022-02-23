@@ -1,8 +1,6 @@
 package fr.lumi.Commandes;
 
 import fr.lumi.Main;
-import fr.lumi.Util.Utilities;
-import fr.lumi.Util.autocommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -16,8 +14,7 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
 
     Main plugin;
-
-    public CommandRunnerHelp(Main plg) {
+    public CommandRunnerHelp(Main plg ) {
 
         plugin = plg;
     }
@@ -26,8 +23,8 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> l = new ArrayList<>();
-        if (cmd.getName().equalsIgnoreCase("acmdhelp")) {
-            if (sender instanceof Player) {
+        if(cmd.getName().equalsIgnoreCase("acmdhelp")){
+            if(sender instanceof Player){
                 List<String> list = new ArrayList<>();
 
             }
@@ -37,16 +34,21 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length >= 0) {
-            sender.sendMessage("§e-----------§aAutoCommands-Help§e--------------");
-            sender.sendMessage("§6ACMD Version : 1.0");
-            sender.sendMessage("§6/acmd [new|enable|disable|delete|list|edit] -> §aMain commands");
-            sender.sendMessage("§6/acmdconfig -> §amodification of the plugin's parameters");
-            sender.sendMessage("§6/acmdreload -> §areload the plugin and the autocomands");
-            sender.sendMessage("§e------------------------------------------");
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
 
+            String message =
+
+            "§e-----------§aAutoCommands-Help§e--------------\n"
+            +"§6ACMD Version : 1.0\n"
+            +"§6/acmd -> §7The main command of the plugin\n"
+            +"§6/acmdreload -> §7reload the plugin and the autocomands\n"
+            +"§6Link to our discord : §3https://discord.gg/EQHknuSTP8 \n"
+            +"§6The plugin's wiki  :§a https://github.com/AutoPluginsDev/Documentation/wiki/AutoCommands-%5BACMD%5D \n"
+            +"§e------------------------------------------\n";
+
+            player.sendMessage(message);
         }
-
         return true;
     }
 }

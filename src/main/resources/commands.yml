@@ -12,6 +12,7 @@ example2:
     commands:
       - say Dont forget to join our Discord !
     message: '' #no message
+    running: false
   DailySchedulerParameters:
     time: ''
 

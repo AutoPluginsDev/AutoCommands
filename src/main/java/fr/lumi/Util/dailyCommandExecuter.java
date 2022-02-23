@@ -2,7 +2,6 @@ package fr.lumi.Util;
 
 import fr.lumi.Main;
 
-import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -41,14 +40,11 @@ public class dailyCommandExecuter implements Runnable{
 
         String HourString = hour+"H"+minute;
 
-        for(autocommand cmd : m_commandList){
+        for(autocommand acmd : m_commandList){
 
-            if (Objects.equals(cmd.getTime(), HourString)){
-                try {
-                    cmd.setActive(true,plugin.getCommandsConfig(),plugin);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (Objects.equals(acmd.getTime(), HourString) && acmd.isActive()){
+                acmd.setRunning(true,plugin.getCommandsConfig(),plugin);
+
             }
         }
     }

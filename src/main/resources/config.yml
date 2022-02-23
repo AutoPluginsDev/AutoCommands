@@ -1,5 +1,4 @@
-ConsolePrefix : '&eAUTOCOMMANDS |'
-
-Prefix : '&eacmd | '
-
 ConfigVersion : 1 # DONT TOUCH AT THIS LINE
+ConsolePrefix : '&eAUTOCOMMANDS |'
+Prefix : '&eacmd | '
+MaxDisplayedCommandInList : 3

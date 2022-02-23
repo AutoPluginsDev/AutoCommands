@@ -12,7 +12,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -67,18 +66,11 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         m_ut = new Utilities(this);
-
         saveDefaultConfig();
         getRessourceFile(getLangFile(),"lang.yml",this);
         getRessourceFile(getCommandsFile(),"commands.yml",this);
 
-        try {
-            Load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+        Load();
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn"));
     }
@@ -90,7 +82,7 @@ public final class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cOff"));
     }
 
-    public void Load() throws IOException {
+    public void Load() {
         reloadConfig();
         config = getConfig();
 
@@ -139,18 +131,14 @@ public final class Main extends JavaPlugin {
     }
 
 
-    public boolean loadCommandsTimeTable() throws IOException {
+    public boolean loadCommandsTimeTable() {
         commandList.clear();
         getServer().getScheduler().cancelTasks(this);
-        BukkitScheduler scheduler = this.getServer().getScheduler();
-
-
-
         for(String i : getCommandsConfig().getKeys(false)){
             autocommand cmd = new autocommand(this);
             if(cmd.getInConfig(getCommandsConfig(),this,i)){
-                cmd.printToConsole(this);
-                cmd.addToScheduler(this);
+                cmd.printToConsole();
+                cmd.addToScheduler();
                 commandList.add(cmd);
                 cmd.saveInConfig(commandsConfig,this);
             }
@@ -166,12 +154,21 @@ public final class Main extends JavaPlugin {
         return count;
     }
 
+    public int getRunningCommand(){
+        int count=0;
+        for(autocommand a:getcommandList()){
+            if (a.isRunning()) count++;
+        }
+        return count;
+    }
+
+
 
     public long convertToTick(long seconds){
         return (long) seconds*20;
     }
 
-    public static YamlConfiguration getRessourceFile(File file, String resource, Main plugin) {
+    public static void getRessourceFile(File file, String resource, Main plugin) {
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -190,7 +187,7 @@ public final class Main extends JavaPlugin {
             e.printStackTrace();
         }
 
-        return YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration.loadConfiguration(file);
     }
 
 
