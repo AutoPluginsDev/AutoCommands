@@ -21,8 +21,8 @@ public class CommandRunnerReload implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         plugin.Load();
-        Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersPluginVars(plugin.getLangConfig().getString("OnReload")));
-        sender.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars(plugin.getLangConfig().getString("OnReload")));
+        Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar(plugin.getLangConfig().getString("OnReload")));
+        sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(plugin.getLangConfig().getString("OnReload")));
 
         return true;
     }

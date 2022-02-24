@@ -48,7 +48,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 if (args.length == 2) {
                     if(Objects.equals(args[0], "list")){
 
-                        for(int i =1;i< (plugin.getcommandList().size()+1)/listAfficher.getMaxCommand();i++) l.add((i)+"");
+                        for(int i =1;i< listAfficher.getPageNumber()+1;i++) l.add((i)+"");
 
                     }
                 }
@@ -131,7 +131,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
 
                 if(index <= 0 || index > listAfficher.getPageNumber()+1 ) { //need more args
-                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("&4Try a page between 1 and " + (listAfficher.getPageNumber() + 1)));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Try a page between 1 and " + (listAfficher.getPageNumber() + 1)));
                     return true;
                 }
                 listAfficher.printListToSender(index-1,player);
@@ -141,7 +141,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
         if (args.length == 2) {
             String id = args[1];
             if (!plugin.acmdIdExist(id)){
-                player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("try a valid command ID"));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("try a valid command ID"));
                 return true;
             }
 
@@ -152,7 +152,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 if(acmd == null) return false;
 
                 if(!acmd.isActive()){
-                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("&4Try to enable the command "+acmd.getName()+" first with : /acmd enable "+acmd.getID()));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Try to enable the command "+acmd.getName()+" first with : /acmd enable "+acmd.getID()));
                     return true;
                 }
                 acmd.setRunning(true, plugin.getCommandsConfig(), plugin);
@@ -196,7 +196,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
             String id = args[1];
             if (!plugin.acmdIdExist(id)){
-                player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("try a valid command ID"));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("try a valid command ID"));
                 return true;
             }
             autocommand acmd;
@@ -263,7 +263,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                 String id = args[1];
                 if (!plugin.acmdIdExist(id)){
-                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("try a valid command ID"));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("try a valid command ID"));
                     return true;
                 }
                 autocommand acmd;

@@ -66,7 +66,7 @@ public class Utilities {
         s = s.replace("%acmdFound",plugin.getcommandList().size()+"");
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
-        return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix")+s);
+        return s;
     }
 
 
@@ -76,8 +76,22 @@ public class Utilities {
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix")+s);
     }
 
+    public String replacePlaceHoldersForPlayerPlgVar(String s){
+        s = replacePlaceHoldersPluginVars(s);
+        return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix")+s);
+    }
+
+
     public String replacePlaceHoldersForConsole(String s,autocommand cmd){
         s = replacePlaceHolders(s,cmd);
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix")+s);
     }
+
+    public String replacePlaceHoldersForConsolePlgVar(String s){
+        s = replacePlaceHoldersPluginVars(s);
+        return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix")+s);
+    }
+
+
+
 }

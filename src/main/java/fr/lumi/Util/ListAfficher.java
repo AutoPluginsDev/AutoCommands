@@ -18,11 +18,11 @@ public class ListAfficher {
     public void printListToSender(int page, CommandSender sender){
 
         if (plugin.getLangConfig().getString("CommandListTop") != "")
-            sender.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars(plugin.getLangConfig().getString("CommandListTop")));
+            sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(plugin.getLangConfig().getString("CommandListTop")));
 
         for (int i = page * m_commandMax; i < page* m_commandMax + m_commandMax && i < plugin.getcommandList().size(); i++) {
             autocommand cmd = plugin.getcommandList().get(i);
-            cmd.printToPlayer(sender);//
+            cmd.printToPlayer(sender);
         }
 
         String s = "";
@@ -30,7 +30,7 @@ public class ListAfficher {
             s = plugin.getLangConfig().getString("CommandListBottom");
             s = s.replace("%acmdNumberOfListPage",(getPageNumber()+1)+"");
             s = s.replace("%acmdCurrentPageOfList",(page+1)+"");
-            sender.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars(s));
+            sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(s));
     }
 
     public int getPageNumber(){

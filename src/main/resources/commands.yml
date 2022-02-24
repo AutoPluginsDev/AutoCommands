@@ -31,6 +31,7 @@ example2:
 #      - say Hello World
 #      - say dlroW olleH
 #    message: '&aThis is a &6test &a! '
+#    running: false
 #  DailySchedulerParameters:
 #    time : '18H42' #if empty, the acmd will not be a dayly task.
 

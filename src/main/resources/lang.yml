@@ -41,7 +41,7 @@ onDeleteAcmd: 'Command %acmdName successfully deleted'
 CommandListTop: '&e---------[ &6%acmdcurrentlyRunning / %acmdFound running , %acmdCurrentlyEnabled / %acmdFound Active &e]---------'
 CommandListBottom: ' ---Page--(%acmdCurrentPageOfList / %acmdNumberOfListPage&e)---------'
 
-OnReload: 'reloaded %acmdFound acmds'
+OnReload: '&a&lreloaded %acmdFound acmds'
 
 OnRepetitionEnd: '&cstopping executing %acmdName'
 

@@ -4,6 +4,8 @@ import fr.lumi.Commandes.CommandRunnerCommand;
 import fr.lumi.Commandes.CommandRunnerHelp;
 
 import fr.lumi.Commandes.CommandRunnerReload;
+import fr.lumi.FileVerifiers.ConfigFileVerification;
+import fr.lumi.FileVerifiers.LangFileVerification;
 import fr.lumi.Util.Utilities;
 import fr.lumi.Util.autocommand;
 import fr.lumi.Util.dailyCommandExecuter;
@@ -19,6 +21,15 @@ import java.util.List;
 import java.util.Objects;
 
 public final class Main extends JavaPlugin {
+
+    private String[] Logo ={
+    "&e&9     &6__     __ &e ",
+    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.2.1",
+    "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
+    ""};
+
+
+
 
     FileConfiguration config = getConfig();
 
@@ -37,16 +48,39 @@ public final class Main extends JavaPlugin {
         return commandsFile;
     }
 
+    public boolean saveCommandsFile() {
+        try {
+            getCommandsConfig().save(getCommandsFile());
+        } catch (IOException ignored){
+            return false;
+        }
+        return true;
+    }
+
+
+
     //translatefile gestion
     private File Langfile = new File(getDataFolder(),"lang.yml");
     private FileConfiguration Langconfig= YamlConfiguration.loadConfiguration(Langfile);
+
     public FileConfiguration getLangConfig() {
         Langconfig = YamlConfiguration.loadConfiguration(Langfile);
         return Langconfig;
     }
+
     public File getLangFile() {
         Langfile= new File(getDataFolder(),"lang.yml");
         return Langfile;
+    }
+
+    public boolean saveLangFile() {
+        Bukkit.getConsoleSender().sendMessage("saving the lang");
+        try {
+            getLangConfig().save(getLangFile());
+        } catch (IOException ignored){
+            return false;
+        }
+        return true;
     }
 
 
@@ -62,11 +96,25 @@ public final class Main extends JavaPlugin {
         return commandList;
     }
 
+    //FileVerifiers
+    private LangFileVerification LangVerif = new LangFileVerification(this);
+    private ConfigFileVerification ConfigVerif = new ConfigFileVerification(this);
+
 
     @Override
     public void onEnable() {
+
         m_ut = new Utilities(this);
+
+        for(String s :Logo)//print the logo
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',s));
+
         saveDefaultConfig();
+
+
+        ConfigVerif.Verif();
+        LangVerif.Verif();
+
         getRessourceFile(getLangFile(),"lang.yml",this);
         getRessourceFile(getCommandsFile(),"commands.yml",this);
 
@@ -86,19 +134,23 @@ public final class Main extends JavaPlugin {
         reloadConfig();
         config = getConfig();
 
+        //verification des fichiers configs
+
+
+
         Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
         Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this));
         Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+ "&e---------------Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands---------------"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+ "&e-Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands-"));
 
         if(!loadCommandsTimeTable()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"&6No AutoComands to execute"));
 
         //daily executor enable
         executer = new dailyCommandExecuter(this,getcommandList());
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, executer, 0, executer.getrefreshRate());
-
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
+        if(getConfig().getBoolean("DisplayAcmdInConsole"))
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aLoaded"));
 
     }
@@ -144,7 +196,10 @@ public final class Main extends JavaPlugin {
                     acmd.setID(acmd.getID() +"_"+index);
                     index++;
                 }*/
-                acmd.printToConsole();
+
+                if(getConfig().getBoolean("DisplayAcmdInConsole"))
+                    acmd.printToConsole();
+
                 acmd.addToScheduler();
                 commandList.add(acmd);
                 acmd.saveInConfig(commandsConfig,this);
