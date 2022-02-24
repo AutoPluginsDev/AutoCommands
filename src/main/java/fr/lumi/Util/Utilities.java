@@ -35,7 +35,7 @@ public class Utilities {
         else s = s.replace("%acmdIsActive","&cDisable");
 
 
-        if (cmd.getCycleInSec() < 10){
+        if (cmd.getCycleInSec() < 10 && cmd.getCycleInSec() > 0 ){
             s = s.replace("%acmdCycleTick","&c"+cmd.getCycle()+"(short cycle)");
             s = s.replace("%acmdCycleSec","&c"+cmd.getCycleInSec()+"(short cycle)");
         }
