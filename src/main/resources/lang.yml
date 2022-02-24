@@ -38,7 +38,7 @@ onAddingANewCommand : 'command %acmdName successfully added'
 
 onDeleteAcmd: 'Command %acmdName successfully deleted'
 
-CommandListTop: '---------[&6%acmdcurrentlyRunning running out of %acmdFound found&e]---------'
+CommandListTop: '&e---------[ &6%acmdcurrentlyRunning / %acmdFound running , %acmdCurrentlyEnabled / %acmdFound Active &e]---------'
 CommandListBottom: ' ---Page--(%acmdCurrentPageOfList / %acmdNumberOfListPage&e)---------'
 
 OnReload: 'reloaded %acmdFound acmds'

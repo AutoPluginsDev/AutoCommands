@@ -34,7 +34,7 @@ public class ListAfficher {
     }
 
     public int getPageNumber(){
-        return (plugin.getcommandList().size()/m_commandMax) ;
+        return (int) ((plugin.getcommandList().size()-1)/(m_commandMax)) ;
     }
 
     public int getMaxCommand(){

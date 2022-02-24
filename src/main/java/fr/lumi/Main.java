@@ -135,12 +135,19 @@ public final class Main extends JavaPlugin {
         commandList.clear();
         getServer().getScheduler().cancelTasks(this);
         for(String i : getCommandsConfig().getKeys(false)){
-            autocommand cmd = new autocommand(this);
-            if(cmd.getInConfig(getCommandsConfig(),this,i)){
-                cmd.printToConsole();
-                cmd.addToScheduler();
-                commandList.add(cmd);
-                cmd.saveInConfig(commandsConfig,this);
+            autocommand acmd = new autocommand(this);
+            if(acmd.getInConfig(getCommandsConfig(),this,i)){
+/*
+                int index=0;
+                while(acmdIdExist(acmd.getID())){
+                    Bukkit.getConsoleSender().sendMessage(acmd.getID());
+                    acmd.setID(acmd.getID() +"_"+index);
+                    index++;
+                }*/
+                acmd.printToConsole();
+                acmd.addToScheduler();
+                commandList.add(acmd);
+                acmd.saveInConfig(commandsConfig,this);
             }
         }
         return true;

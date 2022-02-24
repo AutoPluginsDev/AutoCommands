@@ -89,7 +89,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                                 }
                             }
                         if (Objects.equals(args[2], "setDailyExecutionTime")) {
-                            l.add("18H42");
+                            l.add("08H05");
                         }
                     }
 
@@ -98,12 +98,11 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
 
                 if (Objects.equals(args[0], "new")) {
-                    if (args.length == 2) l.add("NAME");
-                    if (args.length == 3) l.add("Loop Time (tick) 20tick->1second");
-                    if (args.length == 4) l.add("Delay At Start (tick) 20tick->1second");
-                    if (args.length == 5) l.add("Repetitions(-1 = no limit)");
-                    if (args.length == 6) l.add("YOUR COMMAND");
-                    if (args.length == 6) l.add("If you need to display a message, use /acmd setMessage ID [message]");
+                    if (args.length == 2) l.add("[name]");
+                    if (args.length == 3) l.add("[Period]");
+                    if (args.length == 4) l.add("[DelayBeforeStart]");
+                    if (args.length == 5) l.add("[Repetitions(-1=noLimit)]");
+                    if (args.length == 6) l.add("[command]");
                 }
             }
         }
@@ -115,41 +114,46 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
         CommandSender player = sender;
         if (args.length == 0) return false;
 
-        if (args.length >= 1) {
 
+        if (args.length >= 1) {
             if (Objects.equals(args[0], "list")) {
 
-                if(args.length == 1 )
-                    return false;
+
+                if(args.length == 1 ){
+                    listAfficher.printListToSender(0,player);
+                    return true;
+                }
+
 
                 if(!StringNumberVerif.isDigit(args[1]))
                     return false;
                 int index = Integer.parseInt(args[1]);
 
 
-                if(index <= 0 || index > listAfficher.getPageNumber()+1 ){ //need more args
-                    if(listAfficher.getPageNumber() <= 0)
-                        player.sendMessage("§4No command to show !");
-                    else
-                        player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("&4Try a page between 1 and "+(listAfficher.getPageNumber() + 1)));
-                    return false;
+                if(index <= 0 || index > listAfficher.getPageNumber()+1 ) { //need more args
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("&4Try a page between 1 and " + (listAfficher.getPageNumber() + 1)));
+                    return true;
                 }
                 listAfficher.printListToSender(index-1,player);
 
             }
         }
         if (args.length == 2) {
-            if (Objects.equals(args[0], "run")) {
-                String id = args[1];
-                if (!plugin.acmdIdExist(id)) return false;
+            String id = args[1];
+            if (!plugin.acmdIdExist(id)){
+                player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("try a valid command ID"));
+                return true;
+            }
 
-                autocommand acmd;
-                acmd = plugin.getacmdInList(id);
+            autocommand acmd;
+            acmd = plugin.getacmdInList(id);
+            if (Objects.equals(args[0], "run")) {
+
                 if(acmd == null) return false;
 
                 if(!acmd.isActive()){
-                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("&4Try to enable the command "+acmd.getName()+" first. "));
-                    return false;
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("&4Try to enable the command "+acmd.getName()+" first with : /acmd enable "+acmd.getID()));
+                    return true;
                 }
                 acmd.setRunning(true, plugin.getCommandsConfig(), plugin);
 
@@ -158,23 +162,14 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             }
 
             if (Objects.equals(args[0], "stop")) {
-                String id = args[1];
-                if (!plugin.acmdIdExist(id)) return false;
 
-                autocommand acmd;
-                acmd = plugin.getacmdInList(id);
-                if(acmd == null) return false;
                 acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
 
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onStopAcmd"), acmd));
                 //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
             }
             if (Objects.equals(args[0], "enable")) {
-                String id = args[1];
-                if (!plugin.acmdIdExist(id)) return false;
 
-                autocommand acmd;
-                acmd = plugin.getacmdInList(id);
                 if(acmd == null) return false;
 
                 acmd.setActive(true);
@@ -183,11 +178,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             }
 
             if (Objects.equals(args[0], "disable")) {
-                String id = args[1];
-                if (!plugin.acmdIdExist(id)) return false;
 
-                autocommand acmd;
-                acmd = plugin.getacmdInList(id);
                 if(acmd == null) return false;
                 acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
                 acmd.setActive(false);
@@ -204,11 +195,13 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
         if (Objects.equals(args[0], "edit") && args.length >= 2) {
 
             String id = args[1];
-            if (!plugin.acmdIdExist(id)) return false;
-            //initializing the new command
+            if (!plugin.acmdIdExist(id)){
+                player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("try a valid command ID"));
+                return true;
+            }
             autocommand acmd;
             acmd = plugin.getacmdInList(id);
-            if(acmd == null) return false;
+
             if (Objects.equals(args[2], "setMessage")) {
 
                 StringBuilder s = new StringBuilder();
@@ -269,20 +262,23 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             if (Objects.equals(args[0], "delete")) {
 
                 String id = args[1];
-                if (!plugin.acmdIdExist(id)) return false;
-                //initializing the new command
-                autocommand cmd;
-                cmd = plugin.getacmdInList(id);
+                if (!plugin.acmdIdExist(id)){
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersPluginVars("try a valid command ID"));
+                    return true;
+                }
+                autocommand acmd;
+                acmd = plugin.getacmdInList(id);
+
 
                 //desactivation of the command
 
-                cmd.setRunning(false, plugin.getCommandsConfig(), plugin);
+                acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
 
 
 
-                cmd.delete(plugin.getCommandsConfig());
+                acmd.delete(plugin.getCommandsConfig());
 
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), cmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd));
 
 
             }
@@ -329,9 +325,12 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 cmd.addCommand(s.toString());
 
                 cmd.setID("acmd" + plugin.getcommandList().size());
-
+                int index=0;
+                while(plugin.acmdIdExist(cmd.getID())){
+                    cmd.setID("acmd" +index);
+                    index++;
+                }
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd));
-
 
 
                 cmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
