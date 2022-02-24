@@ -35,9 +35,13 @@ public class Utilities {
         else s = s.replace("%acmdIsActive","&cDisable");
 
 
-        if (cmd.getCycleInSec()<10){
+        if (cmd.getCycleInSec() < 10){
             s = s.replace("%acmdCycleTick","&c"+cmd.getCycle()+"(short cycle)");
             s = s.replace("%acmdCycleSec","&c"+cmd.getCycleInSec()+"(short cycle)");
+        }
+        else if(cmd.getCycleInSec() == 0){
+            s = s.replace("%acmdCycleTick","&c"+cmd.getCycle()+"(do you want to crash your serv ?)");
+            s = s.replace("%acmdCycleSec","&c"+cmd.getCycleInSec()+"(do you want to crash your serv ?)");
         }
         else{
             s = s.replace("%acmdCycleTick","&a"+cmd.getCycle());
