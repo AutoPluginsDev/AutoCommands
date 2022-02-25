@@ -28,15 +28,12 @@ public class LangFileVerification extends cfgFileVerification {
         keys.put("ConsoleExecutingMessage","");
         keys.put("CommandEdited","");
         keys.put("onDysplayingAcmd","");
-
         super.setKeys(keys);
     }
 
     @Override
     public void savemodif() {
-        //plugin.getLangConfig().set("OnReload","5");
-
-        //plugin.saveLangFile();
+        plugin.saveLangFile();
     }
 
 

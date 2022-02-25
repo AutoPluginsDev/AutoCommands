@@ -13,10 +13,10 @@ public abstract class cfgFileVerification {
 
     Main plugin;
     protected HashMap<String,Object> keyList;
-    private String errorMess;
-    private String filename;
+    private final String errorMess;
+    private final String filename;
 
-    FileConfiguration fileconf;
+    private final FileConfiguration fileconf;
 
     cfgFileVerification(Main plg, FileConfiguration fg, String errorMessage,String fname){
         filename = fname;

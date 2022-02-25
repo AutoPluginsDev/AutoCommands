@@ -52,7 +52,7 @@ CommandEdited: '&6command successfully modified'
 onDysplayingAcmd:
  - '   &eName : &6%acmdName '
  - '   &eID : &d%acmdID &e, Active : %acmdIsActive&e, running : %acmdIsRunning'
- - '   &eEvery : %acmdCycleSec seconds&e, delay : &9%acmdDelaySec'
+ - '   &eEvery : %acmdCycleSec s&e, delay : &9%acmdDelaySec s'
  - '   &eDaily execution hour : &a&l%acmdDaylyTime'
  - '   &6List of the commands : '
  - '   &6%acmdCommand'

@@ -163,6 +163,31 @@ public void addToScheduler(){
 
     }
 
+
+    public void runTest() {
+
+        if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
+        Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
+
+
+        for(String command : m_commands ){
+            Bukkit.getConsoleSender().sendMessage(command);
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),command);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public void saveInConfig(FileConfiguration config, Main plg)  {
 
 

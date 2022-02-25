@@ -68,15 +68,22 @@ public final class Main extends JavaPlugin {
         return Langconfig;
     }
 
+    public FileConfiguration getLangConfigWithoutreload() {
+
+        return Langconfig;
+    }
+
+
     public File getLangFile() {
         Langfile= new File(getDataFolder(),"lang.yml");
         return Langfile;
     }
 
     public boolean saveLangFile() {
-        Bukkit.getConsoleSender().sendMessage("saving the lang");
+
         try {
-            getLangConfig().save(getLangFile());
+            Bukkit.getConsoleSender().sendMessage("saving the lang");
+            getLangConfigWithoutreload().save(getLangFile());
         } catch (IOException ignored){
             return false;
         }
@@ -103,6 +110,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        long  start = System.currentTimeMillis();
 
         m_ut = new Utilities(this);
 
@@ -119,9 +127,14 @@ public final class Main extends JavaPlugin {
         getRessourceFile(getCommandsFile(),"commands.yml",this);
 
         Load();
+        long exeTime = System.currentTimeMillis() - start;
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn (took "+exeTime+" ms)"));
+
+
+
     }
+
 
     @Override
     public void onDisable() {
@@ -233,9 +246,11 @@ public final class Main extends JavaPlugin {
     public static void getRessourceFile(File file, String resource, Main plugin) {
         try {
             if (!file.exists()) {
+
                 file.createNewFile();
                 InputStream inputStream = plugin.getResource(resource);
                 OutputStream outputStream = new FileOutputStream(file);
+
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
