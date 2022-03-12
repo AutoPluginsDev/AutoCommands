@@ -20,9 +20,12 @@ public abstract class Condition {
         return m_parameters.get(id);
     }
 
-    public void setParam(List<String> list){
+    public void setParams(List<String> list){
         m_parameters = list;
     }
+
+    protected abstract void formatingParams();
+
     abstract boolean paramVerifier();
 
     public abstract String getCondition();

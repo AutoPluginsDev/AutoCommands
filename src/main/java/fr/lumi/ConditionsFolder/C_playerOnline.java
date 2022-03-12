@@ -8,7 +8,7 @@ import java.util.List;
 public class C_playerOnline extends Condition {
 
     int onlinePlayerCondNumber = 0;
-
+    int cnd =0;
 
     @Override
     public boolean verify() {
@@ -21,8 +21,12 @@ public class C_playerOnline extends Condition {
     }
 
     @Override
-    public String getParam(int id) {
-        return null;
+    protected void formatingParams() {
+        if(m_parameters.get(0) == "<") cnd = -1;
+        if(m_parameters.get(0) == "=") cnd = 0;
+        if(m_parameters.get(0) == ">") cnd = 1;
+        onlinePlayerCondNumber = Integer.parseInt(m_parameters.get(1));
+
     }
 
     @Override
@@ -33,6 +37,6 @@ public class C_playerOnline extends Condition {
 
     @Override
     public String getCondition() {
-        return null;
+        return "Online players "+m_parameters.get(0)+" "+m_parameters.get(1);
     }
 }

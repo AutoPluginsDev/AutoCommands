@@ -18,6 +18,7 @@ public class autocommand implements Runnable {
     private String m_name="";
     private long m_cycle=0;
     private List<String> m_commands = new ArrayList<String>();
+
     private List<Condition> m_conditions = new ArrayList<Condition>();
 
     private String ID ="";
