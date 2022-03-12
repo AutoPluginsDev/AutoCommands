@@ -1,3 +1,4 @@
+#RELOAD THE SERVER TO SAVE THE CONFIG.
 ConfigVersion : 2 # DONT TOUCH AT THIS LINE
 ConsolePrefix : '&eAUTOCOMMANDS |'
 Prefix : '&eacmd | '

@@ -24,7 +24,7 @@ public class ConfigFileVerification extends cfgFileVerification {
 
     @Override
     public void savemodif() {
-        plugin.getConfig().set("ConfigVersion",2);
-        plugin.saveConfig();
+        //plugin.getConfig().set("ConfigVersion",2);
+        //plugin.saveConfig();
     }
 }

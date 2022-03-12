@@ -6,6 +6,7 @@ import fr.lumi.Commandes.CommandRunnerHelp;
 import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.FileVerifiers.ConfigFileVerification;
 import fr.lumi.FileVerifiers.LangFileVerification;
+import fr.lumi.Util.ConditionVerifier;
 import fr.lumi.Util.Utilities;
 import fr.lumi.Util.autocommand;
 import fr.lumi.Util.dailyCommandExecuter;
@@ -32,7 +33,7 @@ public final class Main extends JavaPlugin {
 
 
     FileConfiguration config = getConfig();
-
+    ConditionVerifier amcdVerifier = new ConditionVerifier(this);
     dailyCommandExecuter executer;
 
 
@@ -69,7 +70,6 @@ public final class Main extends JavaPlugin {
     }
 
     public FileConfiguration getLangConfigWithoutreload() {
-
         return Langconfig;
     }
 
@@ -79,10 +79,19 @@ public final class Main extends JavaPlugin {
         return Langfile;
     }
 
-    public boolean saveLangFile() {
-
+    public boolean saveLangFilewithLoad() {
         try {
-            Bukkit.getConsoleSender().sendMessage("saving the lang");
+            getLangConfig().save(getLangFile());
+        } catch (IOException ignored){
+            return false;
+        }
+        return true;
+    }
+
+
+
+    public boolean saveLangFile() {
+        try {
             getLangConfigWithoutreload().save(getLangFile());
         } catch (IOException ignored){
             return false;
@@ -108,32 +117,52 @@ public final class Main extends JavaPlugin {
     private ConfigFileVerification ConfigVerif = new ConfigFileVerification(this);
 
 
+    public void init(){
+        m_ut = new Utilities(this);
+        config = getConfig();
+        Langfile = new File(getDataFolder(),"lang.yml");
+        Langconfig= YamlConfiguration.loadConfiguration(Langfile);
+        commandsFile = new File(getDataFolder(),"commands.yml");
+        commandsConfig = YamlConfiguration.loadConfiguration(commandsFile);
+        commandList = new ArrayList<autocommand>();
+        //FileVerifiers
+        LangVerif = new LangFileVerification(this);
+        ConfigVerif = new ConfigFileVerification(this);
+        getRessourceFile(getLangFile(),"lang.yml",this);
+        getRessourceFile(getCommandsFile(),"commands.yml",this);
+        saveLangFile();
+        saveCommandsFile();
+    }
+
+
     @Override
     public void onEnable() {
         long  start = System.currentTimeMillis();
-
-        m_ut = new Utilities(this);
+        init();
 
         for(String s :Logo)//print the logo
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',s));
 
         saveDefaultConfig();
 
+        verifyFiles();
 
-        ConfigVerif.Verif();
-        LangVerif.Verif();
 
-        getRessourceFile(getLangFile(),"lang.yml",this);
-        getRessourceFile(getCommandsFile(),"commands.yml",this);
+
 
         Load();
         long exeTime = System.currentTimeMillis() - start;
-
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn (took "+exeTime+" ms)"));
 
 
 
     }
+
+    public void verifyFiles(){
+        ConfigVerif.Verif();
+        LangVerif.Verif();
+    }
+
 
 
     @Override
@@ -144,11 +173,11 @@ public final class Main extends JavaPlugin {
     }
 
     public void Load() {
+        verifyFiles();
         reloadConfig();
         config = getConfig();
 
         //verification des fichiers configs
-
 
 
         Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
@@ -165,7 +194,6 @@ public final class Main extends JavaPlugin {
         if(getConfig().getBoolean("DisplayAcmdInConsole"))
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aLoaded"));
-
     }
 
     public void Unload(){

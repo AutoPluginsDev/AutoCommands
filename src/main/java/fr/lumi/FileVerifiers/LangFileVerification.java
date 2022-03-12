@@ -33,8 +33,6 @@ public class LangFileVerification extends cfgFileVerification {
 
     @Override
     public void savemodif() {
-        plugin.saveLangFile();
+
     }
-
-
 }

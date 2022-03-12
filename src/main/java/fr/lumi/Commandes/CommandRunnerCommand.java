@@ -45,6 +45,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     l.add("edit");
                     l.add("delete");
                     l.add("info");
+                    l.add("force");
                 }
 
                 if (args.length == 2) {
@@ -62,7 +63,8 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                             || Objects.equals(args[0], "disable")
                             || Objects.equals(args[0], "run")
                             || Objects.equals(args[0], "stop")
-                            || Objects.equals(args[0], "info"))) {
+                            || Objects.equals(args[0], "info")
+                            || Objects.equals(args[0], "force"))) {
                         for (autocommand acmd : plugin.getcommandList()) {
                             l.add(acmd.getID());
                         }
@@ -99,11 +101,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                             l.add("08H05");
                         }
                     }
-
-
                 }
-
-
                 if (Objects.equals(args[0], "new")) {
                     if (args.length == 2) l.add("[name]");
                     if (args.length == 3) l.add("[Period]");
@@ -118,8 +116,10 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0)
+        if (args.length == 0){
             sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&7This commands require more arguments! Use /acmdhelp for more information."));
+            return true;
+        }
 
         if (args.length >= 1) {
             if (Objects.equals(args[0], "list")) {
@@ -144,7 +144,10 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
             }
         }
-        if (args.length == 2 &&(Objects.equals(args[0], "disable") || Objects.equals(args[0], "run") || Objects.equals(args[0], "stop")||Objects.equals(args[0], "enable")|| Objects.equals(args[0], "info"))) {
+
+
+
+        if (args.length == 2 &&(Objects.equals(args[0], "disable") || Objects.equals(args[0], "run") || Objects.equals(args[0], "stop")||Objects.equals(args[0], "enable")|| Objects.equals(args[0], "info")|| Objects.equals(args[0], "force"))) {
 
             String id = args[1];
             autocommand acmd = getAcmdWithID(id, sender);
@@ -194,21 +197,18 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             if(Objects.equals(args[0], "info")){acmd.printToPlayer(sender);} // info print the acmd
 
 
-
-        }
-
-
-
-        if (args.length ==3 && Objects.equals(args[0], "run")) {
-            String id = args[1];
-            autocommand acmd = getAcmdWithID(id, sender);
-            if(acmd == null) return true;
-            if(Objects.equals(args[2], "force")){
+            if(Objects.equals(args[0], "force")){
                 acmd.runTest();
                 sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer("&6 Force running %acmdName ", acmd));
             }
 
+
+
         }
+
+
+
+
 
 
         if(Objects.equals(args[0], "edit") && args.length >=2){
@@ -365,6 +365,4 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
         return plugin.getacmdInList(id);
 
     }
-
-
 }

@@ -1,5 +1,6 @@
 package fr.lumi.Util;
 
+import fr.lumi.ConditionsFolder.Condition;
 import fr.lumi.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +18,7 @@ public class autocommand implements Runnable {
     private String m_name="";
     private long m_cycle=0;
     private List<String> m_commands = new ArrayList<String>();
+    private List<Condition> m_conditions = new ArrayList<Condition>();
 
     private String ID ="";
     private boolean m_running=false;
@@ -99,6 +101,21 @@ public class autocommand implements Runnable {
         return m_commands;
     }
 
+
+    public void addCondition(Condition cond){
+        m_conditions.add(cond);
+    }
+
+    public void removeCondition(int condID){
+        m_conditions.remove(m_conditions.get(condID));
+    }
+
+
+    public List<Condition> getConditions(){
+        return m_conditions;
+    }
+
+
     public String getStringFormatCommands(){
         int i =0;
         StringBuilder s = new StringBuilder();
@@ -136,9 +153,12 @@ public void addToScheduler(){
         plugin.getServer().getScheduler().cancelTask(shedulerId);
 }
 
+
+
     @Override
     public void run() {
-        if(m_Active){
+
+        if(ConditionVerifier.verify(this) ){
             if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
             Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
 
