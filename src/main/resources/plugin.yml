@@ -35,6 +35,14 @@ commands:
     usage:
       Bad usage of this command, please verify your command ID or your syntax.
 
+  acmdEditor:
+    usage:
+      Bad usage of this command, please verify your command ID or your syntax.
+    description:
+      edit by menu the acmds
+    permission: acmd.admin
+    permission-message: Sorry, you dont are not allowed to do this
+
   acmd:
     usage:
       Bad usage of this command, please verify your command ID or your syntax.

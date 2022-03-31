@@ -17,14 +17,8 @@ public class ConditionVerifier {
         for (Condition c : acmd.getConditions()){
             verified = verified && c.verify();
         }
-
-        verified = true;
         return verified;
     }
 
-    private boolean playerOnline(int nb,int cond){
-
-        return true;
-    }
 
 }

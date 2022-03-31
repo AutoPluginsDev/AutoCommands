@@ -1,15 +1,13 @@
 package fr.lumi;
 
 import fr.lumi.Commandes.CommandRunnerCommand;
+import fr.lumi.Commandes.CommandRunnerEditor;
 import fr.lumi.Commandes.CommandRunnerHelp;
 
 import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.FileVerifiers.ConfigFileVerification;
 import fr.lumi.FileVerifiers.LangFileVerification;
-import fr.lumi.Util.ConditionVerifier;
-import fr.lumi.Util.Utilities;
-import fr.lumi.Util.autocommand;
-import fr.lumi.Util.dailyCommandExecuter;
+import fr.lumi.Util.*;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -177,20 +175,29 @@ public final class Main extends JavaPlugin {
         reloadConfig();
         config = getConfig();
 
-        //verification des fichiers configs
+
+
 
 
         Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
         Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this));
         Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
 
+
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+ "&e-Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands-"));
 
+        //loading the commands in the plugin
         if(!loadCommandsTimeTable()) Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"&6No AutoComands to execute"));
 
         //daily executor enable
         executer = new dailyCommandExecuter(this,getcommandList());
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, executer, 0, executer.getrefreshRate());
+
+        //registering the menu
+        CommandEditor acmdEditor = new CommandEditor(this);
+        getServer().getPluginManager().registerEvents(acmdEditor,this);
+        Objects.requireNonNull(this.getCommand("acmdEditor")).setExecutor(new CommandRunnerEditor(this,acmdEditor));
+
         if(getConfig().getBoolean("DisplayAcmdInConsole"))
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aLoaded"));

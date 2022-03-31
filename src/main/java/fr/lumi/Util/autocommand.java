@@ -144,16 +144,15 @@ public class autocommand implements Runnable {
     public void setShedulerId(int id){shedulerId = id;}
     public int getsetShedulerId(){return shedulerId;}
 
-public void addToScheduler(){
+    public void addToScheduler(){
 
-    if(m_running){
-        if(getRepetition() != -1) setRepetitionCounter(0);
-        shedulerId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this, getDelay(), getCycle());
+        if(m_running){
+            if(getRepetition() != -1) setRepetitionCounter(0);
+            shedulerId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this, getDelay(), getCycle());
+        }
+        else
+            plugin.getServer().getScheduler().cancelTask(shedulerId);
     }
-    else
-        plugin.getServer().getScheduler().cancelTask(shedulerId);
-}
-
 
 
     @Override
@@ -197,16 +196,6 @@ public void addToScheduler(){
         }
 
     }
-
-
-
-
-
-
-
-
-
-
 
 
     public void saveInConfig(FileConfiguration config, Main plg)  {
