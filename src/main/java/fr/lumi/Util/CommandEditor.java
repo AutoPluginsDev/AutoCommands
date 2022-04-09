@@ -71,7 +71,7 @@ public class CommandEditor implements Listener {
         if(e.getClickedInventory().equals(GUI_ChooseACMD)){
             e.setCancelled(true);
             if(slot < plugin.getcommandList().size()){
-                p.sendMessage("opening editor for the acmd "+plugin.getcommandList().get(slot).getName());
+                //p.sendMessage("opening editor for the acmd "+plugin.getcommandList().get(slot).getName());
                 p.closeInventory();
                 openACMDEditor(p,plugin.getcommandList().get(slot),slot);
             }
@@ -96,13 +96,13 @@ public class CommandEditor implements Listener {
                 createEditGui();
                 reloadGUI_ChoosingACMD();
                 openchoosing(p);
-                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&2New ACMD created !"));
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), acmd));
             }
         }
         //menu edit
         if(editorsListe.contains(e.getClickedInventory())){
             e.setCancelled(true);
-            p.sendMessage("Nothing to do yet with this button");
+
             autocommand acmd = plugin.getcommandList().get(editorsListe.indexOf(e.getClickedInventory()));
 
             switch (slot){
@@ -126,25 +126,65 @@ public class CommandEditor implements Listener {
                     p.closeInventory();
                     p.openInventory(GUI_ChooseACMD);
                     break;
-                case 0 :
-                    waitForChat = "name";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the ID in the chat (type exit to exit) :"));
-                    p.closeInventory();
-                    return;
+                case 0 :
+                    //waitForChat = "ID";
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&bNothing to do yet with this button"));
+                    //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the ID in the chat (type exit to exit) :"));
+                    //p.closeInventory();
+                    break;
                 case 1 :
                     acmd.setActive(!acmd.isActive());
                     break;
                 case 2 :
                     acmd.setRunning(!acmd.isRunning(), plugin.getCommandsConfig(), plugin);
                     break;
+                case 3 :
+                    waitForChat = "period";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the period in the chat in tick (format : integer , type exit to exit) :"));
+                    p.closeInventory();
+                    break;
+
+                case 4 :
+                    waitForChat = "delay";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the delay in the chat in tick (format : integer , type exit to exit) :"));
+                    p.closeInventory();
+                    break;
+                case 5 :
+                    waitForChat = "hour";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : 18H02 , type exit to exit) :"));
+                    p.closeInventory();
+                    break;
+                case 6 :
+                    waitForChat = "command";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the command in the chat (type exit to exit) :"));
+                    p.closeInventory();
+                    break;
+                case 7 :
+                    waitForChat = "repetition";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the repetition in the chat (format : integer , type exit to exit) :"));
+                    p.closeInventory();
+                    break;
+                case 8 :
+                    waitForChat = "message";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : & usables , type exit to exit) :"));
+                    p.closeInventory();
+                    break;
+                case 9 :
+                    waitForChat = "name";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the name in the chat (type exit to exit) :"));
+                    p.closeInventory();
             }
             acmd.saveInConfig(plugin.getCommandsConfig(),plugin);
-            createEditGui();
+            reloadAllEditGUI();
             reloadGUI_ChoosingACMD();
-            p.openInventory(editorsListe.get(LastOpened));
-
-
 
         }
 
@@ -152,32 +192,93 @@ public class CommandEditor implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
+
         if(e.getPlayer() == user && ! Objects.equals(waitForChat, "")){
             e.setCancelled(true);
             String message = e.getMessage();
 
             updateACMDWithValue(message, e.getPlayer());
 
-
             waitForChat = "";
-            e.getPlayer().openInventory(editorsListe.get(LastOpened));
-
+            reloadAllEditGUI();
+            reloadGUI_ChoosingACMD();
         }
     }
 
     public void updateACMDWithValue(String val,Player p){
         autocommand acmd = plugin.getcommandList().get(LastOpened);
-        if(Objects.equals(val, "exit")) {
-            waitForChat = "";
-            p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("Exit with succes"));
+        switch (waitForChat) {
+            case "exit" :
+
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aExit with succes"));
+                break;
+            case "ID" :
+                acmd.setName(val);
+                acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
+                //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aName modified with succes"));
+                //p.openInventory(editorsListe.get(LastOpened));
+                break;
+            case "period" :
+                if (StringNumberVerif.isDigit(val)){
+                    acmd.setCycle(Integer.parseInt(val));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aPeriod modified with succes"));
+                }
+                else {
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Period must be integer"));
+                }
+                break;
+
+            case "delay" :
+                if (StringNumberVerif.isDigit(val)){
+                    acmd.setDelay(Integer.parseInt(val));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aDelay modified with succes"));
+                }
+                else {
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Delay must be integer"));
+                }
+                break;
+            case "hour" :
+
+                acmd.setTime(val);
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aDaily execution time modified with succes"));
+
+                //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Daily execution time must be like 18H02"));
+
+                break;
+
+            case "command" :
+
+                acmd.addCommand(val);
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aCommand modified with succes"));
+
+                break;
+
+            case "repetition" :
+
+                if (StringNumberVerif.isDigit(val)){
+                    acmd.setRepetition(Integer.parseInt(val));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aRepetition modified with succes"));
+                }
+                else {
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Repetition must be integer"));
+                }
+
+                break;
+
+            case "message" :
+
+                acmd.setmessage(val);
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aMessage modified with succes"));
+
+                break;
+            case "name" :
+                acmd.setName(val);
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aName modified with succes"));
+
         }
-        if (Objects.equals(waitForChat, "name")){
-            acmd.setName(val);
-            acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
-            p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("Name modified with succes"));
-        }
-        reloadAllEditGUI();
-        reloadGUI_ChoosingACMD();
+        acmd.saveInConfig(plugin.getCommandsConfig(),plugin);
+
+
     }
 
     public void reloadGUI_ChoosingACMD(){
@@ -188,7 +289,15 @@ public class CommandEditor implements Listener {
             ItemStack item = new ItemStack(Material.CHAIN_COMMAND_BLOCK,1);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("§6§l"+acmd.getName());
-            meta.setLore(acmd.getCommands());
+            ArrayList<String> lore = new ArrayList<String>();
+            int index2 = 0;
+            for(String s : acmd.getCommands()){
+                lore.add("§9-"+index2+" -> §d"+s);
+                index2++;
+            }
+            lore.add("§7(§aclick to open the editor§7)");
+
+            meta.setLore(lore);
             item.setItemMeta(meta);
 
             GUI_ChooseACMD.setItem(index,item);
@@ -213,7 +322,15 @@ public class CommandEditor implements Listener {
             ItemStack item = new ItemStack(Material.CHAIN_COMMAND_BLOCK,1);
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("§6§l"+acmd.getName());
-            meta.setLore(acmd.getCommands());
+            ArrayList<String> lore = new ArrayList<String>();
+            int index2 = 0;
+            for(String s : acmd.getCommands()){
+                lore.add("§9-"+index2+" -> §d"+s);
+                index2++;
+            }
+            lore.add("§7(§aclick to open the editor§7)");
+
+            meta.setLore(lore);
             item.setItemMeta(meta);
 
             GUI_ChooseACMD.setItem(index,item);
@@ -230,18 +347,14 @@ public class CommandEditor implements Listener {
 
     }
 
-    public Inventory createGUI_EditACMD(autocommand acmd){
-        Inventory gui = Bukkit.createInventory(null, 54,"§6§oEditing "+acmd.getName());
-
-
-        //ID
+    public Inventory fillGUI_EditACMD(autocommand acmd, Inventory gui){
         ItemStack item = new ItemStack(Material.PAPER,1);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName("§eID");
 
         List<String> lore = new ArrayList<String>();
         lore.add( "§d"+acmd.getID());
-
+        lore.add("§7(§aYou can modify it in the commands.yml file§7)");
         meta.setLore(lore);
         item.setItemMeta(meta);
         gui.setItem(0,item);
@@ -253,7 +366,13 @@ public class CommandEditor implements Listener {
         meta.setDisplayName("§eActive");
 
         lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.isActive());
+        if(acmd.isActive()){
+            lore.add( "§aEnabled");
+        }
+
+        else{
+            lore.add( "§cDisabled");
+        }
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -263,10 +382,15 @@ public class CommandEditor implements Listener {
         //running
         item = new ItemStack(Material.STONE_BUTTON,1);
         meta = item.getItemMeta();
-        meta.setDisplayName("§eRunning");
+        meta.setDisplayName("§eRun");
 
         lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.isRunning());
+        if(acmd.isRunning()){
+            lore.add( "§aRunning");
+        }
+        else{
+            lore.add( "§cStopped");
+        }
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -279,7 +403,18 @@ public class CommandEditor implements Listener {
         meta.setDisplayName("§ePeriod");
 
         lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getCycleInSec()+" s");
+        if (acmd.getCycleInSec() < 10 && acmd.getCycleInSec() > 0 ){
+            lore.add("§c"+acmd.getCycle()+"(short cycle)");
+            lore.add("§c"+acmd.getCycleInSec()+"(short cycle)");
+        }
+        else if(acmd.getCycleInSec() == 0){
+            lore.add("§c"+acmd.getCycle()+"(very short cycle)");
+            lore.add("§c"+acmd.getCycleInSec()+"(very short cycle )");
+        }
+        else{
+            lore.add("§a"+acmd.getCycle());
+            lore.add("§a"+ acmd.getCycleInSec());
+        }
 
         meta.setLore(lore);
         item.setItemMeta(meta);
@@ -317,7 +452,23 @@ public class CommandEditor implements Listener {
         meta = item.getItemMeta();
         meta.setDisplayName("§eCommands");
 
-        meta.setLore(acmd.getCommands());
+        lore = new ArrayList<String>();
+        int index = 0;
+        for(String s : acmd.getCommands()){
+            lore.add("§9ID "+index+" -> §6"+s);
+            index++;
+        }
+
+        lore.add("§7( §aUse in-game commands or commands.yml ");
+        lore.add("§afile to remove or modify the commands easily");
+        lore.add("§e ->You can use :");
+
+        lore.add("§e     -/acmd edit acmd0 removeCommand CommandID");
+
+        lore.add("§a      to remove a command with its CommandID §7)");
+
+
+        meta.setLore(lore);
 
         item.setItemMeta(meta);
         gui.setItem(6,item);
@@ -348,10 +499,24 @@ public class CommandEditor implements Listener {
         gui.setItem(8,item);
 
 
+        //Name
+        item = new ItemStack(Material.ITEM_FRAME,1);
+        meta = item.getItemMeta();
+        meta.setDisplayName("§eName");
+
+        lore = new ArrayList<String>();
+        lore.add( "§a"+acmd.getName());
+
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        gui.setItem(9,item);
+
+
+
         //delet button
         item = new ItemStack(Material.RED_CONCRETE,1);
         meta = item.getItemMeta();
-        meta.setDisplayName("§4DELETE ACMD");
+        meta.setDisplayName("§4X DELETE ACMD");
 
         lore = new ArrayList<String>();
         lore.add( "§cThis is irreversible");
@@ -363,7 +528,7 @@ public class CommandEditor implements Listener {
         //back button
         item = new ItemStack(Material.ORANGE_CONCRETE,1);
         meta = item.getItemMeta();
-        meta.setDisplayName("§6Return");
+        meta.setDisplayName("§6<- Return");
 
         lore = new ArrayList<String>();
         lore.add( "§eBack to the main page");
@@ -377,6 +542,12 @@ public class CommandEditor implements Listener {
         return gui;
     }
 
+    public Inventory createGUI_EditACMD(autocommand acmd){
+        Inventory gui = Bukkit.createInventory(null, 54,"§8§oEditing "+acmd.getName());
+        return fillGUI_EditACMD(acmd,gui);
+
+    }
+
     public void reloadAllEditGUI(){
         int index = 0;
         for( Inventory gui : editorsListe){
@@ -387,143 +558,7 @@ public class CommandEditor implements Listener {
 
     public void RefreshGUI_EditACMD(autocommand acmd,Inventory gui){
         gui.clear();
-        //ID
-        ItemStack item = new ItemStack(Material.PAPER,1);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("§eID");
-
-        List<String> lore = new ArrayList<String>();
-        lore.add( "§d"+acmd.getID());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(0,item);
-
-
-        //active
-        item = new ItemStack(Material.LEVER,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eActive");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.isActive());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(1,item);
-
-
-        //running
-        item = new ItemStack(Material.STONE_BUTTON,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eRunning");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.isRunning());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(2,item);
-
-
-        //period
-        item = new ItemStack(Material.CLOCK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§ePeriod");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getCycleInSec()+" s");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(3,item);
-
-
-        //delay
-        item = new ItemStack(Material.CLOCK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eDelay");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getDelay()+" tick");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(4,item);
-
-
-        //Daily execution
-        item = new ItemStack(Material.SUNFLOWER,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eDaily execution");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getTime());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(5,item);
-
-
-        //commands
-        item = new ItemStack(Material.COMMAND_BLOCK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eCommands");
-
-        meta.setLore(acmd.getCommands());
-
-        item.setItemMeta(meta);
-        gui.setItem(6,item);
-
-
-        //RepeatTime
-        item = new ItemStack(Material.COMPARATOR,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eRepeatTask");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getRepetition());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(7,item);
-
-        //Message
-        item = new ItemStack(Material.WRITABLE_BOOK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eMessage");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getmessage());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(8,item);
-
-
-        //delet button
-        item = new ItemStack(Material.RED_CONCRETE,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§4DELETE ACMD");
-
-        lore = new ArrayList<String>();
-        lore.add( "§cThis is irreversible");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(53,item);
-
-        //back button
-        item = new ItemStack(Material.ORANGE_CONCRETE,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§6Return");
-
-        lore = new ArrayList<String>();
-        lore.add( "§eBack to the main page");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(44,item);
+        fillGUI_EditACMD(acmd,gui);
 
     }
 

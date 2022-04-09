@@ -16,24 +16,36 @@ import java.util.Objects;
 public class autocommand implements Runnable {
 
     private String m_name="";
-    private long m_cycle=0;
+    private long m_cycle=200;
     private List<String> m_commands = new ArrayList<String>();
 
     private List<Condition> m_conditions = new ArrayList<Condition>();
 
     private String ID ="";
     private boolean m_running=false;
-    private boolean m_Active = true;
+    private boolean m_Active = false;
     private String m_message="";
     private long m_delay = 0;
     private int shedulerId=0;
     private int m_Repetition=-1;
     private int m_RepetitionCounter=0;
     private String m_time = "";
-    private String m_error = "";
+    private String m_error = "X";
 
     Main plugin;
-    public autocommand(Main plg){plugin = plg;}
+    public autocommand(Main plg){
+        plugin = plg;
+        /*
+        m_cycle=0;
+        m_running=true;
+        m_Active = true;
+        m_commands.add(" gamerule maxEntityCramming 80");
+        m_commands.add(" gamerule maxEntityCramming 80");
+        m_commands.add(" gamerule maxEntityCramming 80");
+        m_commands.add(" gamerule maxEntityCramming 80");
+        */
+
+    }
 
 
 

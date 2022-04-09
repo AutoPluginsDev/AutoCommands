@@ -32,7 +32,7 @@ public class LangFileVerification extends cfgFileVerification {
     }
 
     @Override
-    public void savemodif() {
-
+    public void savemodif() throws IOException {
+        plugin.getLangConfig().save(filename);
     }
 }

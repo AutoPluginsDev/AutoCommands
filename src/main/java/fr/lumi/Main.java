@@ -33,7 +33,11 @@ public final class Main extends JavaPlugin {
     FileConfiguration config = getConfig();
     ConditionVerifier amcdVerifier = new ConditionVerifier(this);
     dailyCommandExecuter executer;
+    CommandEditor acmdGUIEditor;
 
+    public CommandEditor getAcmdGUIEditor(){
+        return acmdGUIEditor;
+    }
 
     //command file creation
     private File commandsFile = new File(getDataFolder(),"commands.yml");
@@ -143,12 +147,9 @@ public final class Main extends JavaPlugin {
 
         saveDefaultConfig();
 
-        verifyFiles();
 
+        boolean verified = Load();
 
-
-
-        Load();
         long exeTime = System.currentTimeMillis() - start;
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn (took "+exeTime+" ms)"));
 
@@ -156,9 +157,11 @@ public final class Main extends JavaPlugin {
 
     }
 
-    public void verifyFiles(){
-        ConfigVerif.Verif();
-        LangVerif.Verif();
+    public boolean verifyFiles(){
+        boolean verified = false;
+        verified = ConfigVerif.Verif();
+        verified = verified && LangVerif.Verif();
+        return verified;
     }
 
 
@@ -170,8 +173,9 @@ public final class Main extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cOff"));
     }
 
-    public void Load() {
-        verifyFiles();
+    public boolean Load() {
+        boolean verified = false;
+        verified = verifyFiles();
         reloadConfig();
         config = getConfig();
 
@@ -194,13 +198,14 @@ public final class Main extends JavaPlugin {
         Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, executer, 0, executer.getrefreshRate());
 
         //registering the menu
-        CommandEditor acmdEditor = new CommandEditor(this);
-        getServer().getPluginManager().registerEvents(acmdEditor,this);
-        Objects.requireNonNull(this.getCommand("acmdEditor")).setExecutor(new CommandRunnerEditor(this,acmdEditor));
+        acmdGUIEditor = new CommandEditor(this);
+        getServer().getPluginManager().registerEvents(acmdGUIEditor,this);
+        Objects.requireNonNull(this.getCommand("acmdEditor")).setExecutor(new CommandRunnerEditor(this,acmdGUIEditor));
 
         if(getConfig().getBoolean("DisplayAcmdInConsole"))
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &e-------------------------------------------------"));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aLoaded"));
+        return verified;
     }
 
     public void Unload(){

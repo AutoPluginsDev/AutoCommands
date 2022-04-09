@@ -194,7 +194,10 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
             }
 
-            if(Objects.equals(args[0], "info")){acmd.printToPlayer(sender);} // info print the acmd
+            if(Objects.equals(args[0], "info")){
+
+                acmd.printToPlayer(sender);
+            } // info print the acmd
 
 
             if(Objects.equals(args[0], "force")){
@@ -209,12 +212,16 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
 
 
-
-
         if(Objects.equals(args[0], "edit") && args.length >=2){
             String id = args[1];
             autocommand acmd = getAcmdWithID(id, sender);
             if(acmd == null) return true;
+
+
+            if( args.length == 2){
+                plugin.getAcmdGUIEditor().openACMDEditor((Player) sender,acmd,plugin.getcommandList().indexOf(acmd));
+                return true;
+            }
 
             if (Objects.equals(args[2], "setMessage")) {
 
