@@ -246,7 +246,15 @@ public class autocommand implements Runnable {
             m_cycle = config.getLong(ID+".TaskParameters.cycle");
             m_delay= config.getLong(ID+".TaskParameters.delay");
             m_Repetition = config.getInt(ID+".TaskParameters.repetition");
-            m_message = config.getString(ID+".TaskParameters.message");
+
+            if(! config.isSet(ID+".TaskParameters.message")){
+                m_message = "";
+            }else{
+                m_message =config.getString(ID+".TaskParameters.message");
+            }
+
+
+
             m_time = config.getString(ID+".DailySchedulerParameters.time");
             m_commands =  config.getStringList(ID+".TaskParameters.commands");
             return true;

@@ -130,9 +130,9 @@ public final class Main extends JavaPlugin {
         //FileVerifiers
         LangVerif = new LangFileVerification(this);
         ConfigVerif = new ConfigFileVerification(this);
-        getRessourceFile(getLangFile(),"lang.yml",this);
+
         getRessourceFile(getCommandsFile(),"commands.yml",this);
-        saveLangFile();
+
         saveCommandsFile();
     }
 
@@ -146,8 +146,8 @@ public final class Main extends JavaPlugin {
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',s));
 
         saveDefaultConfig();
-
-
+        getRessourceFile(getLangFile(),"lang.yml",this);
+        //saveLangFile();
         boolean verified = Load();
 
         long exeTime = System.currentTimeMillis() - start;
