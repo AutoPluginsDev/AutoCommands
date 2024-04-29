@@ -3,7 +3,7 @@ package fr.lumi;
 import fr.lumi.Commandes.CommandRunnerCommand;
 import fr.lumi.Commandes.CommandRunnerEditor;
 import fr.lumi.Commandes.CommandRunnerHelp;
-
+import fr.lumi.Metrics.Metrics;
 import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.FileVerifiers.ConfigFileVerification;
 import fr.lumi.FileVerifiers.LangFileVerification;
@@ -23,14 +23,13 @@ public final class Main extends JavaPlugin {
 
     private String[] Logo ={
     "&e&9     &6__     __ &e ",
-    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.2.1",
+    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.2",
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
 
-
-
-
     FileConfiguration config = getConfig();
+
+    // TODO: implement condition system
     ConditionVerifier amcdVerifier = new ConditionVerifier(this);
     dailyCommandExecuter executer;
     CommandEditor acmdGUIEditor;
@@ -71,34 +70,16 @@ public final class Main extends JavaPlugin {
         return Langconfig;
     }
 
-    public FileConfiguration getLangConfigWithoutreload() {
-        return Langconfig;
-    }
-
 
     public File getLangFile() {
         Langfile= new File(getDataFolder(),"lang.yml");
         return Langfile;
     }
 
-    public boolean saveLangFilewithLoad() {
-        try {
-            getLangConfig().save(getLangFile());
-        } catch (IOException ignored){
-            return false;
-        }
-        return true;
-    }
 
-
-
-    public boolean saveLangFile() {
-        try {
-            getLangConfigWithoutreload().save(getLangFile());
-        } catch (IOException ignored){
-            return false;
-        }
-        return true;
+    public void addBstatsMetrics(){
+        int pluginId = 21737;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
 
@@ -139,6 +120,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        // add bstat metrics
+        addBstatsMetrics();
+
         long  start = System.currentTimeMillis();
         init();
 
@@ -147,14 +132,10 @@ public final class Main extends JavaPlugin {
 
         saveDefaultConfig();
         getRessourceFile(getLangFile(),"lang.yml",this);
-        //saveLangFile();
         boolean verified = Load();
 
         long exeTime = System.currentTimeMillis() - start;
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aOn (took "+exeTime+" ms)"));
-
-
-
     }
 
     public boolean verifyFiles(){
@@ -164,29 +145,25 @@ public final class Main extends JavaPlugin {
         return verified;
     }
 
-
-
     @Override
     public void onDisable() {
         Unload();
-
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cOff"));
     }
 
     public boolean Load() {
         boolean verified = false;
+
         verified = verifyFiles();
+        if (!verified) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+"&4Ignore these errors if this is the first time you are running the plugin."));
+        }
+
         reloadConfig();
         config = getConfig();
-
-
-
-
-
         Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
         Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this));
         Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
-
 
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+ "&e-Loading "+getCommandsConfig().getKeys(false).size()+" AutoComands-"));
 
@@ -277,8 +254,6 @@ public final class Main extends JavaPlugin {
         return count;
     }
 
-
-
     public long convertToTick(long seconds){
         return (long) seconds*20;
     }
@@ -290,7 +265,6 @@ public final class Main extends JavaPlugin {
                 file.createNewFile();
                 InputStream inputStream = plugin.getResource(resource);
                 OutputStream outputStream = new FileOutputStream(file);
-
                 byte[] buffer = new byte[1024];
                 int bytesRead;
                 while ((bytesRead = inputStream.read(buffer)) != -1) {
@@ -303,9 +277,6 @@ public final class Main extends JavaPlugin {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         YamlConfiguration.loadConfiguration(file);
     }
-
-
 }

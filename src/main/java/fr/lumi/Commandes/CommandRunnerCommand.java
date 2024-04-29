@@ -116,10 +116,13 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
         if (args.length == 0){
             sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&7This commands require more arguments! Use /acmdhelp for more information."));
             return true;
         }
+
+        CommandSender player = sender;
 
         if (args.length >= 1) {
             if (Objects.equals(args[0], "list")) {
@@ -279,13 +282,6 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
         }
 
 
-
-
-
-
-
-
-
         if (Objects.equals(args[0], "delete") && args.length >= 2) {
 
             String id = args[1];
@@ -351,11 +347,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     index++;
                 }
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd));
-
-
             cmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
-
-
             cmd.setRunning(cmd.isRunning(), plugin.getCommandsConfig(), plugin);
             plugin.getcommandList().add(cmd);
 
