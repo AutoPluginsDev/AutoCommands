@@ -3,7 +3,7 @@ package fr.lumi;
 import fr.lumi.Commandes.CommandRunnerCommand;
 import fr.lumi.Commandes.CommandRunnerEditor;
 import fr.lumi.Commandes.CommandRunnerHelp;
-
+import fr.lumi.Metrics.Metrics;
 import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.FileVerifiers.ConfigFileVerification;
 import fr.lumi.FileVerifiers.LangFileVerification;
@@ -23,11 +23,13 @@ public final class Main extends JavaPlugin {
 
     private String[] Logo ={
     "&e&9     &6__     __ &e ",
-    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.0",
+    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.2",
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
 
     FileConfiguration config = getConfig();
+
+    // TODO: implement condition system
     ConditionVerifier amcdVerifier = new ConditionVerifier(this);
     dailyCommandExecuter executer;
     CommandEditor acmdGUIEditor;
@@ -68,34 +70,16 @@ public final class Main extends JavaPlugin {
         return Langconfig;
     }
 
-    public FileConfiguration getLangConfigWithoutreload() {
-        return Langconfig;
-    }
-
 
     public File getLangFile() {
         Langfile= new File(getDataFolder(),"lang.yml");
         return Langfile;
     }
 
-    public boolean saveLangFilewithLoad() {
-        try {
-            getLangConfig().save(getLangFile());
-        } catch (IOException ignored){
-            return false;
-        }
-        return true;
-    }
 
-
-
-    public boolean saveLangFile() {
-        try {
-            getLangConfigWithoutreload().save(getLangFile());
-        } catch (IOException ignored){
-            return false;
-        }
-        return true;
+    public void addBstatsMetrics(){
+        int pluginId = 21737;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 
 
@@ -136,6 +120,10 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        // add bstat metrics
+        addBstatsMetrics();
+
         long  start = System.currentTimeMillis();
         init();
 
@@ -144,7 +132,6 @@ public final class Main extends JavaPlugin {
 
         saveDefaultConfig();
         getRessourceFile(getLangFile(),"lang.yml",this);
-        //saveLangFile();
         boolean verified = Load();
 
         long exeTime = System.currentTimeMillis() - start;
