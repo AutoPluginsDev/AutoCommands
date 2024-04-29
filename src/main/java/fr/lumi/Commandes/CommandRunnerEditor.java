@@ -42,8 +42,6 @@ public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
 
             valid = valid && openMenu( (Player) sender);
             if(!valid) return false;
-            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&eMenu Opened"));
-
 
             valid = valid && SaveMenu();
             if(!valid) return false;
