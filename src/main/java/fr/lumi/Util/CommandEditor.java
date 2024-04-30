@@ -96,7 +96,7 @@ public class CommandEditor implements Listener {
                 createEditGui();
                 reloadGUI_ChoosingACMD();
                 openchoosing(p);
-                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), acmd));
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), acmd, p));
             }
         }
         //menu edit
@@ -116,7 +116,7 @@ public class CommandEditor implements Listener {
 
                     p.closeInventory();
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, p));
                     createEditGui();
                     reloadGUI_ChoosingACMD();
                     openchoosing(p);

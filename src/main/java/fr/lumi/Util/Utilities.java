@@ -2,6 +2,8 @@ package fr.lumi.Util;
 
 import fr.lumi.Main;
 import org.bukkit.ChatColor;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.entity.Player;
 
 public class Utilities {
 
@@ -11,7 +13,7 @@ public class Utilities {
         plugin = plg;
     }
 
-    public String replacePlaceHolders(String s,autocommand cmd ){
+    public String replacePlaceHolders(String s,autocommand cmd){
 
         s = s.replace("%acmdName",cmd.getName());
 
@@ -58,6 +60,7 @@ public class Utilities {
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
 
+        s = PapiReplace(null,s);
 
         return s;
     }
@@ -66,13 +69,17 @@ public class Utilities {
         s = s.replace("%acmdFound",plugin.getcommandList().size()+"");
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
+
+        s = PapiReplace(null,s);
         return s;
     }
 
 
 
-    public String replacePlaceHoldersForPlayer(String s,autocommand cmd){
+    public String replacePlaceHoldersForPlayer(String s, autocommand cmd, Player player){
         s = replacePlaceHolders(s,cmd);
+
+        s = PapiReplace(player,s);
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix")+s);
     }
 
@@ -92,6 +99,11 @@ public class Utilities {
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix")+s);
     }
 
+    public String PapiReplace( Player player, String s){
+        if (plugin.isPapiPresent())
+            s = PlaceholderAPI.setPlaceholders(player,s);
+        return s;
+    }
 
 
 }
