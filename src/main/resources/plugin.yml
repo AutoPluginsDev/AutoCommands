@@ -7,7 +7,10 @@ authors:
   - Adi_
 prefix: AutoCommands 1.2.0
 load: STARTUP
-
+loadbefore:
+  - PlaceholderAPI
+  - essentials
+softdepend: [PlaceholderAPI]
 permissions:
   acmd.*:
     description: give acces to all the plugin

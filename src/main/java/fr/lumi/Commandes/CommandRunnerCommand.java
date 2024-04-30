@@ -169,14 +169,14 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 acmd.setRunning(true, plugin.getCommandsConfig(), plugin);
 
 
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onRunAcmd"), acmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onRunAcmd"),acmd, (Player)player));
             }
 
             if (Objects.equals(args[0], "stop")) {
 
                 acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
 
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onStopAcmd"), acmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onStopAcmd"), acmd, (Player)player));
                 //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
             }
             if (Objects.equals(args[0], "enable")) {
@@ -185,7 +185,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 //acmd.printToPlayer(sender);
                 acmd.setActive(true);
 
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onEnablAcmd"), acmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onEnablAcmd"), acmd, (Player)player));
             }
 
             if (Objects.equals(args[0], "disable")) {
@@ -193,7 +193,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                 acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
                 acmd.setActive(false);
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDisableAcmd"), acmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDisableAcmd"), acmd, (Player)player));
                 //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
             }
 
@@ -205,7 +205,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
             if(Objects.equals(args[0], "force")){
                 acmd.runTest();
-                sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer("&6 Force running %acmdName ", acmd));
+                sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer("&6 Force running %acmdName ", acmd, (Player)player));
             }
 
 
@@ -277,7 +277,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                 acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
 
-                sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandEdited"), acmd));
+                sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandEdited"), acmd, (Player)player));
             }
         }
 
@@ -296,7 +296,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
             acmd.delete(plugin.getCommandsConfig());
 
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, (Player)player));
 
 
         }
@@ -318,7 +318,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
                 cmd.setCycle(cycle);
                 if (cmd.getCycle() < 200) {
-                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), cmd));
+                    player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), cmd, (Player)player));
 
             }
 
@@ -346,7 +346,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     cmd.setID("acmd" +index);
                     index++;
                 }
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd));
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd, (Player)player));
             cmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
             cmd.setRunning(cmd.isRunning(), plugin.getCommandsConfig(), plugin);
             plugin.getcommandList().add(cmd);

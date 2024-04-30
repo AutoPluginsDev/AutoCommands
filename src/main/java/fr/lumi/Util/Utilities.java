@@ -2,6 +2,8 @@ package fr.lumi.Util;
 
 import fr.lumi.Main;
 import org.bukkit.ChatColor;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.entity.Player;
 
 public class Utilities {
 
@@ -58,6 +60,7 @@ public class Utilities {
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
 
+        s = PlaceholderAPI.setPlaceholders(null,s);
 
         return s;
     }
@@ -71,8 +74,10 @@ public class Utilities {
 
 
 
-    public String replacePlaceHoldersForPlayer(String s,autocommand cmd){
+    public String replacePlaceHoldersForPlayer(String s, autocommand cmd, Player player){
         s = replacePlaceHolders(s,cmd);
+
+        s = PlaceholderAPI.setPlaceholders(player,s);
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix")+s);
     }
 

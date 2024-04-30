@@ -80,6 +80,7 @@ public final class Main extends JavaPlugin {
     public void addBstatsMetrics(){
         int pluginId = 21737;
         Metrics metrics = new Metrics(this, pluginId);
+        metrics.addCustomChart(new Metrics.SimplePie("enabled_commands", () -> String.valueOf(getEnbaledCommand())));
     }
 
 
