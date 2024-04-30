@@ -13,7 +13,7 @@ public class Utilities {
         plugin = plg;
     }
 
-    public String replacePlaceHolders(String s,autocommand cmd ){
+    public String replacePlaceHolders(String s,autocommand cmd){
 
         s = s.replace("%acmdName",cmd.getName());
 
@@ -60,7 +60,7 @@ public class Utilities {
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
 
-        s = PlaceholderAPI.setPlaceholders(null,s);
+        s = PapiReplace(null,s);
 
         return s;
     }
@@ -69,6 +69,8 @@ public class Utilities {
         s = s.replace("%acmdFound",plugin.getcommandList().size()+"");
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
+
+        s = PapiReplace(null,s);
         return s;
     }
 
@@ -77,7 +79,7 @@ public class Utilities {
     public String replacePlaceHoldersForPlayer(String s, autocommand cmd, Player player){
         s = replacePlaceHolders(s,cmd);
 
-        s = PlaceholderAPI.setPlaceholders(player,s);
+        s = PapiReplace(player,s);
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("Prefix")+s);
     }
 
@@ -97,6 +99,11 @@ public class Utilities {
         return ChatColor.translateAlternateColorCodes('&',plugin.getConfig().getString("ConsolePrefix")+s);
     }
 
+    public String PapiReplace( Player player, String s){
+        if (plugin.isPapiPresent())
+            s = PlaceholderAPI.setPlaceholders(player,s);
+        return s;
+    }
 
 
 }

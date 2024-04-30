@@ -2,12 +2,12 @@ package fr.lumi.Util;
 
 import fr.lumi.ConditionsFolder.Condition;
 import fr.lumi.Main;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,7 +177,7 @@ public class autocommand implements Runnable {
 
 
             for(String command : m_commands ){
-                String cmd = plugin.getUt().replacePlaceHoldersForConsole(command,this);
+                String cmd = plugin.getUt().replacePlaceHolders(command,this);
                 Bukkit.getConsoleSender().sendMessage(cmd);
                 Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(),cmd);
             }

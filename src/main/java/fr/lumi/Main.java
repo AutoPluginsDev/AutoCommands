@@ -18,14 +18,21 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
     private String[] Logo ={
     "&e&9     &6__     __ &e ",
-    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.2",
+    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.3",
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
+
+    boolean papiPresent = false;
+
+    public boolean isPapiPresent() {
+        return papiPresent;
+    }
 
     FileConfiguration config = getConfig();
 
@@ -121,6 +128,13 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            papiPresent = true;
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &aPlaceholderAPI found"));
+        } else {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cPlaceholderAPI not found"));
+        }
 
         // add bstat metrics
         addBstatsMetrics();

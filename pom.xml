@@ -6,7 +6,7 @@
 
     <groupId>fr</groupId>
     <artifactId>AutoCommands_ACMD</artifactId>
-    <version>1.0.6</version>
+    <version>1.5.3</version>
     <packaging>jar</packaging>
 
     <repositories>
@@ -44,9 +44,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
-
-
 
     <properties>
         <java.version>1.8</java.version>
