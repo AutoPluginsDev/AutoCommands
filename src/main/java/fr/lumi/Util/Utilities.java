@@ -22,14 +22,14 @@ public class Utilities {
 
 
         s = s.replace("%acmdRepCounter",cmd.getRepetitionCounter()+"");
-        s = s.replace("%acmdMessage",cmd.getmessage()+"");
+        s = s.replace("%acmdMessage", cmd.getmessage());
         s = s.replace("%acmdDelayTick",cmd.getDelay()+"");
         s = s.replace("%acmdDelaySec",(long)(cmd.getDelay()/20)+"");
 
         if (cmd.isRunning()){
             s = s.replace("%acmdIsRunning","&aRunning");
         }
-        else s = s.replace("%acmdIsRunning","&cStoped");
+        else s = s.replace("%acmdIsRunning","&cStopped");
 
         if (cmd.isActive()){
             s = s.replace("%acmdIsActive","&aEnable");
@@ -50,11 +50,13 @@ public class Utilities {
             s = s.replace("%acmdCycleSec","&a"+cmd.getCycleInSec());
         }
 
-        s = s.replace("%acmdID",cmd.getID()+"");
-        s = s.replace("%acmdCommand",cmd.getStringFormatCommands()+"");
+        s = s.replace("%acmdID",cmd.getID());
+        s = s.replace("%acmdCommand",cmd.getStringFormatCommands());
 
-        if(cmd.getTime() != "") s = s.replace("%acmdDaylyTime",cmd.getTime()+"");
-        else s = s.replace("%acmdDaylyTime","&cX");
+        if(!cmd.getTime().isEmpty())
+            s = s.replace("%acmdDaylyTime",cmd.getTime());
+        else
+            s = s.replace("%acmdDaylyTime","&cX");
 
         s = s.replace("%acmdFound",plugin.getcommandList().size()+"");
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");

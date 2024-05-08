@@ -12,7 +12,7 @@ loadbefore:
 softdepend: [PlaceholderAPI]
 permissions:
   acmd.*:
-    description: give acces to all the plugin
+    description: give access to all the plugin
     children:
       plugin.reload: true
       plugin.admin: true

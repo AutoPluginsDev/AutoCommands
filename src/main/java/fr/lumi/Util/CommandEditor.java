@@ -537,15 +537,12 @@ public class CommandEditor implements Listener {
         item.setItemMeta(meta);
         gui.setItem(44,item);
 
-
-
         return gui;
     }
 
     public Inventory createGUI_EditACMD(autocommand acmd){
         Inventory gui = Bukkit.createInventory(null, 54,"§8§oEditing "+acmd.getName());
         return fillGUI_EditACMD(acmd,gui);
-
     }
 
     public void reloadAllEditGUI(){
@@ -559,7 +556,6 @@ public class CommandEditor implements Listener {
     public void RefreshGUI_EditACMD(autocommand acmd,Inventory gui){
         gui.clear();
         fillGUI_EditACMD(acmd,gui);
-
     }
 
 
