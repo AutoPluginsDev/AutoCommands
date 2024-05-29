@@ -24,7 +24,7 @@ public class autocommand implements Runnable {
 
     private String ID ="";
     private boolean m_running=false;
-    private boolean m_Active = false;
+    private boolean m_Active = true;
     private String m_message="";
     private long m_delay = 0;
     private int shedulerId=0;
@@ -53,7 +53,7 @@ public class autocommand implements Runnable {
 
     public void setRunning(boolean state, FileConfiguration config,Main plg) {
         m_running=state;
-        config.set(ID+".active",m_running);
+        config.set(ID+".running",m_running);
 
         saveInConfig(config);
         addToScheduler();
