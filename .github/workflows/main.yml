@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.version }}
+          tag_name: ${{ env.TARGET_VERSION }}
           release_name: ACMD${{ env.TARGET_VERSION }}
           draft: true
           prerelease: false
