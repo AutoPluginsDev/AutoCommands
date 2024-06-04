@@ -141,11 +141,9 @@ public final class Main extends JavaPlugin {
     }
 
 
-
-    public String VerifyPluginVersion() {
-        String spigotResponse = "";
-        String currentVersion = this.getDescription().getVersion();
-        try {
+    public String callGithubForTag(){
+        StringBuilder response = new StringBuilder();
+            try {
             // Make HTTP GET request
             URL url = new URL("https://api.github.com/repos/lumi-git/AutoCommands/tags");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -159,16 +157,27 @@ public final class Main extends JavaPlugin {
 
             // Read response
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            StringBuilder response = new StringBuilder();
+
             String line;
             while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
             reader.close();
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Failed to check for a new version on spigot.", e);
+        }
+            return response.toString();
+    }
+
+    public String VerifyPluginVersion() {
+        String spigotResponse = "";
+        String currentVersion = this.getDescription().getVersion();
+
+            String response = callGithubForTag();
 
             // Parse JSON response
             JsonParser parser = new JsonParser();
-            JsonElement jsonElement = parser.parse(response.toString());
+            JsonElement jsonElement = parser.parse(response);
             if (jsonElement.isJsonArray()) {
                 JsonArray jsonArray = jsonElement.getAsJsonArray();
                 if (jsonArray.size() > 0) {
@@ -176,9 +185,6 @@ public final class Main extends JavaPlugin {
                     spigotResponse = latestTag.get("name").getAsString();
                 }
             }
-        } catch (IOException e) {
-            getLogger().log(Level.WARNING, "Failed to check for a new version on spigot.", e);
-        }
 
         if (spigotResponse.equals("")) {
             return "&cFailed to check for a new version on spigot.";
@@ -188,7 +194,7 @@ public final class Main extends JavaPlugin {
             return "&aYou are running the latest version of AutoCommands "+ currentVersion +" !";
         }
 
-        return "&eAutoCommands &a&l" + spigotResponse +" &eis available! &c(https://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090)";
+        return "&eAutoCommands &a&l" + spigotResponse +" &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
     }
 
     @Override
