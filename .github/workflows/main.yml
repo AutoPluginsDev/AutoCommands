@@ -34,9 +34,12 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: AutoCommand_${{ vars.TARGET_VERSION }}
+          name: AutoCommand_${{ vars.TARGET_VERSION }}.jar
           path: ./target
-
+          
+      - name: List target directory
+        run: ls -la ./target
+        
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
