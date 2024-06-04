@@ -34,7 +34,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: AutoCommand_${{ vars.TARGET_VERSION }}.jar
+          name: AutoCommand_${{ vars.TARGET_VERSION }}
           path: ./target
           
       - name: List target directory
@@ -57,6 +57,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/AutoCommand_${{ vars.TARGET_VERSION }}.jar
-          asset_name: AutoCommand_{{ vars.TARGET_VERSION }}.jar
+          asset_path: ./target/AutoCommand_${{ vars.TARGET_VERSION }}
+          asset_name: AutoCommand_{{ vars.TARGET_VERSION }}
           asset_content_type: application/java-archive
