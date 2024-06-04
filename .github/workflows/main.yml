@@ -4,6 +4,7 @@ on: [push]
 
 jobs:
   build:
+    environment: env
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,20 +20,21 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: AutoCommand_${{ env.TARGET_VERSION }}
+          name: AutoCommand_${{ vars.TARGET_VERSION }}
           path: target/*.jar
 
   release:
     if: github.ref == 'refs/heads/master'
     needs: build
     runs-on: ubuntu-latest
+    environment: env
     steps:
       - uses: actions/checkout@v2
 
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: AutoCommand_${{ env.TARGET_VERSION }}
+          name: AutoCommand_${{ vars.TARGET_VERSION }}
           path: ./target
 
       - name: Create GitHub Release
@@ -41,8 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.TARGET_VERSION }}
-          release_name: ACMD${{ env.TARGET_VERSION }}
+          tag_name: ${{ vars.TARGET_VERSION }}
+          release_name: ACMD${{ vars.TARGET_VERSION }}
           draft: true
           prerelease: false
 
@@ -53,5 +55,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./target/*.jar
-          asset_name: AutoCommand.jar
+          asset_name: AutoCommand_{{ vars.TARGET_VERSION }}.jar
           asset_content_type: application/java-archive
