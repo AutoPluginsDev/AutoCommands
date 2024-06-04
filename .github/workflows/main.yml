@@ -34,7 +34,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
-          name: AutoCommand-${{ vars.TARGET_VERSION }}.jar
+          name: AutoCommand-${{ vars.TARGET_VERSION }}
           path: ./target
           
       - name: List target directory
