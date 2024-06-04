@@ -1,18 +1,18 @@
 name: AutoCommands
-version: 1.5.3
+version: 1.5.7
 main: fr.lumi.Main
 api-version: 1.15
 authors:
   - Lumi_
   - Adi_
-prefix: AutoCommands 1.2.0
+prefix: AutoCommands 1.5.7
 loadbefore:
   - PlaceholderAPI
   - essentials
 softdepend: [PlaceholderAPI]
 permissions:
   acmd.*:
-    description: give acces to all the plugin
+    description: give access to all the plugin
     children:
       plugin.reload: true
       plugin.admin: true

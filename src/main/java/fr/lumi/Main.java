@@ -1,5 +1,8 @@
 package fr.lumi;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import fr.lumi.Commandes.CommandRunnerCommand;
 import fr.lumi.Commandes.CommandRunnerEditor;
 import fr.lumi.Commandes.CommandRunnerHelp;
@@ -15,6 +18,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.Bukkit;
 
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.logging.Level;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +39,7 @@ public final class Main extends JavaPlugin {
 
     private String[] Logo ={
     "&e&9     &6__     __ &e ",
-    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.3",
+    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e" + this.getDescription().getVersion(),
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
 
@@ -97,7 +112,7 @@ public final class Main extends JavaPlugin {
         return m_ut;
     }
 
-
+    // command list, core of the plugin holding current commands
     private List<autocommand> commandList = new ArrayList<autocommand>();
     public List<autocommand> getcommandList(){
         return commandList;
@@ -126,8 +141,68 @@ public final class Main extends JavaPlugin {
     }
 
 
+    public String callGithubForTag(){
+        StringBuilder response = new StringBuilder();
+            try {
+            // Make HTTP GET request
+            URL url = new URL("https://api.github.com/repos/lumi-git/AutoCommands/tags");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Accept", "application/json");
+
+            // Check response code
+            if (connection.getResponseCode() != 200) {
+                throw new IOException("Failed to get response from GitHub API");
+            }
+
+            // Read response
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            getLogger().log(Level.WARNING, "Failed to check for a new version on spigot.", e);
+        }
+            return response.toString();
+    }
+
+    public String VerifyPluginVersion() {
+        String spigotResponse = "";
+        String currentVersion = this.getDescription().getVersion();
+
+            String response = callGithubForTag();
+
+            // Parse JSON response
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(response);
+            if (jsonElement.isJsonArray()) {
+                JsonArray jsonArray = jsonElement.getAsJsonArray();
+                if (jsonArray.size() > 0) {
+                    JsonObject latestTag = jsonArray.get(0).getAsJsonObject();
+                    spigotResponse = latestTag.get("name").getAsString();
+                }
+            }
+
+        if (spigotResponse.equals("")) {
+            return "&cFailed to check for a new version on spigot.";
+        }
+
+        if (spigotResponse.equals(currentVersion)) {
+            return "&aYou are running the latest version of AutoCommands "+ currentVersion +" !";
+        }
+
+        return "&eAutoCommands &a&l" + spigotResponse +" &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
+    }
+
     @Override
     public void onEnable() {
+
+        // verify if the plugin is up to date and send a message to the admins
+        String broadcastMessage = ChatColor.translateAlternateColorCodes('&',getConfig().getString("Prefix")+VerifyPluginVersion());
+        Bukkit.broadcast(broadcastMessage, "bukkit.broadcast.admin");
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             papiPresent = true;
@@ -234,17 +309,8 @@ public final class Main extends JavaPlugin {
         for(String i : getCommandsConfig().getKeys(false)){
             autocommand acmd = new autocommand(this);
             if(acmd.getInConfig(getCommandsConfig(),this,i)){
-/*
-                int index=0;
-                while(acmdIdExist(acmd.getID())){
-                    Bukkit.getConsoleSender().sendMessage(acmd.getID());
-                    acmd.setID(acmd.getID() +"_"+index);
-                    index++;
-                }*/
-
                 if(getConfig().getBoolean("DisplayAcmdInConsole"))
                     acmd.printToConsole();
-
                 acmd.addToScheduler();
                 commandList.add(acmd);
                 acmd.saveInConfig(commandsConfig,this);

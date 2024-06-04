@@ -1,6 +1,7 @@
 package fr.lumi.Commandes;
 
 import fr.lumi.Main;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,9 +39,9 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
 
             String message =
-
             "§e-----------§aAutoCommands-Help§e--------------\n"
-            +"§6ACMD Version : 1.0\n"
+            +"§6" + ChatColor.translateAlternateColorCodes('&',plugin.VerifyPluginVersion())+"\n"
+            +"§6ACMD Version : "+ plugin.getDescription().getVersion()+"\n"
             +"§6/acmd -> §7The main command of the plugin\n"
             +"§6/acmd list [page]-> §7Displays the list of the AutoCommands\n"
             +"§6/acmdreload -> §7reload the plugin and the autocomands\n"

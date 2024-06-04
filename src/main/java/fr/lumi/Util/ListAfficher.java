@@ -27,17 +27,19 @@ public class ListAfficher {
 
         String s = "";
         if (plugin.getLangConfig().getString("CommandListBottom") != "")
+        {
             s = plugin.getLangConfig().getString("CommandListBottom");
-            s = s.replace("%acmdNumberOfListPage",(getPageNumber()+1)+"");
-            s = s.replace("%acmdCurrentPageOfList",(page+1)+"");
-            sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(s));
+            s = s.replace("%acmdNumberOfListPage", (getPageNumber() + 1) + "");
+            s = s.replace("%acmdCurrentPageOfList", (page + 1) + "");
+        }
+        sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(s));
     }
 
     public int getPageNumber(){
         return (int) ((plugin.getcommandList().size()-1)/(m_itemsMax)) ;
     }
 
-    public int getMaxitem(){
+    public int getMaxItem(){
         return m_itemsMax;
     }
 
