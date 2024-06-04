@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr</groupId>
-    <artifactId>AutoCommands_ACMD</artifactId>
+    <artifactId>AutoCommand_</artifactId>
     <version>1.5.8</version>
     <packaging>jar</packaging>
 
