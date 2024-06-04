@@ -24,7 +24,7 @@ public final class Main extends JavaPlugin {
 
     private String[] Logo ={
     "&e&9     &6__     __ &e ",
-    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e1.5.3",
+    "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e" + this.getDescription().getVersion(),
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
 
