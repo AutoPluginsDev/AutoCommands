@@ -1,11 +1,11 @@
 name: AutoCommands
-version: 1.5.8
+version: 1.5.7
 main: fr.lumi.Main
 api-version: 1.15
 authors:
   - Lumi_
   - Adi_
-prefix: AutoCommands 1.5.8
+prefix: AutoCommands 1.5.7
 loadbefore:
   - PlaceholderAPI
   - essentials
