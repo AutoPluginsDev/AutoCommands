@@ -58,5 +58,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./target/AutoCommand-${{ vars.TARGET_VERSION }}.jar
-          asset_name: AutoCommand-{{ vars.TARGET_VERSION }}.jar
+          asset_name: AutoCommand-${{ vars.TARGET_VERSION }}.jar
           asset_content_type: application/java-archive
