@@ -6,7 +6,7 @@
 
     <groupId>fr</groupId>
     <artifactId>AutoCommands_ACMD</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.7</version>
     <packaging>jar</packaging>
 
     <repositories>

@@ -5,7 +5,7 @@ api-version: 1.15
 authors:
   - Lumi_
   - Adi_
-prefix: AutoCommands 1.2.0
+prefix: AutoCommands 1.5.7
 loadbefore:
   - PlaceholderAPI
   - essentials
