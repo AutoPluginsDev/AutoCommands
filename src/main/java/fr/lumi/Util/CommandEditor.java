@@ -8,10 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -285,32 +282,20 @@ public class CommandEditor implements Listener {
         GUI_ChooseACMD.clear();
         int index=0;
         for(autocommand acmd : plugin.getcommandList()){
-
-            ItemStack item = new ItemStack(Material.CHAIN_COMMAND_BLOCK,1);
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("§6§l"+acmd.getName());
             ArrayList<String> lore = new ArrayList<String>();
             int index2 = 0;
             for(String s : acmd.getCommands()){
                 lore.add("§9-"+index2+" -> §d"+s);
                 index2++;
             }
-            lore.add("§7(§aclick to open the editor§7)");
+            lore.add("§7(§aClick to open the editor§7)");
 
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-
-            GUI_ChooseACMD.setItem(index,item);
+            new UIItem.ItemBuilder(Material.CHAIN_COMMAND_BLOCK, "§6§l"+acmd.getName()).lore(lore).setItem(GUI_ChooseACMD, index);
             index++;
         }
-        ItemStack item = new ItemStack(Material.GREEN_CONCRETE,1);
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = new ArrayList<String>();
-        lore.add( "§dCreate a new acmd");
-        meta.setDisplayName("§6§lNew ACMD");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        GUI_ChooseACMD.setItem(53,item);
+        new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lNew ACMD")
+                .lore("§dCreate a new ACMD")
+                .setItem(GUI_ChooseACMD, 53);
     }
 
 
@@ -319,9 +304,6 @@ public class CommandEditor implements Listener {
         int index=0;
         for(autocommand acmd : plugin.getcommandList()){
 
-            ItemStack item = new ItemStack(Material.CHAIN_COMMAND_BLOCK,1);
-            ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName("§6§l"+acmd.getName());
             ArrayList<String> lore = new ArrayList<String>();
             int index2 = 0;
             for(String s : acmd.getCommands()){
@@ -330,78 +312,34 @@ public class CommandEditor implements Listener {
             }
             lore.add("§7(§aclick to open the editor§7)");
 
-            meta.setLore(lore);
-            item.setItemMeta(meta);
-
-            GUI_ChooseACMD.setItem(index,item);
+            new UIItem.ItemBuilder(Material.CHAIN_COMMAND_BLOCK, "§6§l"+acmd.getName()).lore(lore).setItem(GUI_ChooseACMD, index);
             index++;
         }
-        ItemStack item = new ItemStack(Material.GREEN_CONCRETE,1);
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = new ArrayList<String>();
-        lore.add( "§dCreate a new acmd");
-        meta.setDisplayName("§6§lNew ACMD");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        GUI_ChooseACMD.setItem(53,item);
-
+        new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lNew ACMD")
+                .lore("§dCreate a new auto command")
+                .setItem(GUI_ChooseACMD, 53);
     }
 
     public Inventory fillGUI_EditACMD(autocommand acmd, Inventory gui){
-        ItemStack item = new ItemStack(Material.PAPER,1);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName("§eID");
 
         List<String> lore = new ArrayList<String>();
         lore.add( "§d"+acmd.getID());
         lore.add("§7(§aYou can modify it in the commands.yml file§7)");
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(0,item);
+        new UIItem.ItemBuilder(Material.PAPER, "§eID").lore(lore).setItem(gui, 0);
 
-
-        //active
-        item = new ItemStack(Material.LEVER,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eActive");
-
+        // Active
         lore = new ArrayList<String>();
-        if(acmd.isActive()){
-            lore.add( "§aEnabled");
-        }
+        lore.add( acmd.isActive() ? "§aEnabled" : "§cDisabled");
 
-        else{
-            lore.add( "§cDisabled");
-        }
+        new UIItem.ItemBuilder(Material.LEVER,"§eActive").lore(lore).setItem(gui,1);
 
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(1,item);
-
-
-        //running
-        item = new ItemStack(Material.STONE_BUTTON,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eRun");
-
+        // Running
         lore = new ArrayList<String>();
-        if(acmd.isRunning()){
-            lore.add( "§aRunning");
-        }
-        else{
-            lore.add( "§cStopped");
-        }
+        lore.add(acmd.isRunning() ? "§aRunning" : "§cStopped");
 
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(2,item);
+        new UIItem.ItemBuilder(Material.STONE_BUTTON, "§eRun").lore(lore).setItem(gui, 2);
 
-
-        //period
-        item = new ItemStack(Material.CLOCK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§ePeriod");
-
+        // Period
         lore = new ArrayList<String>();
         if (acmd.getCycleInSec() < 10 && acmd.getCycleInSec() > 0 ){
             lore.add("§c"+acmd.getCycle()+"(short cycle)");
@@ -416,42 +354,18 @@ public class CommandEditor implements Listener {
             lore.add("§a"+ acmd.getCycleInSec());
         }
 
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(3,item);
+        new UIItem.ItemBuilder(Material.CLOCK, "§ePeriod").lore(lore).setItem(gui, 3);
+
+        // Delay
+        new UIItem.ItemBuilder(Material.CLOCK, "§eDelay")
+                .lore("§a"+acmd.getDelay()+" tick").
+                setItem(gui, 4);
+
+        // Daily execution
+        new UIItem.ItemBuilder(Material.SUNFLOWER, "§eDaily execution").lore("§a"+acmd.getTime()).setItem(gui, 5);
 
 
-        //delay
-        item = new ItemStack(Material.CLOCK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eDelay");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getDelay()+" tick");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(4,item);
-
-
-        //Daily execution
-        item = new ItemStack(Material.SUNFLOWER,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eDaily execution");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getTime());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(5,item);
-
-
-        //commands
-        item = new ItemStack(Material.COMMAND_BLOCK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eCommands");
-
+        // Commands
         lore = new ArrayList<String>();
         int index = 0;
         for(String s : acmd.getCommands()){
@@ -467,77 +381,28 @@ public class CommandEditor implements Listener {
 
         lore.add("§a      to remove a command with its CommandID §7)");
 
-
-        meta.setLore(lore);
-
-        item.setItemMeta(meta);
-        gui.setItem(6,item);
+        new UIItem.ItemBuilder(Material.COMMAND_BLOCK, "§eCommands").lore(lore).setItem(gui, 6);
 
 
-        //RepeatTime
-        item = new ItemStack(Material.COMPARATOR,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eRepeatTask");
+        // RepeatTime
+        new UIItem.ItemBuilder(Material.COMPARATOR, "§eRepeat Task").lore("§a"+acmd.getRepetition()).setItem(gui, 7);
 
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getRepetition());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(7,item);
-
-        //Message
-        item = new ItemStack(Material.WRITABLE_BOOK,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eMessage");
-
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getmessage());
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(8,item);
+        // Message
+        new UIItem.ItemBuilder(Material.WRITABLE_BOOK, "§eMessage").lore("§a"+acmd.getmessage()).setItem(gui, 8);
 
 
-        //Name
-        item = new ItemStack(Material.ITEM_FRAME,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§eName");
+        // Name
+        new UIItem.ItemBuilder(Material.ITEM_FRAME, "§eName").lore("§a" + acmd.getName()).setItem(gui, 9);
 
-        lore = new ArrayList<String>();
-        lore.add( "§a"+acmd.getName());
+        // Delete button
+        new UIItem.ItemBuilder(Material.RED_CONCRETE, "§4§lX §4DELETE THIS ACMD")
+                .lore("§cThis action is irreversible !")
+                .setItem(gui, 53);
 
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(9,item);
-
-
-
-        //delet button
-        item = new ItemStack(Material.RED_CONCRETE,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§4X DELETE ACMD");
-
-        lore = new ArrayList<String>();
-        lore.add( "§cThis is irreversible");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(53,item);
-
-        //back button
-        item = new ItemStack(Material.ORANGE_CONCRETE,1);
-        meta = item.getItemMeta();
-        meta.setDisplayName("§6<- Return");
-
-        lore = new ArrayList<String>();
-        lore.add( "§eBack to the main page");
-
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        gui.setItem(44,item);
-
-
+        // Back button
+        new UIItem.ItemBuilder(Material.ORANGE_CONCRETE, "§6<- Return")
+                .lore("§eBack to the main page")
+                .setItem(gui, 44);
 
         return gui;
     }
@@ -545,7 +410,6 @@ public class CommandEditor implements Listener {
     public Inventory createGUI_EditACMD(autocommand acmd){
         Inventory gui = Bukkit.createInventory(null, 54,"§8§oEditing "+acmd.getName());
         return fillGUI_EditACMD(acmd,gui);
-
     }
 
     public void reloadAllEditGUI(){
@@ -559,7 +423,6 @@ public class CommandEditor implements Listener {
     public void RefreshGUI_EditACMD(autocommand acmd,Inventory gui){
         gui.clear();
         fillGUI_EditACMD(acmd,gui);
-
     }
 
 
