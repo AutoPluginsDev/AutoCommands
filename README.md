@@ -57,3 +57,16 @@ example2:
   
 ```
 
+## release workflow
+
+1. First go to environment "env" and change the variable to the targeted tag/version 
+
+2. Merge develop on master
+
+3. Go edit the release created by the action, add just the name and a description. The binaries are already there.
+
+
+
+
+
+
