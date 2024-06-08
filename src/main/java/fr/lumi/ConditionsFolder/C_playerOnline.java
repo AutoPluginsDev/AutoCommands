@@ -2,9 +2,6 @@ package fr.lumi.ConditionsFolder;
 
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class C_playerOnline extends Condition {
 
     public C_playerOnline(){}

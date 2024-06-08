@@ -2,7 +2,6 @@ package fr.lumi.Util;
 
 import fr.lumi.ConditionsFolder.Condition;
 import fr.lumi.Main;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

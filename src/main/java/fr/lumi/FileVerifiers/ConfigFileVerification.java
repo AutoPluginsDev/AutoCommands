@@ -1,8 +1,6 @@
 package fr.lumi.FileVerifiers;
 
 import fr.lumi.Main;
-import org.bukkit.Bukkit;
-
 import java.util.HashMap;
 
 public class ConfigFileVerification extends cfgFileVerification {

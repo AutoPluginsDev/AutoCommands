@@ -1,9 +1,6 @@
 package fr.lumi.FileVerifiers;
 
 import fr.lumi.Main;
-
-import org.bukkit.Bukkit;
-
 import java.io.IOException;
 import java.util.HashMap;
 
