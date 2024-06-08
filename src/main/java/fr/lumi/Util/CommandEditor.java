@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -211,13 +212,13 @@ public class CommandEditor implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryClickEvent e){
-        if(e.getClickedInventory() == null) return;
-        if(e.getClickedInventory().equals(GUI_ChooseACMD)){
-            clearLock((Player) e.getWhoClicked());
+    public void onInventoryClose(InventoryCloseEvent e){
+        if(e.getInventory() == null) return;
+        if(e.getInventory().equals(GUI_ChooseACMD)){
+            clearLock((Player) e.getPlayer());
         }
-        if(editorsListe.contains(e.getClickedInventory())){
-            clearLock((Player) e.getWhoClicked());
+        if(editorsListe.contains(e.getInventory())){
+            clearLock((Player) e.getPlayer());
         }
     }
 
