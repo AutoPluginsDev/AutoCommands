@@ -49,7 +49,12 @@ public class CommandEditor implements Listener {
         reloadGUI_ChoosingACMD();
 
         // enables a lock with the player's UUID to prevent other players from using the command editor
-        plugin.getModificationLock().lock(p.getUniqueId().toString());
+        boolean authorized = plugin.getModificationLock().lock(p.getUniqueId().toString());
+
+        if (!authorized) {
+            p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4You can't open the editor because it is already in use by" + plugin.getModificationLock().getLastTennant()));
+            return;
+        }
         p.openInventory(GUI_ChooseACMD);
     }
 
