@@ -47,6 +47,9 @@ public class CommandEditor implements Listener {
     public void openchoosing(Player p ){
         createEditGui();
         reloadGUI_ChoosingACMD();
+
+        // enables a lock with the player's UUID to prevent other players from using the command editor
+        plugin.getModificationLock().lock(p.getUniqueId().toString());
         p.openInventory(GUI_ChooseACMD);
     }
 
@@ -202,18 +205,35 @@ public class CommandEditor implements Listener {
         }
     }
 
+    @EventHandler
+    public void onInventoryClose(InventoryClickEvent e){
+        if(e.getClickedInventory() == null) return;
+        if(e.getClickedInventory().equals(GUI_ChooseACMD)){
+            clearLock((Player) e.getWhoClicked());
+        }
+        if(editorsListe.contains(e.getClickedInventory())){
+            clearLock((Player) e.getWhoClicked());
+        }
+    }
+
+    private void clearLock(Player p){
+        plugin.getModificationLock().unlock(p.getUniqueId().toString());
+    }
+
     public void updateACMDWithValue(String val,Player p){
         autocommand acmd = plugin.getcommandList().get(LastOpened);
         switch (waitForChat) {
             case "exit" :
 
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aExit with succes"));
+                clearLock(p);
                 break;
             case "ID" :
                 acmd.setName(val);
                 acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
                 //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aName modified with succes"));
                 //p.openInventory(editorsListe.get(LastOpened));
+                clearLock(p);
                 break;
             case "period" :
                 if (StringNumberVerif.isDigit(val)){
@@ -223,6 +243,7 @@ public class CommandEditor implements Listener {
                 else {
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Period must be integer"));
                 }
+                clearLock(p);
                 break;
 
             case "delay" :
@@ -233,6 +254,7 @@ public class CommandEditor implements Listener {
                 else {
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Delay must be integer"));
                 }
+                clearLock(p);
                 break;
             case "hour" :
 
@@ -240,14 +262,14 @@ public class CommandEditor implements Listener {
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aDaily execution time modified with succes"));
 
                 //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Daily execution time must be like 18H02"));
-
+                clearLock(p);
                 break;
 
             case "command" :
 
                 acmd.addCommand(val);
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aCommand modified with succes"));
-
+                clearLock(p);
                 break;
 
             case "repetition" :
@@ -259,19 +281,19 @@ public class CommandEditor implements Listener {
                 else {
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Repetition must be integer"));
                 }
-
+                clearLock(p);
                 break;
 
             case "message" :
 
                 acmd.setmessage(val);
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aMessage modified with succes"));
-
+                clearLock(p);
                 break;
             case "name" :
                 acmd.setName(val);
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aName modified with succes"));
-
+                clearLock(p);
         }
         acmd.saveInConfig(plugin.getCommandsConfig(),plugin);
 

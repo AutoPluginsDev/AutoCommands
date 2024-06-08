@@ -22,6 +22,7 @@ import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 import com.google.gson.JsonParser;
 import java.util.ArrayList;
@@ -35,6 +36,16 @@ public final class Main extends JavaPlugin {
     "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e" + this.getDescription().getVersion(),
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
+
+    /*
+     * modificationLock: This prevents the administrator to modify the plugin in the mean time, it could cause some issues/conflicts.
+     */
+    ModificationLock modificationLock = new ModificationLock(this);
+
+    public ModificationLock getModificationLock() {
+        return modificationLock;
+    }
+
 
     boolean papiPresent = false;
 
