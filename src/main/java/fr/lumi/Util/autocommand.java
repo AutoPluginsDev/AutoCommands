@@ -36,22 +36,9 @@ public class autocommand implements Runnable {
     Main plugin;
     public autocommand(Main plg){
         plugin = plg;
-        /*
-        m_cycle=0;
-        m_running=true;
-        m_Active = true;
-        m_commands.add(" gamerule maxEntityCramming 80");
-        m_commands.add(" gamerule maxEntityCramming 80");
-        m_commands.add(" gamerule maxEntityCramming 80");
-        m_commands.add(" gamerule maxEntityCramming 80");
-        */
-
     }
 
-
-
-
-    public void setRunning(boolean state, FileConfiguration config,Main plg) {
+    public void setRunning(boolean state, FileConfiguration config) {
         m_running=state;
         config.set(ID+".running",m_running);
 
@@ -189,7 +176,7 @@ public class autocommand implements Runnable {
                     Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnRepetitionEnd"),this));
                     plugin.getServer().getScheduler().cancelTask(shedulerId);
 
-                    setRunning(false,plugin.getCommandsConfig(),plugin);
+                    setRunning(false,plugin.getCommandsConfig());
 
                 }
             }

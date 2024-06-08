@@ -87,7 +87,7 @@ public class CommandEditor implements Listener {
                 }
 
                 acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
-                acmd.setRunning(acmd.isRunning(), plugin.getCommandsConfig(), plugin);
+                acmd.setRunning(acmd.isRunning(), plugin.getCommandsConfig());
                 plugin.getcommandList().add(acmd);
 
                 createEditGui();
@@ -107,7 +107,7 @@ public class CommandEditor implements Listener {
                     if(acmd == null) return ;
                     //desactivation of the command
 
-                    acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
+                    acmd.setRunning(false, plugin.getCommandsConfig());
 
                     acmd.delete(plugin.getCommandsConfig());
 
@@ -134,7 +134,7 @@ public class CommandEditor implements Listener {
                     acmd.setActive(!acmd.isActive());
                     break;
                 case 2 :
-                    acmd.setRunning(!acmd.isRunning(), plugin.getCommandsConfig(), plugin);
+                    acmd.setRunning(!acmd.isRunning(), plugin.getCommandsConfig());
                     break;
                 case 3 :
                     waitForChat = "period";

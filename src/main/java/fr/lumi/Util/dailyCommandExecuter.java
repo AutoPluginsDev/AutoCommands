@@ -43,7 +43,7 @@ public class dailyCommandExecuter implements Runnable{
         for(autocommand acmd : m_commandList){
 
             if (Objects.equals(acmd.getTime(), HourString) && acmd.isActive()){
-                acmd.setRunning(true,plugin.getCommandsConfig(),plugin);
+                acmd.setRunning(true,plugin.getCommandsConfig());
 
             }
         }

@@ -166,7 +166,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Try to enable the command "+acmd.getName()+" first with : /acmd enable "+acmd.getID()));
                     return true;
                 }
-                acmd.setRunning(true, plugin.getCommandsConfig(), plugin);
+                acmd.setRunning(true, plugin.getCommandsConfig());
 
 
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onRunAcmd"),acmd, (Player)player));
@@ -174,7 +174,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
             if (Objects.equals(args[0], "stop")) {
 
-                acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
+                acmd.setRunning(false, plugin.getCommandsConfig());
 
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onStopAcmd"), acmd, (Player)player));
                 //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
@@ -191,7 +191,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             if (Objects.equals(args[0], "disable")) {
 
 
-                acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
+                acmd.setRunning(false, plugin.getCommandsConfig());
                 acmd.setActive(false);
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDisableAcmd"), acmd, (Player)player));
                 //player.sendMessage(plugin.getConfig().getString("Prefix")+" please reload the plugin with /acmdreload to make this change effective");
@@ -290,7 +290,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             if(acmd == null) return true;
             //desactivation of the command
 
-            acmd.setRunning(false, plugin.getCommandsConfig(), plugin);
+            acmd.setRunning(false, plugin.getCommandsConfig());
 
 
 
@@ -348,7 +348,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 }
                 player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd, (Player)player));
             cmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
-            cmd.setRunning(cmd.isRunning(), plugin.getCommandsConfig(), plugin);
+            cmd.setRunning(cmd.isRunning(), plugin.getCommandsConfig());
             plugin.getcommandList().add(cmd);
 
         }
