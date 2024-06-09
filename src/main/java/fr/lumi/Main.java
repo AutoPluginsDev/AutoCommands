@@ -234,6 +234,7 @@ public final class Main extends JavaPlugin {
     public boolean verifyFiles(){
         boolean verified = false;
         verified = ConfigVerif.Verif();
+        ConfigUtil.mergeConfig(this,"lang.yml",getLangFile());
         verified = verified && LangVerif.Verif();
         return verified;
     }

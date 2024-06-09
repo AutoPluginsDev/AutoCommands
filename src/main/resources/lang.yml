@@ -47,7 +47,7 @@ OnReload: '&a&lreloaded %acmdFound acmds'
 
 OnRepetitionEnd: '&cstopping executing %acmdName'
 
-ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter the  command&a->&6 %acmdCommand'
+ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter time the command&a->&6 %acmdCommand'
 
 CommandEdited: '&6command successfully modified'
 
