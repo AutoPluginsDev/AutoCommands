@@ -3,6 +3,7 @@ package fr.lumi;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import fr.lumi.CommandPatternObject.Command;
 import fr.lumi.Commandes.CommandRunnerCommand;
 import fr.lumi.Commandes.CommandRunnerEditor;
 import fr.lumi.Commandes.CommandRunnerHelp;
@@ -136,8 +137,12 @@ public final class Main extends JavaPlugin {
     private LangFileVerification LangVerif = new LangFileVerification(this);
     private ConfigFileVerification ConfigVerif = new ConfigFileVerification(this);
 
+    public void executeCommand(Command cmd) {
+        cmd.execute();
+    }
 
     public void init() {
+
         m_ut = new Utilities(this);
         config = getConfig();
         Langfile = new File(getDataFolder(), "lang.yml");
