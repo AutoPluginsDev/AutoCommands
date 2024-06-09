@@ -37,6 +37,11 @@ public final class Main extends JavaPlugin {
     "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
     ""};
 
+    private void printLogo(){
+        for(String s :Logo)//print the logo
+            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',s));
+    }
+
     /*
      * modificationLock: This prevents the administrator to modify the plugin in the mean time, it could cause some issues/conflicts.
      */
@@ -202,7 +207,7 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        printLogo();
         // verify if the plugin is up to date and send a message to the admins
         String broadcastMessage = ChatColor.translateAlternateColorCodes('&',getConfig().getString("Prefix")+VerifyPluginVersion());
         Bukkit.broadcast(broadcastMessage, "bukkit.broadcast.admin");
@@ -219,9 +224,6 @@ public final class Main extends JavaPlugin {
 
         long  start = System.currentTimeMillis();
         init();
-
-        for(String s :Logo)//print the logo
-            Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',s));
 
         saveDefaultConfig();
         getRessourceFile(getLangFile(),"lang.yml",this);
