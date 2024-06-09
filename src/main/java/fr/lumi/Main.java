@@ -282,7 +282,7 @@ public final class Main extends JavaPlugin {
     public void Unload(){
         getServer().getScheduler().cancelTasks(this);
         for (autocommand acmd : getcommandList()){
-            acmd.cancel();
+            acmd.setRunning(false,getCommandsConfig());
         }
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',config.getString("ConsolePrefix")+" &cUnloaded"));
     }
