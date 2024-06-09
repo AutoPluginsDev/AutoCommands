@@ -248,9 +248,6 @@ public class autocommand implements Runnable {
             }else{
                 m_message =config.getString(ID+".TaskParameters.message");
             }
-
-
-
             m_time = config.getString(ID+".DailySchedulerParameters.time");
             m_commands =  config.getStringList(ID+".TaskParameters.commands");
             return true;
@@ -260,7 +257,6 @@ public class autocommand implements Runnable {
 
         for(String line : plugin.getLangConfig().getStringList("onDysplayingAcmd")){
             player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(line,this, (Player)player));
-
         }
     }
 
