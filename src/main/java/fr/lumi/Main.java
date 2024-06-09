@@ -86,7 +86,6 @@ public final class Main extends JavaPlugin {
     }
 
 
-
     //translatefile gestion
     private File Langfile = new File(getDataFolder(),"lang.yml");
     private FileConfiguration Langconfig= YamlConfiguration.loadConfiguration(Langfile);
