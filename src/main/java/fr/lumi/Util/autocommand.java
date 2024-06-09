@@ -23,7 +23,7 @@ public class autocommand implements Runnable {
 
     private String ID ="";
     private boolean m_running=false;
-    private boolean m_Active = true;
+    private boolean m_Active = false;
     private String m_message="";
     private long m_delay = 0;
     private int shedulerId=0;
