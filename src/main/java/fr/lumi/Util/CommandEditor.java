@@ -53,10 +53,15 @@ public class CommandEditor implements Listener {
         boolean authorized = plugin.getModificationLock().lock(p.getUniqueId().toString());
 
         if (!authorized) {
-            p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4You can't open the editor because it is already in use by" + plugin.getModificationLock().getLastTennant()));
+            p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(plugin.getLangConfig().getString("onEditorIsLockedError")));
             return;
         }
         p.openInventory(GUI_ChooseACMD);
+    }
+
+    public void closeInventory(Player p){
+        p.closeInventory();
+        clearLock(p);
     }
 
     public void openACMDEditor(Player p , autocommand acmd,int nb ){
@@ -78,7 +83,7 @@ public class CommandEditor implements Listener {
             e.setCancelled(true);
             if(slot < plugin.getcommandList().size()){
                 //p.sendMessage("opening editor for the acmd "+plugin.getcommandList().get(slot).getName());
-                p.closeInventory();
+                closeInventory(p);
                 openACMDEditor(p,plugin.getcommandList().get(slot),slot);
             }
 
@@ -120,16 +125,17 @@ public class CommandEditor implements Listener {
 
                     acmd.delete(plugin.getCommandsConfig());
 
-                    p.closeInventory();
+                    closeInventory(p);
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, p));
+
                     createEditGui();
                     reloadGUI_ChoosingACMD();
                     openchoosing(p);
                     return;
 
                 case 44 :
-                    p.closeInventory();
+                    closeInventory(p);
                     p.openInventory(GUI_ChooseACMD);
                     break;
 
@@ -137,7 +143,7 @@ public class CommandEditor implements Listener {
                     //waitForChat = "ID";
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&bNothing to do yet with this button"));
                     //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the ID in the chat (type exit to exit) :"));
-                    //p.closeInventory();
+                    //closeInventory(p);
                     break;
                 case 1 :
                     acmd.setActive(!acmd.isActive());
@@ -149,44 +155,44 @@ public class CommandEditor implements Listener {
                     waitForChat = "period";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the period in the chat in tick (format : integer , type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
                     break;
 
                 case 4 :
                     waitForChat = "delay";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the delay in the chat in tick (format : integer , type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
                     break;
                 case 5 :
                     waitForChat = "hour";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : 18H02 , type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
                     break;
                 case 6 :
                     waitForChat = "command";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the command in the chat (type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
                     break;
                 case 7 :
                     waitForChat = "repetition";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the repetition in the chat (format : integer , type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
                     break;
                 case 8 :
                     waitForChat = "message";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : & usables , type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
                     break;
                 case 9 :
                     waitForChat = "name";
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the name in the chat (type exit to exit) :"));
-                    p.closeInventory();
+                    closeInventory(p);
             }
             acmd.saveInConfig(plugin.getCommandsConfig(),plugin);
             reloadAllEditGUI();

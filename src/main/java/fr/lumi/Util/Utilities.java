@@ -61,7 +61,7 @@ public class Utilities {
         s = s.replace("%acmdFound",plugin.getcommandList().size()+"");
         s = s.replace("%acmdcurrentlyRunning",plugin.getRunningCommand()+"");
         s = s.replace("%acmdCurrentlyEnabled",plugin.getEnbaledCommand()+"");
-
+        s = s.replace("%acmdLockingUser",plugin.getModificationLock().getLastTennant());
         s = PapiReplace(null,s);
 
         return s;

@@ -23,6 +23,8 @@
 #   %acmdNumberOfListPage
 #   %acmdCurrentPageOfList
 
+# inner message: errors / warning / info
+onEditorIsLockedError: '&cThe editor is locked by %acmdLockingUser, you can not edit the command'
 
 # Enable and disable the ACMD
 onEnablAcmd: '&6%acmdName &aenable'
