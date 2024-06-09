@@ -46,7 +46,7 @@ public class ModificationLock {
      *
      */
     public boolean unlock(String lastTennant) {
-        if (locked && !lastTennant.equals(getLastTennant())){
+        if (locked && !lastTennant.equals(getLastTennant())) {
             throw new IllegalStateException("Unlocking an already unlocked lock");
         }
         locked = false;
