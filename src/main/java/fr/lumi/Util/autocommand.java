@@ -150,9 +150,13 @@ public class autocommand implements Runnable {
             shedulerId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, this, getDelay(), getCycle());
         }
         else
-            plugin.getServer().getScheduler().cancelTask(shedulerId);
+            cancel();
     }
 
+    public void cancel(){
+
+        plugin.getServer().getScheduler().cancelTask(shedulerId);
+    }
 
     @Override
     public void run() {
