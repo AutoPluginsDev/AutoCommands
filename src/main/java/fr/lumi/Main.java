@@ -311,7 +311,6 @@ public final class Main extends JavaPlugin {
         return false;
     }
 
-    // refactor this ?? why loading all commands even if they are not active
     public boolean loadCommandsTimeTable() {
         commandList.clear();
         getServer().getScheduler().cancelTasks(this);
@@ -320,9 +319,7 @@ public final class Main extends JavaPlugin {
             if(acmd.getInConfig(getCommandsConfig(),this,i)){
                 if(getConfig().getBoolean("DisplayAcmdInConsole"))
                     acmd.printToConsole();
-                //acmd.addToScheduler();
                 commandList.add(acmd);
-                //acmd.saveInConfig(commandsConfig,this);
             }
         }
         return true;
