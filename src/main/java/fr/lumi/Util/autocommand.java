@@ -162,8 +162,6 @@ public class autocommand implements Runnable {
     public void run() {
 
         if(ConditionVerifier.verify(this) ){
-            if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
-            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
 
 
             for(String command : m_commands ){
@@ -176,12 +174,19 @@ public class autocommand implements Runnable {
             setRepetitionCounter(getRepetitionCounter()+1);
             if(getRepetition() != -1){
                 if (getRepetitionCounter() == getRepetition()) {
-                    Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnRepetitionEnd"),this));
-                    plugin.getServer().getScheduler().cancelTask(shedulerId);
+                     plugin.getServer().getScheduler().cancelTask(shedulerId);
 
                     setRunning(false,plugin.getCommandsConfig());
 
                 }
+            }
+            try {
+                Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("OnRepetitionEnd"), this));
+                if (!Objects.equals(m_message, ""))
+                    Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', m_message));
+                Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"), this));
+            } catch (Exception e) {
+                System.out.println("Verify your lang config file");
             }
         }
 
@@ -192,7 +197,6 @@ public class autocommand implements Runnable {
 
         if(!Objects.equals(m_message, "")) Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&',m_message));
         Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsole(plugin.getLangConfig().getString("ConsoleExecutingMessage"),this));
-
 
         for(String command : m_commands ){
             Bukkit.getConsoleSender().sendMessage(command);
