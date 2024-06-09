@@ -25,6 +25,7 @@ public class LangFileVerification extends cfgFileVerification {
         keys.put("ConsoleExecutingMessage","");
         keys.put("CommandEdited","");
         keys.put("onDysplayingAcmd","");
+        keys.put("onEditorIsLockedError","");
         super.setKeys(keys);
     }
 
