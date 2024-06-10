@@ -139,7 +139,7 @@ public class CommandEditor implements Listener {
                     closeInventory(p);
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, p));
-
+                    closeInventory(p);
                     createEditGui();
                     reloadGUI_ChoosingACMD();
                     openchoosing(p);
