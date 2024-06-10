@@ -114,7 +114,7 @@ public class CommandEditor implements Listener {
                 acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
                 acmd.setRunning(acmd.isRunning(), plugin.getCommandsConfig());
                 plugin.getcommandList().add(acmd);
-
+                closeInventory(p);
                 createEditGui();
                 reloadGUI_ChoosingACMD();
                 openchoosing(p);
@@ -139,7 +139,6 @@ public class CommandEditor implements Listener {
                     closeInventory(p);
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, p));
-                    closeInventory(p);
                     createEditGui();
                     reloadGUI_ChoosingACMD();
                     openchoosing(p);
