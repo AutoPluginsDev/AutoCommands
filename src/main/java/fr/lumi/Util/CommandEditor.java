@@ -313,30 +313,16 @@ public class CommandEditor implements Listener {
         }
         acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
     }
-
     public void reloadGUI_ChoosingACMD() {
         GUI_ChooseACMD.clear();
-        int index = 0;
-        for (autocommand acmd : plugin.getcommandList()) {
-            ArrayList<String> lore = new ArrayList<String>();
-            int index2 = 0;
-            for (String s : acmd.getCommands()) {
-                lore.add("§9-" + index2 + " -> §d" + s);
-                index2++;
-            }
-            lore.add("§7(§aClick to open the editor§7)");
-
-            new UIItem.ItemBuilder(Material.CHAIN_COMMAND_BLOCK, "§6§l" + acmd.getName()).lore(lore).setItem(GUI_ChooseACMD, index);
-            index++;
-        }
-        new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lNew ACMD")
-                .lore("§dCreate a new ACMD")
-                .setItem(GUI_ChooseACMD, 53);
+        fillMainMenu();
     }
-
 
     public void createGUI_ChoosingACMD() {
         GUI_ChooseACMD = Bukkit.createInventory(null, 54, "§2§l§oACMD editor");
+        fillMainMenu();
+    }
+    public void fillMainMenu(){
         int index = 0;
         for (autocommand acmd : plugin.getcommandList()) {
 
@@ -354,13 +340,11 @@ public class CommandEditor implements Listener {
         new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lNew ACMD")
                 .lore("§dCreate a new auto command")
                 .setItem(GUI_ChooseACMD, 53);
-
         for (int i = 0; i < 54; i++) {
             if (GUI_ChooseACMD.getItem(i) == null) {
                 new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_ChooseACMD, i);
             }
         }
-
     }
 
     public Inventory fillGUI_EditACMD(autocommand acmd, Inventory gui) {
