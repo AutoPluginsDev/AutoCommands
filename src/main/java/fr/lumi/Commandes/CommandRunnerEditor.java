@@ -15,6 +15,7 @@ public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
 
     CommandEditor acmdEditor;
     Main plugin;
+
     public CommandRunnerEditor(Main plg, CommandEditor Editor) {
         acmdEditor = Editor;
         plugin = plg;
@@ -24,8 +25,8 @@ public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> l = new ArrayList<>();
-        if(cmd.getName().equalsIgnoreCase("acmdEditor")){
-            if(sender instanceof Player){
+        if (cmd.getName().equalsIgnoreCase("acmdEditor")) {
+            if (sender instanceof Player) {
                 List<String> list = new ArrayList<>();
 
             }
@@ -40,31 +41,31 @@ public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
             Player player = (Player) sender;
 
 
-            valid = valid && openMenu( (Player) sender);
-            if(!valid) return false;
+            valid = valid && openMenu((Player) sender);
+            if (!valid) return false;
 
             valid = valid && SaveMenu();
-            if(!valid) return false;
+            if (!valid) return false;
 
 
             valid = valid && closeMenu();
-            if(!valid) return false;
+            if (!valid) return false;
 
         }
         return valid;
     }
 
-    private boolean openMenu(Player p){
+    private boolean openMenu(Player p) {
         acmdEditor.openchoosing(p);
         return true;
     }
 
-    private boolean SaveMenu(){
+    private boolean SaveMenu() {
         return true;
     }
 
 
-    private boolean closeMenu(){
+    private boolean closeMenu() {
         return true;
     }
 

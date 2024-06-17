@@ -15,6 +15,7 @@ import java.util.List;
 public class CommandRunnerConf implements CommandExecutor, TabCompleter {
 
     Main plugin;
+
     public CommandRunnerConf(Main plg) {
         plugin = plg;
 
@@ -24,8 +25,8 @@ public class CommandRunnerConf implements CommandExecutor, TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> l = new ArrayList<>();
 
-        if(cmd.getName().equalsIgnoreCase("acmdconf")){
-            if(sender instanceof Player){
+        if (cmd.getName().equalsIgnoreCase("acmdconf")) {
+            if (sender instanceof Player) {
                 List<String> list = new ArrayList<>();
                 l.add("prefix");
             }
@@ -37,7 +38,7 @@ public class CommandRunnerConf implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(args.length > 0 ){
+            if (args.length > 0) {
 
             }
         }

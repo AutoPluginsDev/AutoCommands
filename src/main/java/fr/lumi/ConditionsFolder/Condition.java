@@ -7,7 +7,7 @@ public abstract class Condition {
 
     protected List<String> m_parameters;
 
-    public Condition(){
+    public Condition() {
         m_parameters = new ArrayList<String>();
     }
 
@@ -16,11 +16,11 @@ public abstract class Condition {
 
     public abstract String getName();
 
-    public String getParam(int id){
+    public String getParam(int id) {
         return m_parameters.get(id);
     }
 
-    public void setParams(List<String> list){
+    public void setParams(List<String> list) {
         m_parameters = list;
     }
 

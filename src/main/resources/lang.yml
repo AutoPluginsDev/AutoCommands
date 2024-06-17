@@ -22,7 +22,10 @@
 #   %acmdDaylyTime (hour and minuts with format "hh H mm" when the command will be executed everyday)
 #   %acmdNumberOfListPage
 #   %acmdCurrentPageOfList
+#   %acmdLockingUser (the player who is using the editor)
 
+# inner message: errors / warning / info
+onEditorIsLockedError: '&cThe editor is locked by %acmdLockingUser, you can not edit the command'
 
 # Enable and disable the ACMD
 onEnablAcmd: '&6%acmdName &aenable'
@@ -45,7 +48,7 @@ OnReload: '&a&lreloaded %acmdFound acmds'
 
 OnRepetitionEnd: '&cstopping executing %acmdName'
 
-ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter the  command&a->&6 %acmdCommand'
+ConsoleExecutingMessage: '&6 %acmdName Executing fot the %acmdRepCounter time the command&a->&6 %acmdCommand'
 
 CommandEdited: '&6command successfully modified'
 
