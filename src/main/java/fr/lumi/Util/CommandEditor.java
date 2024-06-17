@@ -238,12 +238,13 @@ public class CommandEditor implements Listener {
 
     public void updateACMDWithValue(String val, Player p) {
         autocommand acmd = plugin.getcommandList().get(LastOpened);
-        switch (waitForChat) {
-            case "exit":
+        if (val == "exit"){
+            p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aExit with succes"));
+            clearLock(p);
+        }
 
-                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aExit with succes"));
-                clearLock(p);
-                break;
+        switch (waitForChat) {
+
             case "ID":
                 acmd.setName(val);
                 acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
