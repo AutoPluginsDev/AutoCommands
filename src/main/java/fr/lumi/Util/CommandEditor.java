@@ -323,6 +323,9 @@ public class CommandEditor implements Listener {
         fillMainMenu();
     }
     public void fillMainMenu(){
+        for (int i = 0; i < 54; i++) {
+            new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_ChooseACMD, i);
+        }
         int index = 0;
         for (autocommand acmd : plugin.getcommandList()) {
 
@@ -340,11 +343,7 @@ public class CommandEditor implements Listener {
         new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lNew ACMD")
                 .lore("§dCreate a new auto command")
                 .setItem(GUI_ChooseACMD, 53);
-        for (int i = 0; i < 54; i++) {
-            if (GUI_ChooseACMD.getItem(i) == null) {
-                new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_ChooseACMD, i);
-            }
-        }
+
     }
 
     public Inventory fillGUI_EditACMD(autocommand acmd, Inventory gui) {
