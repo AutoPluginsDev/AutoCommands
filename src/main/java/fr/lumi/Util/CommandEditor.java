@@ -354,6 +354,13 @@ public class CommandEditor implements Listener {
         new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lNew ACMD")
                 .lore("§dCreate a new auto command")
                 .setItem(GUI_ChooseACMD, 53);
+
+        for (int i = 0; i < 54; i++) {
+            if (GUI_ChooseACMD.getItem(i) == null) {
+                new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(gui, i);
+            }
+        }
+
     }
 
     public Inventory fillGUI_EditACMD(autocommand acmd, Inventory gui) {
@@ -437,6 +444,14 @@ public class CommandEditor implements Listener {
         new UIItem.ItemBuilder(Material.ORANGE_CONCRETE, "§6<- Return")
                 .lore("§eBack to the main page")
                 .setItem(gui, 44);
+
+        //for all empty slots in the inventory we put a glass pane. Test if the slot is empty
+        for (int i = 0; i < 54; i++) {
+            if (gui.getItem(i) == null) {
+                new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(gui, i);
+            }
+        }
+
 
         return gui;
     }
