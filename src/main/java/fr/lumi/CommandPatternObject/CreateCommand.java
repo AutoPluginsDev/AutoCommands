@@ -1,7 +1,6 @@
 package fr.lumi.CommandPatternObject;
 
 import fr.lumi.Main;
-import fr.lumi.Util.StringNumberVerif;
 import fr.lumi.Util.autocommand;
 import org.bukkit.entity.Player;
 
@@ -15,6 +14,8 @@ public class CreateCommand extends Command{
 
     String acmdcommand;
 
+    String ID;
+
     public CreateCommand(Main plg) {
         super(plg);
     }
@@ -27,37 +28,57 @@ public class CreateCommand extends Command{
         acmdName = n;
     }
 
+    public void setacmdCycle(long c) {
+        acmdCycle = c;
+    }
+
+    public void setacmdDelay(long d) {
+        acmdDelay = d;
+    }
+
+    public void setacmdRepetitions(int r) {
+        acmdRepetitions = r;
+    }
+
+    public void setacmdcommand(String c) {
+        acmdcommand = c;
+    }
+
+    public void setacmdID(String id) {
+        ID = id;
+    }
+
     @Override
     public void execute() {
 
 
-        autocommand cmd = new autocommand(plugin);
-        cmd.setName(acmdName);
+        autocommand acmd = new autocommand(plugin);
+        acmd.setName(acmdName);
 
 
-        cmd.setCycle(acmdCycle);
-        if (cmd.getCycle() < 200) {
-            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), cmd, (Player) player));
+        acmd.setCycle(acmdCycle);
+        if (acmd.getCycle() < 200) {
+            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), acmd, (Player) player));
         }
 
-        cmd.setDelay(acmdDelay);
+        acmd.setDelay(acmdDelay);
 
-        cmd.setRepetition(acmdRepetitions);
+        acmd.setRepetition(acmdRepetitions);
 
-        cmd.addCommand(acmdcommand);
+        acmd.addCommand(acmdcommand);
 
-        cmd.setID("acmd" + plugin.getcommandList().size());
+        acmd.setID(ID);
         int index = 0;
 
-        while (plugin.acmdIdExist(cmd.getID())) {
-            cmd.setID("acmd" + index);
+        while (plugin.acmdIdExist(acmd.getID())) {
+            acmd.setID("acmd" + index);
             index++;
         }
 
-        player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd, (Player) player));
-        cmd.saveInConfig(plugin.getCommandsConfig(), plugin); //sauvegarde de la commande dans le fichier de commands
-        cmd.setRunning(cmd.isRunning(), plugin.getCommandsConfig());
-        plugin.getcommandList().add(cmd);
+        player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), acmd, (Player) player));
+        acmd.saveInConfig(plugin.getCommandsConfig(), plugin); //sauvegarde de la commande dans le fichier de commands
+        acmd.setRunning(acmd.isRunning(), plugin.getCommandsConfig());
+        plugin.getcommandList().add(acmd);
 
     }
 }

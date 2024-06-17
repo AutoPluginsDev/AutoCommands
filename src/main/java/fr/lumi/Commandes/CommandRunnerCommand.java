@@ -1,5 +1,6 @@
 package fr.lumi.Commandes;
 
+import fr.lumi.CommandPatternObject.CreateCommand;
 import fr.lumi.Main;
 import fr.lumi.Util.ListAfficher;
 import fr.lumi.Util.StringNumberVerif;
@@ -256,49 +257,42 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
         if (Objects.equals(args[0], "new") && args.length >= 4) {
 
+            CreateCommand cmd = new CreateCommand(plugin);
+
+            cmd.setPlayer((Player) player);
+
             long cycle;
             long delay;
             int repetitions;
 
-            autocommand cmd = new autocommand(plugin);
-            cmd.setName(args[1]);
+            cmd.setacmdName(args[1]);
             if (!StringNumberVerif.isDigit(args[2]))
                 return false;
 
             cycle = (long) Float.parseFloat(args[2]);
-            cmd.setCycle(cycle);
-            if (cmd.getCycle() < 200) {
-                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), cmd, (Player) player));
-            }
+            cmd.setacmdCycle(cycle);
 
             if (!StringNumberVerif.isDigit(args[3]))
                 return false;
             delay = (long) Float.parseFloat(args[3]);
-            cmd.setDelay(delay);
+            cmd.setacmdDelay(delay);
 
             if (!StringNumberVerif.isDigit(args[4]))
                 return false;
             repetitions = Integer.parseInt(args[4]);
 
-            cmd.setRepetition(repetitions);
+            cmd.setacmdRepetitions(repetitions);
 
             StringBuilder s = new StringBuilder();
             for (int i = 5; i <= args.length - 1; i++) {
                 s.append(args[i] + " ");
             }
 
-            cmd.addCommand(s.toString());
+            cmd.setacmdcommand(s.toString());
 
-            cmd.setID("acmd" + plugin.getcommandList().size());
-            int index = 0;
-            while (plugin.acmdIdExist(cmd.getID())) {
-                cmd.setID("acmd" + index);
-                index++;
-            }
-            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), cmd, (Player) player));
-            cmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
-            cmd.setRunning(cmd.isRunning(), plugin.getCommandsConfig());
-            plugin.getcommandList().add(cmd);
+            cmd.setacmdID("acmd" + plugin.getcommandList().size());
+
+            plugin.executeCommand(cmd);
 
         }
 
