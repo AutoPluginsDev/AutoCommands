@@ -154,7 +154,7 @@ public final class Main extends JavaPlugin {
         LangVerif = new LangFileVerification(this);
         ConfigVerif = new ConfigFileVerification(this);
 
-        getRessourceFile(getCommandsFile(), "commands.yml", this);
+        //getRessourceFile(getCommandsFile(), "commands.yml", this);
 
         saveCommandsFile();
     }
@@ -237,7 +237,7 @@ public final class Main extends JavaPlugin {
         init();
 
         saveDefaultConfig();
-        getRessourceFile(getLangFile(), "lang.yml", this);
+        //getRessourceFile(getLangFile(), "lang.yml", this);
         boolean verified = Load();
 
         long exeTime = System.currentTimeMillis() - start;
