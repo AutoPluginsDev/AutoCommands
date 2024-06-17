@@ -102,7 +102,7 @@ public final class Main extends JavaPlugin {
     private FileConfiguration Langconfig = YamlConfiguration.loadConfiguration(Langfile);
 
     public FileConfiguration getLangConfig() {
-        Langconfig = YamlConfiguration.loadConfiguration(Langfile);
+        Langconfig = YamlConfiguration.loadConfiguration(getLangFile());
         return Langconfig;
     }
 
