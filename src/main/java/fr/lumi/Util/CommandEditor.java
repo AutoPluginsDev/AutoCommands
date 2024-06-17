@@ -312,8 +312,6 @@ public class CommandEditor implements Listener {
                 clearLock(p);
         }
         acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
-
-
     }
 
     public void reloadGUI_ChoosingACMD() {

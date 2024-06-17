@@ -43,9 +43,10 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
                     "§e-----------§aAutoCommands-Help§e--------------\n"
                             + "§6" + ChatColor.translateAlternateColorCodes('&', plugin.VerifyPluginVersion()) + "\n"
                             + "§6ACMD Version : " + plugin.getDescription().getVersion() + "\n"
-                            + "§6/acmd -> §7The main command of the plugin\n"
-                            + "§6/acmd list [page]-> §7Displays the list of the AutoCommands\n"
-                            + "§6/acmdreload -> §7reload the plugin and the autocomands\n"
+                            + "§6  /acmd <params> §e-> §7The main command of the plugin\n"
+                            + "§6  /acmd list [page] §e-> §7Displays the list of the AutoCommands\n"
+                            + "§6  /acmdreload §e-> §7reload the plugin and the Autocomands\n"
+                            + "§6  /acmdeditor §e-> §7The §aUI§7 of autocomands, try it now!\n"
                             + "§6Link to our discord : §3https://discord.gg/EQHknuSTP8 \n"
                             + "§6The plugin's wiki  :§a https://github.com/AutoPluginsDev/Documentation/wiki/AutoCommands-%5BACMD%5D \n"
                             + "§e------------------------------------------\n";
