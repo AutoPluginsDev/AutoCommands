@@ -238,7 +238,7 @@ public class CommandEditor implements Listener {
     }
 
     public void updateACMDWithValue(String val, Player p) {
-        if (val == "exit"){
+        if (Objects.equals(val, "exit")){
             p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aExit with succes"));
             clearLock(p);
             return;

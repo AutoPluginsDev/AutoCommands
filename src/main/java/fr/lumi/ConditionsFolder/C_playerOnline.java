@@ -15,7 +15,7 @@ public class C_playerOnline extends Condition {
     public boolean verify() {
         if (cnd == -1) return Bukkit.getServer().getOnlinePlayers().size() < onlinePlayerCondNumber;
         else if (cnd == 0) return Bukkit.getServer().getOnlinePlayers().size() == onlinePlayerCondNumber;
-        else return Bukkit.getServer().getOnlinePlayers().size() == onlinePlayerCondNumber;
+        else return Bukkit.getServer().getOnlinePlayers().size() > onlinePlayerCondNumber;
     }
 
     @Override

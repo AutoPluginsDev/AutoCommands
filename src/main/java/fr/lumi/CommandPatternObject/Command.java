@@ -2,7 +2,7 @@ package fr.lumi.CommandPatternObject;
 import fr.lumi.Main;
 import fr.lumi.Util.autocommandDataPattern;
 
-public interface Command{
+public interface Command {
 
     void execute();
 
