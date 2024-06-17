@@ -112,6 +112,11 @@ public final class Main extends JavaPlugin {
         return Langfile;
     }
 
+    public File getConfigFile() {
+        Langfile = new File(getDataFolder(), "config.yml");
+        return Langfile;
+    }
+
 
     public void addBstatsMetrics() {
         int pluginId = 21737;
@@ -249,6 +254,7 @@ public final class Main extends JavaPlugin {
         verified = ConfigVerif.Verif();
         verified = verified && LangVerif.Verif();
         ConfigUtil.mergeConfig(this, "lang.yml", getLangFile());
+        ConfigUtil.mergeConfig(this, "config.yml", getConfigFile());
 
         return verified;
     }
