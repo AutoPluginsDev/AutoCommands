@@ -22,6 +22,7 @@
 #   %acmdDaylyTime (hour and minuts with format "hh H mm" when the command will be executed everyday)
 #   %acmdNumberOfListPage
 #   %acmdCurrentPageOfList
+#   %acmdLockingUser (the player who is using the editor)
 
 # inner message: errors / warning / info
 onEditorIsLockedError: '&cThe editor is locked by %acmdLockingUser, you can not edit the command'

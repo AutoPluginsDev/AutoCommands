@@ -60,7 +60,7 @@ public class Utilities {
             s = s.replace("%acmdcurrentlyRunning", plugin.getRunningCommand() + "");
             s = s.replace("%acmdCurrentlyEnabled", plugin.getEnbaledCommand() + "");
             // get the last tennant and tansform it to a player name from plugin.getModificationLock().getLastTennant()
-            String tenanntPlayerName = plugin.getServer().getOfflinePlayer(plugin.getModificationLock().getLastTennant()).getName();
+            String tenanntPlayerName = plugin.getModificationLock().getLastTennant();
             s = s.replace("%acmdLockingUser", tenanntPlayerName);
             s = PapiReplace(null, s);
         } catch (Exception e) {
