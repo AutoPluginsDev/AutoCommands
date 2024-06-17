@@ -289,9 +289,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             }
 
             cmd.setacmdcommand(s.toString());
-
             cmd.setacmdID("acmd" + plugin.getcommandList().size());
-
             plugin.executeCommand(cmd);
 
         }

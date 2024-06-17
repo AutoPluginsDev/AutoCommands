@@ -8,12 +8,10 @@ public class CreateCommand extends Command{
 
     Player player;
     String acmdName;
-    long acmdCycle;
-    long acmdDelay;
-    int acmdRepetitions;
-
+    Long acmdCycle;
+    Long acmdDelay;
+    Integer acmdRepetitions;
     String acmdcommand;
-
     String ID;
 
     public CreateCommand(Main plg) {
@@ -51,29 +49,36 @@ public class CreateCommand extends Command{
     @Override
     public void execute() {
 
-
         autocommand acmd = new autocommand(plugin);
-        acmd.setName(acmdName);
 
-
-        acmd.setCycle(acmdCycle);
-        if (acmd.getCycle() < 200) {
-            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), acmd, (Player) player));
+        if (acmdName != null) {
+            acmd.setName(acmdName);
         }
 
-        acmd.setDelay(acmdDelay);
-
-        acmd.setRepetition(acmdRepetitions);
-
-        acmd.addCommand(acmdcommand);
-
-        acmd.setID(ID);
-        int index = 0;
-
-        while (plugin.acmdIdExist(acmd.getID())) {
-            acmd.setID("acmd" + index);
-            index++;
+        if (acmdCycle != null) {
+            acmd.setCycle(acmdCycle);
+            if (acmd.getCycle() < 200) {
+                player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("AlertShortCycle"), acmd, (Player) player));
+            }
         }
+
+        if (acmdDelay != null) {
+            acmd.setDelay(acmdDelay);
+        }
+
+        if (acmdRepetitions != null) {
+            acmd.setRepetition(acmdRepetitions);
+        }
+
+        if (acmdcommand != null) {
+            acmd.addCommand(acmdcommand);
+        }
+
+        if (ID == null) {
+            ID = "acmd";
+        }
+
+        setID(acmd);
 
         player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), acmd, (Player) player));
         acmd.saveInConfig(plugin.getCommandsConfig(), plugin); //sauvegarde de la commande dans le fichier de commands
@@ -81,4 +86,15 @@ public class CreateCommand extends Command{
         plugin.getcommandList().add(acmd);
 
     }
+
+    private void setID(autocommand acmd) {
+        acmd.setID(ID);
+        int index = 0;
+        while (plugin.acmdIdExist(acmd.getID())) {
+            acmd.setID("acmd" + index);
+            index++;
+        }
+    }
+
+
 }

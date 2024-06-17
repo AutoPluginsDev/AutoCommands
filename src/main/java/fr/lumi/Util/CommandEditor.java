@@ -1,5 +1,6 @@
 package fr.lumi.Util;
 
+import fr.lumi.CommandPatternObject.CreateCommand;
 import fr.lumi.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -91,34 +92,27 @@ public class CommandEditor implements Listener {
 
         Player p = (Player) e.getWhoClicked();
         int slot = e.getSlot();
+
         //menu choose
         if (e.getClickedInventory().equals(GUI_ChooseACMD)) {
             e.setCancelled(true);
             if (slot < plugin.getcommandList().size()) {
-                //p.sendMessage("opening editor for the acmd "+plugin.getcommandList().get(slot).getName());
                 closeInventory(p);
                 openACMDEditor(p, plugin.getcommandList().get(slot), slot);
-            } else if (slot == 53) {//create a new acmd
+            } else if (slot == 53) {
 
-                autocommand acmd = new autocommand(plugin);
-                acmd.setName("myNewAcmd");
-                acmd.setID("acmd" + plugin.getcommandList().size());
+                // Creating a new acmd using the CreateCommand.
+                CreateCommand cmd = new CreateCommand(plugin);
+                cmd.setacmdName("myNewAcmd");
+                cmd.setPlayer(p);
+                cmd.setacmdID("acmd" + plugin.getcommandList().size());
 
-                int index = 0;
-
-                while (plugin.acmdIdExist(acmd.getID())) {
-                    acmd.setID("acmd" + index);
-                    index++;
-                }
-
-                acmd.saveInConfig(plugin.getCommandsConfig(), plugin);//sauvegarde de la commande dans le fichier de commands
-                acmd.setRunning(acmd.isRunning(), plugin.getCommandsConfig());
-                plugin.getcommandList().add(acmd);
+                // sending to execution
+                plugin.executeCommand(cmd);
                 closeInventory(p);
                 createEditGui();
                 reloadGUI_ChoosingACMD();
                 openchoosing(p);
-                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onAddingANewCommand"), acmd, p));
             }
         }
         //menu edit
@@ -130,8 +124,8 @@ public class CommandEditor implements Listener {
             switch (slot) {
                 case 53:
                     if (acmd == null) return;
-                    //desactivation of the command
 
+                    //desactivation of the command
                     acmd.setRunning(false, plugin.getCommandsConfig());
 
                     acmd.delete(plugin.getCommandsConfig());
