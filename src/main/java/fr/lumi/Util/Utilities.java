@@ -64,9 +64,11 @@ public class Utilities {
             s = s.replace("%acmdLockingUser", tenanntPlayerName);
             s = PapiReplace(null, s);
         } catch (Exception e) {
-            plugin.getLogger().info("Error while replacing placeholders. Have a look to you language file");
+            String error = "Error while replacing placeholders. Have a look to you language file";
+            plugin.getLogger().info(error);
             plugin.getLogger().info(e.getMessage());
-            throw e;
+            //broadcast to all admins
+            plugin.getServer().broadcast(error, "acmd.admin");
         }
         return s;
     }

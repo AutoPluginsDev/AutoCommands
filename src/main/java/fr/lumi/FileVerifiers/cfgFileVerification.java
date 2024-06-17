@@ -47,8 +47,8 @@ public abstract class cfgFileVerification {
             }
         }
         if (!m_versionCorrect) {
-            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar("&4Your file " + filename + " is not up to date, go on the github page (/acmdhelp) to get the latest version of the .yml files."));
-            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar("&4The plugin may not work,please go repair that file."));
+            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar("&4Your file " + filename + " is not up to date, please use '/acmdreload' to repair it, or go on the github page (/acmdhelp) to get the latest version of the .yml files."));
+            Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar("&4The plugin may not work, please repair that file (/acmdreload)."));
         }
         try {
             savemodif();
