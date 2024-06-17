@@ -357,7 +357,7 @@ public class CommandEditor implements Listener {
 
         for (int i = 0; i < 54; i++) {
             if (GUI_ChooseACMD.getItem(i) == null) {
-                new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(gui, i);
+                new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_ChooseACMD, i);
             }
         }
 
