@@ -5,16 +5,16 @@ import fr.lumi.Main;
 
 public class ConditionVerifier {
 
-    Main main ;
+    Main main;
 
 
-    public ConditionVerifier(Main _main){
+    public ConditionVerifier(Main _main) {
         main = _main;
     }
 
-    public static boolean verify(autocommand acmd){
+    public static boolean verify(autocommand acmd) {
         boolean verified = acmd.isActive();
-        for (Condition c : acmd.getConditions()){
+        for (Condition c : acmd.getConditions()) {
             verified = verified && c.verify();
         }
         return verified;

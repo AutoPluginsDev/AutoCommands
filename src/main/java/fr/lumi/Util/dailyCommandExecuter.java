@@ -7,17 +7,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class dailyCommandExecuter implements Runnable{
+public class dailyCommandExecuter implements Runnable {
 
     List<autocommand> m_commandList;
     Main plugin;
 
-    public dailyCommandExecuter(Main plg, List<autocommand> acmds){
+    public dailyCommandExecuter(Main plg, List<autocommand> acmds) {
         m_commandList = acmds;
         plugin = plg;
     }
 
-    public int getrefreshRate(){
+    public int getrefreshRate() {
         return 1200;
     }
 
@@ -31,19 +31,19 @@ public class dailyCommandExecuter implements Runnable{
         String hour;
         String minute;
 
-        if(Hours < 10 ) hour = "0"+Hours;
-        else hour = ""+Hours;
+        if (Hours < 10) hour = "0" + Hours;
+        else hour = "" + Hours;
 
-        if(minutes < 10 ) minute = "0"+minutes;
-        else minute = ""+minutes;
+        if (minutes < 10) minute = "0" + minutes;
+        else minute = "" + minutes;
 
 
-        String HourString = hour+"H"+minute;
+        String HourString = hour + "H" + minute;
 
-        for(autocommand acmd : m_commandList){
+        for (autocommand acmd : m_commandList) {
 
-            if (Objects.equals(acmd.getTime(), HourString) && acmd.isActive()){
-                acmd.setRunning(true,plugin.getCommandsConfig(),plugin);
+            if (Objects.equals(acmd.getTime(), HourString) && acmd.isActive()) {
+                acmd.setRunning(true, plugin.getCommandsConfig());
 
             }
         }
