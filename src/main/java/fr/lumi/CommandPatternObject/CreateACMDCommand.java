@@ -4,17 +4,11 @@ import fr.lumi.Main;
 import fr.lumi.Util.autocommand;
 import org.bukkit.entity.Player;
 
-public class CreateCommand extends Command{
+public class CreateACMDCommand extends ACMDRelatedCommand {
 
     Player player;
-    String acmdName;
-    Long acmdCycle;
-    Long acmdDelay;
-    Integer acmdRepetitions;
-    String acmdcommand;
-    String ID;
 
-    public CreateCommand(Main plg) {
+    public CreateACMDCommand(Main plg) {
         super(plg);
     }
 
@@ -22,29 +16,6 @@ public class CreateCommand extends Command{
         player = p;
     }
 
-    public void setacmdName(String n) {
-        acmdName = n;
-    }
-
-    public void setacmdCycle(long c) {
-        acmdCycle = c;
-    }
-
-    public void setacmdDelay(long d) {
-        acmdDelay = d;
-    }
-
-    public void setacmdRepetitions(int r) {
-        acmdRepetitions = r;
-    }
-
-    public void setacmdcommand(String c) {
-        acmdcommand = c;
-    }
-
-    public void setacmdID(String id) {
-        ID = id;
-    }
 
     @Override
     public void execute() {

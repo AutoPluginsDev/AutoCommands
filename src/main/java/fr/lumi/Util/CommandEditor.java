@@ -1,6 +1,7 @@
 package fr.lumi.Util;
 
-import fr.lumi.CommandPatternObject.CreateCommand;
+import fr.lumi.CommandPatternObject.CreateACMDCommand;
+import fr.lumi.CommandPatternObject.DeleteACMDCommand;
 import fr.lumi.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -102,7 +103,7 @@ public class CommandEditor implements Listener {
             } else if (slot == 53) {
 
                 // Creating a new acmd using the CreateCommand.
-                CreateCommand cmd = new CreateCommand(plugin);
+                CreateACMDCommand cmd = new CreateACMDCommand(plugin);
                 cmd.setacmdName("myNewAcmd");
                 cmd.setPlayer(p);
                 cmd.setacmdID("acmd" + plugin.getcommandList().size());
@@ -124,15 +125,15 @@ public class CommandEditor implements Listener {
             switch (slot) {
                 case 53:
                     if (acmd == null) return;
+                    DeleteACMDCommand cmd = new DeleteACMDCommand(plugin);
+                    cmd.setAcmdToDelete(acmd);
+                    cmd.setPlayer(p);
 
-                    //desactivation of the command
-                    acmd.setRunning(false, plugin.getCommandsConfig());
-
-                    acmd.delete(plugin.getCommandsConfig());
+                    // sending to execution
+                    plugin.executeCommand(cmd);
 
                     closeInventory(p);
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, p));
                     createEditGui();
                     reloadGUI_ChoosingACMD();
                     openchoosing(p);

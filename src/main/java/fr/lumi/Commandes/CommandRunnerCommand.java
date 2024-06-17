@@ -1,6 +1,7 @@
 package fr.lumi.Commandes;
 
-import fr.lumi.CommandPatternObject.CreateCommand;
+import fr.lumi.CommandPatternObject.CreateACMDCommand;
+import fr.lumi.CommandPatternObject.DeleteACMDCommand;
 import fr.lumi.Main;
 import fr.lumi.Util.ListAfficher;
 import fr.lumi.Util.StringNumberVerif;
@@ -247,17 +248,18 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             autocommand acmd = getAcmdWithID(id, sender);
 
             if (acmd == null) return true;
-            //desactivation of the command
+            DeleteACMDCommand cmd = new DeleteACMDCommand(plugin);
+            cmd.setAcmdToDelete(acmd);
+            cmd.setPlayer((Player)player);
 
-            acmd.setRunning(false, plugin.getCommandsConfig());
-            acmd.delete(plugin.getCommandsConfig());
-            player.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("onDeleteAcmd"), acmd, (Player) player));
+            // sending to execution
+            plugin.executeCommand(cmd);
         }
 
 
         if (Objects.equals(args[0], "new") && args.length >= 4) {
 
-            CreateCommand cmd = new CreateCommand(plugin);
+            CreateACMDCommand cmd = new CreateACMDCommand(plugin);
 
             cmd.setPlayer((Player) player);
 

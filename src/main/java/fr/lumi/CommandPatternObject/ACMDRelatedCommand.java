@@ -1,14 +1,14 @@
 package fr.lumi.CommandPatternObject;
+
 import fr.lumi.Main;
 import fr.lumi.Util.autocommandDataPattern;
 
-public abstract class Command extends autocommandDataPattern {
+public abstract class ACMDRelatedCommand extends autocommandDataPattern {
     Main plugin;
-    public Command(Main plg) {
+    public ACMDRelatedCommand(Main plg) {
         plugin = plg;
     }
 
     public abstract void execute();
-
 
 }
