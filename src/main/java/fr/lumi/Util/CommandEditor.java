@@ -21,7 +21,6 @@ import java.util.Objects;
 public class CommandEditor implements Listener {
     private int LastOpened;
     private Inventory GUI_ChooseACMD;
-    private Player user;
     private String waitForChat;
     private ArrayList<Inventory> editorsListe;
     private final Main plugin;
@@ -77,7 +76,7 @@ public class CommandEditor implements Listener {
 
     public void openACMDEditor(Player p, autocommand acmd, int nb) {
         //createGUI_EditACMD(acmd);
-        user = p;
+
         p.openInventory(editorsListe.get(nb));
         LastOpened = nb;
     }
@@ -210,7 +209,7 @@ public class CommandEditor implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
 
-        if (e.getPlayer() == user && !Objects.equals(waitForChat, "")) {
+        if (Objects.equals(e.getPlayer().getUniqueId().toString(), plugin.getModificationLock().getLastTennant()) && !Objects.equals(waitForChat, "")) {
             e.setCancelled(true);
             String message = e.getMessage();
 
