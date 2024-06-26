@@ -41,7 +41,7 @@ public class autocommand implements Runnable {
 
     public void setRunning(boolean state, FileConfiguration config) {
         m_running = state;
-        config.set(ID + ".running", m_running);
+        config.set(ID + ".TaskParameters.running", m_running);
 
         saveInConfig(config);
         addToScheduler();
