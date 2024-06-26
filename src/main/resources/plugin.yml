@@ -1,15 +1,12 @@
 name: AutoCommands
-version: 1.5.8
+version: 1.5.9
 main: fr.lumi.Main
 api-version: 1.15
 authors:
   - Lumi_
   - Adi_
-prefix: AutoCommands 1.5.8
-loadbefore:
-  - PlaceholderAPI
-  - essentials
-softdepend: [PlaceholderAPI]
+prefix: AutoCommands 1.5.9
+depends: [PlaceholderAPI]
 permissions:
   acmd.*:
     description: give access to all the plugin
@@ -50,5 +47,13 @@ commands:
       Bad usage of this command, please verify your command ID or your syntax.
     description:
       main command of the plugin
+    permission: acmd.admin
+    permission-message: Sorry, you dont are not allowed to do this
+
+  acmdTime:
+    usage:
+      Bad usage of this command, please verify your command ID or your syntax.
+    description:
+      Gives you the real server time
     permission: acmd.admin
     permission-message: Sorry, you dont are not allowed to do this
