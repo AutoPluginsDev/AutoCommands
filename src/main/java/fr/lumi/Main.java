@@ -278,7 +278,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
         Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this));
         Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
-
+        Objects.requireNonNull(this.getCommand("acmdTime")).setExecutor(new CommandRunnerReload(this));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + "&e-Loading " + getCommandsConfig().getKeys(false).size() + " AutoComands-"));
 
         //loading the commands in the plugin

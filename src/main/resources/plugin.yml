@@ -49,3 +49,11 @@ commands:
       main command of the plugin
     permission: acmd.admin
     permission-message: Sorry, you dont are not allowed to do this
+
+  acmdTime:
+    usage:
+      Bad usage of this command, please verify your command ID or your syntax.
+    description:
+      Gives you the real server time
+    permission: acmd.admin
+    permission-message: Sorry, you dont are not allowed to do this
