@@ -4,11 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import fr.lumi.CommandPatternObject.Command;
-import fr.lumi.Commandes.CommandRunnerCommand;
-import fr.lumi.Commandes.CommandRunnerEditor;
-import fr.lumi.Commandes.CommandRunnerHelp;
+import fr.lumi.Commandes.*;
 import fr.lumi.Metrics.Metrics;
-import fr.lumi.Commandes.CommandRunnerReload;
 import fr.lumi.FileVerifiers.ConfigFileVerification;
 import fr.lumi.FileVerifiers.LangFileVerification;
 import fr.lumi.Util.*;
@@ -278,7 +275,7 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("acmdhelp")).setExecutor(new CommandRunnerHelp(this));
         Objects.requireNonNull(this.getCommand("acmd")).setExecutor(new CommandRunnerCommand(this));
         Objects.requireNonNull(this.getCommand("acmdreload")).setExecutor(new CommandRunnerReload(this));
-
+        Objects.requireNonNull(this.getCommand("acmdTime")).setExecutor(new CommandRunnerTime(this));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + "&e-Loading " + getCommandsConfig().getKeys(false).size() + " AutoComands-"));
 
         //loading the commands in the plugin
