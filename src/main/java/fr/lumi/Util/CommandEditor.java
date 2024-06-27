@@ -218,7 +218,12 @@ public class CommandEditor implements Listener {
             waitForChat = "";
             reloadAllEditGUI();
             reloadGUI_ChoosingACMD();
-            openACMDEditor(e.getPlayer(), LastOpened);
+
+
+            plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
+                openACMDEditor(e.getPlayer(), LastOpened);
+                return null;
+            });
         }
     }
 
@@ -441,7 +446,7 @@ public class CommandEditor implements Listener {
     }
 
     public Inventory createGUI_EditACMD(autocommand acmd) {
-        Inventory gui = Bukkit.createInventory(null, 54, "§8§oEditing " + acmd.getName());
+        Inventory gui = Bukkit.createInventory(null, 54, "§8§oEditing " + acmd.getID());
         return fillGUI_EditACMD(acmd, gui);
     }
 
