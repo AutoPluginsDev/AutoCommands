@@ -58,14 +58,7 @@ public class CreateACMDCommand extends ACMDRelatedCommand {
 
     }
 
-    private void setID(autocommand acmd) {
-        acmd.setID(ID);
-        int index = 0;
-        while (plugin.acmdIdExist(acmd.getID())) {
-            acmd.setID("acmd" + index);
-            index++;
-        }
-    }
+
 
 
 }

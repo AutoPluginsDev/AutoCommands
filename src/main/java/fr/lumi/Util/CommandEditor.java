@@ -74,7 +74,7 @@ public class CommandEditor implements Listener {
         clearLock(p);
     }
 
-    public void openACMDEditor(Player p, autocommand acmd, int nb) {
+    public void openACMDEditor(Player p,int nb) {
         //createGUI_EditACMD(acmd);
 
         p.openInventory(editorsListe.get(nb));
@@ -98,7 +98,7 @@ public class CommandEditor implements Listener {
             e.setCancelled(true);
             if (slot < plugin.getcommandList().size()) {
                 closeInventory(p);
-                openACMDEditor(p, plugin.getcommandList().get(slot), slot);
+                openACMDEditor(p, slot);
             } else if (slot == 53) {
 
                 // Creating a new acmd using the CreateCommand.
@@ -218,6 +218,7 @@ public class CommandEditor implements Listener {
             waitForChat = "";
             reloadAllEditGUI();
             reloadGUI_ChoosingACMD();
+            openACMDEditor(e.getPlayer(), LastOpened);
         }
     }
 
