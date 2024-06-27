@@ -74,6 +74,22 @@ public class CommandEditor implements Listener {
         clearLock(p);
     }
 
+    public void closeLastTennantInventory() {
+        Player p = Bukkit.getPlayer(plugin.getModificationLock().getLastTennant());
+
+        if (p != null) {
+
+            if (p.getOpenInventory().equals(GUI_ChooseACMD)) {
+                closeInventory(p);
+            }
+            if (editorsListe.contains(p.getOpenInventory())) {
+                closeInventory(p);
+            }
+
+
+        }
+    }
+
     public void openACMDEditor(Player p,int nb) {
         //createGUI_EditACMD(acmd);
 
