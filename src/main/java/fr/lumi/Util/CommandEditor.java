@@ -158,20 +158,20 @@ public class CommandEditor implements Listener {
                 case 3:
                     waitForChat = "period";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the period in the chat in tick (format : integer , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the period in the chat in tick (format : integer, type exit to exit) :"));
                     closeInventory(p);
                     break;
 
                 case 4:
                     waitForChat = "delay";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the delay in the chat in tick (format : integer , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the delay in the chat in tick (format : integer, type exit to exit) :"));
                     closeInventory(p);
                     break;
                 case 5:
                     waitForChat = "hour";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : 18H02 , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (example : 18H02, type exit to exit) :"));
                     closeInventory(p);
                     break;
                 case 6:
@@ -189,7 +189,7 @@ public class CommandEditor implements Listener {
                 case 8:
                     waitForChat = "message";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : & usables , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (tips : use & + color , type \"exit\" to exit) :"));
                     closeInventory(p);
                     break;
                 case 9:
