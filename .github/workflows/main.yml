@@ -27,7 +27,7 @@ jobs:
           path: target/*.jar
 
   release:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && startsWith(github.event.pull_request.title, 'chore-') == false
     needs: build
     runs-on: ubuntu-latest
     environment: env
