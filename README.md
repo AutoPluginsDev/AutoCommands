@@ -4,7 +4,8 @@
 
 <img alt="Discord" src="https://img.shields.io/discord/944007562938957824?style=for-the-badge&logo=discord&link=https%3A%2F%2Fdiscord.gg%2FsV2KxsGJHN">
 <img alt="GitHub commits since latest release" src="https://img.shields.io/github/commits-since/lumi-git/autocommands/latest?style=for-the-badge">
-
+<img alt="bStats Servers" src="https://img.shields.io/bstats/servers/21737?style=for-the-badge&label=number%20of%20servers%20currently%20using%20ACMD">
+<img alt="bStats Servers" src="https://img.shields.io/bstats/players/21737?style=for-the-badge&label=number%20of%20players%20currently%20using%20ACMD">
 
 
 A minecraft (java) spigot plugin that let's you **run repetitive tasks** with **delay** and a lot more ! Configurable by UI and chat ! learn more with the **links 🔗** bellow ! 
