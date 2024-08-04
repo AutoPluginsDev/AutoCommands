@@ -166,7 +166,7 @@ public final class Main extends JavaPlugin {
         StringBuilder response = new StringBuilder();
         try {
             // Make HTTP GET request
-            URL url = new URL("https://api.github.com/repos/lumi-git/AutoCommands/tags");
+            URL url = new URL("https://api.github.com/repos/AutoPluginsDev/AutoCommands/tags");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
