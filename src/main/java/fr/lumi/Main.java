@@ -66,6 +66,9 @@ public final class Main extends JavaPlugin {
     dailyCommandExecuter executer;
     CommandEditor acmdGUIEditor;
 
+    // Keep in "cache" last tag checked
+    static String lastTagMessage = "";
+
     public CommandEditor getAcmdGUIEditor() {
         return acmdGUIEditor;
     }
@@ -191,6 +194,11 @@ public final class Main extends JavaPlugin {
     }
 
     public String VerifyPluginVersion() {
+        // check cached msg
+        if (!lastTagMessage.isEmpty()) {
+            return lastTagMessage;
+        }
+
         String spigotResponse = "";
         String currentVersion = this.getDescription().getVersion();
 
@@ -207,15 +215,16 @@ public final class Main extends JavaPlugin {
             }
         }
 
-        if (spigotResponse.equals("")) {
-            return "&cFailed to check for a new version on spigot.";
+        if (spigotResponse.isEmpty()) {
+            lastTagMessage = "&cFailed to check for a new version on spigot.";
         }
-
-        if (spigotResponse.equals(currentVersion)) {
-            return "&aYou are running the latest version of AutoCommands " + currentVersion + " !";
+        else if (spigotResponse.equals(currentVersion)) {
+            lastTagMessage = "&aYou are running the latest version of AutoCommands " + currentVersion + " !";
         }
-
-        return "&eAutoCommands &a&l" + spigotResponse + " &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
+        else {
+            lastTagMessage = "&eAutoCommands &a&l" + spigotResponse + " &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
+        }
+        return lastTagMessage;
     }
 
     @Override
