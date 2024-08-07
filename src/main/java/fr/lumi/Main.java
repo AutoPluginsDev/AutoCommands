@@ -68,6 +68,12 @@ public final class Main extends JavaPlugin {
 
     // Keep in "cache" last tag checked
     static String lastTagMessage = "";
+    static boolean newVersionAvailable = false;
+    public static boolean isNewVersionAvailable() {
+        return newVersionAvailable;
+    }
+
+
 
     public CommandEditor getAcmdGUIEditor() {
         return acmdGUIEditor;
@@ -223,6 +229,7 @@ public final class Main extends JavaPlugin {
         }
         else {
             lastTagMessage = "&eAutoCommands &a&l" + spigotResponse + " &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
+            newVersionAvailable = true;
         }
         return lastTagMessage;
     }
