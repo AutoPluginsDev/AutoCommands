@@ -32,7 +32,7 @@ import java.util.Objects;
 
 public final class Main extends JavaPlugin {
 
-    private String[] Logo = {
+    private final String[] Logo = {
             "&e&9     &6__     __ &e ",
             "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e" + this.getDescription().getVersion(),
             "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin {
     }
 
     /*
-     * modificationLock: This prevents the administrator to modify the plugin in the mean time, it could cause some issues/conflicts.
+     * modificationLock: This prevents the administrator to modify the plugin in the meantime, it could cause some issues/conflicts.
      */
     ModificationLock modificationLock = new ModificationLock(this);
 
@@ -234,10 +234,13 @@ public final class Main extends JavaPlugin {
         return lastTagMessage;
     }
 
+    /**
+     * This method is called when the plugin is enabled
+     */
     @Override
     public void onEnable() {
         printLogo();
-        // verify if the plugin is up to date and send a message to the admins
+        // verify if the plugin is up-to-date and send a message to the admins
         String broadcastMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Prefix") + VerifyPluginVersion());
         Bukkit.broadcast(broadcastMessage, "bukkit.broadcast.admin");
 
@@ -258,6 +261,10 @@ public final class Main extends JavaPlugin {
         //getRessourceFile(getLangFile(), "lang.yml", this);
         boolean verified = Load();
 
+        // Registering the event
+        Bukkit.getPluginManager().registerEvents(new JoinServer(), this);
+
+        // End of the loading
         long exeTime = System.currentTimeMillis() - start;
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &aOn (took " + exeTime + " ms)"));
     }
@@ -318,7 +325,8 @@ public final class Main extends JavaPlugin {
         for (autocommand acmd : getcommandList()) {
             acmd.setRunning(false, getCommandsConfig());
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &cUnloaded"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes(
+                '&', config.getString("ConsolePrefix") + " &cUnloaded"));
     }
 
 
