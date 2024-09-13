@@ -198,6 +198,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             if (args.length == 2) {
                 plugin.getModificationLock().lock(((Player)player).getUniqueId().toString());
                 plugin.getAcmdGUIEditor().openACMDEditor((Player) sender, plugin.getcommandList().indexOf(acmd));
+
                 return true;
             }
 
