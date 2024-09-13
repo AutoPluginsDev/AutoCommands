@@ -18,9 +18,6 @@ public class CommandRunnerReload implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        // verrify if plugin.getModificationLock().getLastTennant() is c
-
         plugin.getAcmdGUIEditor().closeLastTennantInventory();
         plugin.onEnable();
         Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar(plugin.getLangConfig().getString("OnReload")));

@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 
 public class CommandEditor implements Listener {
@@ -75,7 +76,9 @@ public class CommandEditor implements Listener {
     }
 
     public void closeLastTennantInventory() {
-        Player p = Bukkit.getPlayer(plugin.getModificationLock().getLastTennant());
+        // get player by uuid and not by name
+        Player p = Bukkit.getPlayer(UUID.fromString(plugin.getModificationLock().getLastTennant()));
+
 
         if (p != null) {
 
