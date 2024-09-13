@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 
 public class CommandEditor implements Listener {
@@ -74,7 +75,25 @@ public class CommandEditor implements Listener {
         clearLock(p);
     }
 
-    public void openACMDEditor(Player p, autocommand acmd, int nb) {
+    public void closeLastTennantInventory() {
+        // get player by uuid and not by name
+        Player p = Bukkit.getPlayer(UUID.fromString(plugin.getModificationLock().getLastTennant()));
+
+
+        if (p != null) {
+
+            if (p.getOpenInventory().equals(GUI_ChooseACMD)) {
+                closeInventory(p);
+            }
+            if (editorsListe.contains(p.getOpenInventory())) {
+                closeInventory(p);
+            }
+
+
+        }
+    }
+
+    public void openACMDEditor(Player p,int nb) {
         //createGUI_EditACMD(acmd);
 
         p.openInventory(editorsListe.get(nb));
@@ -98,7 +117,7 @@ public class CommandEditor implements Listener {
             e.setCancelled(true);
             if (slot < plugin.getcommandList().size()) {
                 closeInventory(p);
-                openACMDEditor(p, plugin.getcommandList().get(slot), slot);
+                openACMDEditor(p, slot);
             } else if (slot == 53) {
 
                 // Creating a new acmd using the CreateCommand.
@@ -158,20 +177,20 @@ public class CommandEditor implements Listener {
                 case 3:
                     waitForChat = "period";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the period in the chat in tick (format : integer , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the period in the chat in tick (format : integer, type exit to exit) :"));
                     closeInventory(p);
                     break;
 
                 case 4:
                     waitForChat = "delay";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the delay in the chat in tick (format : integer , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the delay in the chat in tick (format : integer, type exit to exit) :"));
                     closeInventory(p);
                     break;
                 case 5:
                     waitForChat = "hour";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : 18H02 , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (example : 18H02, type exit to exit) :"));
                     closeInventory(p);
                     break;
                 case 6:
@@ -189,7 +208,7 @@ public class CommandEditor implements Listener {
                 case 8:
                     waitForChat = "message";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (format : & usables , type exit to exit) :"));
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the hour in the chat (tips : use & + color , type \"exit\" to exit) :"));
                     closeInventory(p);
                     break;
                 case 9:
@@ -218,6 +237,12 @@ public class CommandEditor implements Listener {
             waitForChat = "";
             reloadAllEditGUI();
             reloadGUI_ChoosingACMD();
+
+
+            plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
+                openACMDEditor(e.getPlayer(), LastOpened);
+                return null;
+            });
         }
     }
 
@@ -440,7 +465,7 @@ public class CommandEditor implements Listener {
     }
 
     public Inventory createGUI_EditACMD(autocommand acmd) {
-        Inventory gui = Bukkit.createInventory(null, 54, "§8§oEditing " + acmd.getName());
+        Inventory gui = Bukkit.createInventory(null, 54, "§8§oEditing " + acmd.getID());
         return fillGUI_EditACMD(acmd, gui);
     }
 
