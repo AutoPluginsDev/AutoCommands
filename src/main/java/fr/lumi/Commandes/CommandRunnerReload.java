@@ -18,6 +18,7 @@ public class CommandRunnerReload implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        plugin.getAcmdGUIEditor().closeLastTennantInventory();
         plugin.onEnable();
         Bukkit.getConsoleSender().sendMessage(plugin.getUt().replacePlaceHoldersForConsolePlgVar(plugin.getLangConfig().getString("OnReload")));
         sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar(plugin.getLangConfig().getString("OnReload")));
