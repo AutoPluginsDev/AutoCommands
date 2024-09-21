@@ -33,6 +33,8 @@ public class autocommand implements Runnable {
     private String m_time = "";
     private String m_error = "X";
 
+    private String m_trigger = "";
+
     Main plugin;
 
     public autocommand(Main plg) {
@@ -40,6 +42,7 @@ public class autocommand implements Runnable {
     }
 
     public void setRunning(boolean state, FileConfiguration config) {
+        if (m_running == state) return;
         m_running = state;
         config.set(ID + ".TaskParameters.running", m_running);
 
@@ -145,6 +148,14 @@ public class autocommand implements Runnable {
 
     public List<Condition> getConditions() {
         return m_conditions;
+    }
+
+    public String getTrigger() {
+        return m_trigger;
+    }
+
+    public void setTrigger(String trigger) {
+        m_trigger = trigger;
     }
 
 
@@ -264,10 +275,7 @@ public class autocommand implements Runnable {
 
 
     public void saveInConfig(FileConfiguration config, Main plg) {
-
-
         config.set(ID + "", "");
-
         config.set(ID + ".active", m_Active);
         config.set(ID + ".TaskParameters", "");
         config.set(ID + ".TaskParameters.name", m_name);
@@ -282,6 +290,8 @@ public class autocommand implements Runnable {
 
         config.set(ID + ".DailySchedulerParameters", "");
         config.set(ID + ".DailySchedulerParameters.time", m_time);
+        config.set(ID + ".TriggerParameters", "");
+        config.set(ID + ".TriggerParameters.trigger", m_trigger);
 
         saveInConfig(config);
 
@@ -289,8 +299,6 @@ public class autocommand implements Runnable {
     }
 
     public boolean getInConfig(FileConfiguration config, Main plg, String id) {
-
-
         ID = id;
         m_Active = config.getBoolean(ID + ".active");
         m_running = config.getBoolean(ID + ".TaskParameters.running");
@@ -307,6 +315,7 @@ public class autocommand implements Runnable {
         }
         m_time = config.getString(ID + ".DailySchedulerParameters.time");
         m_commands = config.getStringList(ID + ".TaskParameters.commands");
+        m_trigger = config.getString(ID + ".TriggerParameters.trigger");
         return true;
     }
 
