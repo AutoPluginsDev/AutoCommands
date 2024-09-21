@@ -3,25 +3,16 @@ import fr.lumi.Main;
 import fr.lumi.Util.autocommand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.ServerLoadEvent;
-import org.bukkit.plugin.RegisteredListener;
 
 public class ACMDEventWatcher implements Listener {
     Main plugin;
 
     public ACMDEventWatcher(Main plg) {
         this.plugin = plg;
-        for (HandlerList handler : HandlerList.getHandlerLists()) {
-            for (RegisteredListener registeredListener : handler.getRegisteredListeners()) {
-                if (registeredListener.getListener() instanceof ACMDEventWatcher) {
-                    return;
-                }
-            }
-        }
     }
 
     public void runAcmd(String event) {
