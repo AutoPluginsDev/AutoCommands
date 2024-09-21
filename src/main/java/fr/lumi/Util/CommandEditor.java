@@ -22,16 +22,23 @@ import java.util.UUID;
 public class CommandEditor implements Listener {
     private int LastOpened;
     private Inventory GUI_ChooseACMD;
+    private Inventory GUI_Triggers;
+    private ArrayList<Inventory> GUI_Commands;
     private String waitForChat;
     private ArrayList<Inventory> editorsListe;
     private final Main plugin;
+    private int commandToModify;
 
     public CommandEditor(Main plg) {
         plugin = plg;
+        commandToModify = -1;
 
 
         createGUI_ChoosingACMD();
         reloadGUI_ChoosingACMD();
+
+        createTriggerMenu();
+        reloadTriggerMenu();
 
         createEditGui();
         reloadAllEditGUI();
@@ -100,7 +107,6 @@ public class CommandEditor implements Listener {
         LastOpened = nb;
     }
 
-
     /*
      * Event handler for the inventory click event
      * Responsible of the click event in the inventory and the actions to be taken
@@ -133,9 +139,58 @@ public class CommandEditor implements Listener {
                 reloadGUI_ChoosingACMD();
                 openchoosing(p);
             }
-        }
-        //menu edit
-        if (editorsListe.contains(e.getClickedInventory())) {
+        }else if ( e.getClickedInventory().equals(GUI_Triggers)){
+            e.setCancelled(true);
+            switch (slot){
+                case 3:
+                    plugin.getcommandList().get(LastOpened).setTrigger("onPlayerJoin");
+                    openLast(((Player) e.getWhoClicked()).getPlayer());
+                    break;
+                case 4:
+                    plugin.getcommandList().get(LastOpened).setTrigger("onPlayerQuit");
+                    openLast(((Player) e.getWhoClicked()).getPlayer());
+                    break;
+                case 5:
+                    plugin.getcommandList().get(LastOpened).setTrigger("onServerEnable");
+                    openLast(((Player) e.getWhoClicked()).getPlayer());
+                    break;
+            }
+            plugin.getcommandList().get(LastOpened).saveInConfig(plugin.getCommandsConfig(),plugin);
+            closeInventory(p);
+            reloadAllEditGUI();
+            openACMDEditor(p,LastOpened);
+        } /*else if ( e.getClickedInventory().equals(GUI_Commands)){
+            e.setCancelled(true);
+
+            if( slot < 53){
+                if (e.isRightClick()){
+                    autocommand acmd = plugin.getcommandList().get(LastOpened);
+                    acmd.removeCommand(slot);
+                    acmd.saveInConfig(plugin.getCommandsConfig(),plugin);
+                    closeInventory(p);
+                    openACMDEditor(p,LastOpened);
+                }else if (e.isLeftClick()){
+                    waitForChat = "command";
+                    commandToModify = slot;
+
+                    closeInventory(p);
+                }
+
+            }
+
+            switch (slot){
+                case 53:
+                    waitForChat = "command";
+                    commandToModify = -1;
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the command in the chat (type exit to exit) :"));
+                    closeInventory(p);
+                    break;
+            }
+            plugin.getcommandList().get(LastOpened).saveInConfig(plugin.getCommandsConfig(),plugin);
+            closeInventory(p);
+            openACMDEditor(p,LastOpened);
+        } */else if (editorsListe.contains(e.getClickedInventory())) {
+            //menu edit
             e.setCancelled(true);
 
             autocommand acmd = plugin.getcommandList().get(editorsListe.indexOf(e.getClickedInventory()));
@@ -218,10 +273,11 @@ public class CommandEditor implements Listener {
                     closeInventory(p);
                     break;
                 case 10:
-                    waitForChat = "trigger";
 
-                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the trigger in the chat (possible values:onPlayerJoin, onPlayerQuit, onServerEnable)(type exit to exit) :"));
+                    //p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the trigger in the chat (possible values: onPlayerJoin, onPlayerQuit, onServerEnable)(type exit to exit) :"));
+
                     closeInventory(p);
+                    p.openInventory(GUI_Triggers);
                     break;
 
             }
@@ -246,12 +302,16 @@ public class CommandEditor implements Listener {
             reloadAllEditGUI();
             reloadGUI_ChoosingACMD();
 
-
-            plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
-                openACMDEditor(e.getPlayer(), LastOpened);
-                return null;
-            });
+            openLast(e.getPlayer());
         }
+    }
+
+
+    private void openLast(Player p ){
+        plugin.getServer().getScheduler().callSyncMethod(plugin, () -> {
+            openACMDEditor(p, LastOpened);
+            return null;
+        });
     }
 
     @EventHandler
@@ -343,10 +403,6 @@ public class CommandEditor implements Listener {
                 acmd.setName(val);
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aName modified with succes"));
                 clearLock(p);
-            case "trigger":
-                acmd.setTrigger(val);
-                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aTrigger modified with succes"));
-                clearLock(p);
 
 
         }
@@ -361,6 +417,61 @@ public class CommandEditor implements Listener {
         GUI_ChooseACMD = Bukkit.createInventory(null, 54, "§2§l§oACMD editor");
         fillMainMenu();
     }
+
+    public void createTriggerMenu() {
+        GUI_Triggers = Bukkit.createInventory(null, 9, "§2§l§oSelect a new trigger");
+        fillTriggerMenu();
+    }
+
+    public void reloadTriggerMenu(){
+        GUI_Triggers.clear();
+        fillTriggerMenu();
+    }
+
+    /*public void createCommandMenu(autocommand acmd) {
+        GUI_Commands = Bukkit.createInventory(null, 54, "§2§l§oSelect a new command");
+        fillCommandMenu(acmd);
+    }*/
+
+    /*public void reloadCommandMenu(autocommand acmd){
+        GUI_Commands.clear();
+        fillCommandMenu(acmd);
+    }*/
+
+    /*public void fillCommandMenu(autocommand acmd){
+        for (int i = 0; i < 54; i++) {
+            new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_Commands, i);
+        }
+
+        for (int i = 0; i < acmd.getCommands().size(); i++) {
+            ArrayList<String> lore = new ArrayList<String>();
+            lore.add("§c§lleft Click to delete the command");
+            lore.add("§c§lright Click to modify the command");
+            new UIItem.ItemBuilder(Material.COMMAND_BLOCK, "§6§l" + acmd.getCommands().get(i)).setItem(GUI_Commands, i);
+        }
+
+        new UIItem.ItemBuilder(Material.COMMAND_BLOCK, "§6§lAdd a minecraft command")
+                .lore("§dAdd a new command to the list")
+                .setItem(GUI_Commands, 53);
+    }*/
+
+
+    public void fillTriggerMenu(){
+        for (int i = 0; i < 8; i++) {
+            new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_Triggers, i);
+        }
+        new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lOnPlayerJoin")
+                .lore("§dTriggers when a player joins the server")
+                .setItem(GUI_Triggers, 3);
+        new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lOnPlayerQuit")
+                .lore("§dTriggers when a player leaves the server")
+                .setItem(GUI_Triggers, 4);
+        new UIItem.ItemBuilder(Material.GREEN_CONCRETE, "§6§lOnServerEnable")
+                .lore("§dTriggers when the server is enabled")
+                .setItem(GUI_Triggers, 5);
+    }
+
+
     public void fillMainMenu(){
         for (int i = 0; i < 54; i++) {
             new UIItem.ItemBuilder(Material.GRAY_STAINED_GLASS_PANE, "§8").setItem(GUI_ChooseACMD, i);
@@ -396,13 +507,13 @@ public class CommandEditor implements Listener {
         lore = new ArrayList<String>();
         lore.add(acmd.isActive() ? "§aEnabled" : "§cDisabled");
 
-        new UIItem.ItemBuilder(Material.LEVER, "§eActive").lore(lore).setItem(gui, 1);
+        new UIItem.ItemBuilder(Material.LEVER, "§eActivate the autoCommand").lore(lore).setItem(gui, 1);
 
         // Running
         lore = new ArrayList<String>();
         lore.add(acmd.isRunning() ? "§aRunning" : "§cStopped");
 
-        new UIItem.ItemBuilder(Material.STONE_BUTTON, "§eRun").lore(lore).setItem(gui, 2);
+        new UIItem.ItemBuilder(Material.STONE_BUTTON, "§eRun the autoCommand").lore(lore).setItem(gui, 2);
 
         // Period
         lore = new ArrayList<String>();
@@ -417,15 +528,15 @@ public class CommandEditor implements Listener {
             lore.add("§a" + acmd.getCycleInSec());
         }
 
-        new UIItem.ItemBuilder(Material.CLOCK, "§ePeriod").lore(lore).setItem(gui, 3);
+        new UIItem.ItemBuilder(Material.CLOCK, "§eChange the Period").lore(lore).setItem(gui, 3);
 
         // Delay
-        new UIItem.ItemBuilder(Material.CLOCK, "§eDelay")
+        new UIItem.ItemBuilder(Material.CLOCK, "§eChange the Delay")
                 .lore("§a" + acmd.getDelay() + " tick").
                 setItem(gui, 4);
 
         // Daily execution
-        new UIItem.ItemBuilder(Material.SUNFLOWER, "§eDaily execution").lore("§a" + acmd.getTime()).setItem(gui, 5);
+        new UIItem.ItemBuilder(Material.SUNFLOWER, "§eChange the Daily execution hour").lore("§a" + acmd.getTime()).setItem(gui, 5);
 
 
         // Commands
@@ -444,20 +555,20 @@ public class CommandEditor implements Listener {
 
         lore.add("§a      to remove a command with its CommandID §7)");
 
-        new UIItem.ItemBuilder(Material.COMMAND_BLOCK, "§eCommands").lore(lore).setItem(gui, 6);
+        new UIItem.ItemBuilder(Material.COMMAND_BLOCK, "§eAdd a minecraft command").lore(lore).setItem(gui, 6);
 
 
         // RepeatTime
-        new UIItem.ItemBuilder(Material.COMPARATOR, "§eRepeat Task").lore("§a" + acmd.getRepetition()).setItem(gui, 7);
+        new UIItem.ItemBuilder(Material.COMPARATOR, "§eModify number of Repetition").lore("§a" + acmd.getRepetition()).setItem(gui, 7);
 
         // Message
-        new UIItem.ItemBuilder(Material.WRITABLE_BOOK, "§eMessage").lore("§a" + acmd.getmessage()).setItem(gui, 8);
+        new UIItem.ItemBuilder(Material.WRITABLE_BOOK, "§eModify the message").lore("§a" + acmd.getmessage()).setItem(gui, 8);
 
 
         // Name
-        new UIItem.ItemBuilder(Material.ITEM_FRAME, "§eName").lore("§a" + acmd.getName()).setItem(gui, 9);
+        new UIItem.ItemBuilder(Material.ITEM_FRAME, "§eModify Name").lore("§a" + acmd.getName()).setItem(gui, 9);
 
-        new UIItem.ItemBuilder(Material.BELL, "§eTrigger").lore("§a" + acmd.getTrigger()).setItem(gui, 10);
+        new UIItem.ItemBuilder(Material.BELL, "§eSelect a new trigger").lore("§a" + acmd.getTrigger()).setItem(gui, 10);
 
         // Delete button
         new UIItem.ItemBuilder(Material.RED_CONCRETE, "§4§lX §4DELETE THIS ACMD")
@@ -476,6 +587,7 @@ public class CommandEditor implements Listener {
             }
         }
 
+        //reloadCommandMenu(acmd);
 
         return gui;
     }

@@ -82,6 +82,7 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                     if (args.length == 3) l.add("addCommand");
                     if (args.length == 3) l.add("removeCommand");
                     if (args.length == 3) l.add("setDailyExecutionTime");
+                    if (args.length == 3) l.add("trigger");
 
                     if (args.length == 4) {
                         if (Objects.equals(args[2], "setMessage")) {
@@ -241,6 +242,17 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
                 acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
                 sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandEdited"), acmd, (Player) player));
             }
+
+            if (Objects.equals(args[2], "trigger")) {
+
+                if (args.length == 3) {
+                    acmd.setTrigger("");
+                } else
+                    acmd.setTime(args[3]);
+                acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
+                sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayer(plugin.getLangConfig().getString("CommandEdited"), acmd, (Player) player));
+            }
+
         }
 
 
