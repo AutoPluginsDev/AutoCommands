@@ -9,6 +9,7 @@ import fr.lumi.Metrics.Metrics;
 import fr.lumi.FileVerifiers.ConfigFileVerification;
 import fr.lumi.FileVerifiers.LangFileVerification;
 import fr.lumi.Util.*;
+import fr.lumi.events.ACMDEventWatcher;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -64,6 +65,9 @@ public final class Main extends JavaPlugin {
     // TODO: implement condition system
     ConditionVerifier amcdVerifier = new ConditionVerifier(this);
     dailyCommandExecuter executer;
+
+    ACMDEventWatcher eventWatcher;
+
     CommandEditor acmdGUIEditor;
 
     public CommandEditor getAcmdGUIEditor() {
@@ -278,6 +282,8 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("acmdTime")).setExecutor(new CommandRunnerTime(this));
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + "&e-Loading " + getCommandsConfig().getKeys(false).size() + " AutoComands-"));
 
+
+
         //loading the commands in the plugin
         if (!loadCommandsTimeTable())
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + "&6No AutoComands to execute"));
@@ -290,6 +296,11 @@ public final class Main extends JavaPlugin {
         acmdGUIEditor = new CommandEditor(this);
         getServer().getPluginManager().registerEvents(acmdGUIEditor, this);
         Objects.requireNonNull(this.getCommand("acmdEditor")).setExecutor(new CommandRunnerEditor(this, acmdGUIEditor));
+
+        // register the event Listener "ACMDEventWatcher"
+        eventWatcher = new ACMDEventWatcher(this);
+        Bukkit.getPluginManager().registerEvents(eventWatcher, this);
+
 
         if (getConfig().getBoolean("DisplayAcmdInConsole"))
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &e-------------------------------------------------"));
@@ -362,25 +373,4 @@ public final class Main extends JavaPlugin {
         return (long) seconds * 20;
     }
 
-    public static void getRessourceFile(File file, String resource, Main plugin) {
-        try {
-            if (!file.exists()) {
-
-                file.createNewFile();
-                InputStream inputStream = plugin.getResource(resource);
-                OutputStream outputStream = new FileOutputStream(file);
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
-                inputStream.close();
-                outputStream.flush();
-                outputStream.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        YamlConfiguration.loadConfiguration(file);
-    }
 }

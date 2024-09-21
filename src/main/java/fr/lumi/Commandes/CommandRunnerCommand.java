@@ -296,8 +296,9 @@ public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
             cmd.setacmdID("acmd" + plugin.getcommandList().size());
             plugin.executeCommand(cmd);
 
-        }
 
+        }
+        sender.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("Command not found, try /acmdhelp for more information."));
 
         return true;
     }

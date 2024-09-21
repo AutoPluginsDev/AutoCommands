@@ -216,6 +216,14 @@ public class CommandEditor implements Listener {
 
                     p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the name in the chat (type exit to exit) :"));
                     closeInventory(p);
+                    break;
+                case 10:
+                    waitForChat = "trigger";
+
+                    p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&4Type the trigger in the chat (possible values:onPlayerJoin, onPlayerQuit, onServerEnable)(type exit to exit) :"));
+                    closeInventory(p);
+                    break;
+
             }
             acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
             reloadAllEditGUI();
@@ -335,6 +343,12 @@ public class CommandEditor implements Listener {
                 acmd.setName(val);
                 p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aName modified with succes"));
                 clearLock(p);
+            case "trigger":
+                acmd.setTrigger(val);
+                p.sendMessage(plugin.getUt().replacePlaceHoldersForPlayerPlgVar("&aTrigger modified with succes"));
+                clearLock(p);
+
+
         }
         acmd.saveInConfig(plugin.getCommandsConfig(), plugin);
     }
@@ -442,6 +456,8 @@ public class CommandEditor implements Listener {
 
         // Name
         new UIItem.ItemBuilder(Material.ITEM_FRAME, "§eName").lore("§a" + acmd.getName()).setItem(gui, 9);
+
+        new UIItem.ItemBuilder(Material.BELL, "§eTrigger").lore("§a" + acmd.getTrigger()).setItem(gui, 10);
 
         // Delete button
         new UIItem.ItemBuilder(Material.RED_CONCRETE, "§4§lX §4DELETE THIS ACMD")
