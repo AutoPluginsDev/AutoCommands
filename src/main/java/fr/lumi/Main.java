@@ -21,7 +21,6 @@ import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 
 import com.google.gson.JsonParser;
@@ -38,13 +37,17 @@ public final class Main extends JavaPlugin {
             "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
             ""};
 
+    /**
+     * Print the logo of the plugin
+     */
     private void printLogo() {
-        for (String s : Logo)//print the logo
+        for (String s : Logo)
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', s));
     }
 
-    /*
-     * modificationLock: This prevents the administrator to modify the plugin in the meantime, it could cause some issues/conflicts.
+    /**
+     * modificationLock: This prevents the administrator to modify the plugin in the meantime,
+     * it could cause some issues/conflicts.
      */
     ModificationLock modificationLock = new ModificationLock(this);
 
@@ -92,13 +95,13 @@ public final class Main extends JavaPlugin {
         return commandsFile;
     }
 
-    public boolean saveCommandsFile() {
+    public void saveCommandsFile() {
         try {
             getCommandsConfig().save(getCommandsFile());
         } catch (IOException ignored) {
-            return false;
+            Bukkit.getConsoleSender().sendMessage(
+                    ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &cError saving commands.yml"));
         }
-        return true;
     }
 
 
