@@ -22,7 +22,6 @@ import java.net.URL;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
 import java.util.logging.Level;
 
 import com.google.gson.JsonParser;
@@ -33,19 +32,23 @@ import java.util.Objects;
 
 public final class Main extends JavaPlugin {
 
-    private String[] Logo = {
+    private final String[] Logo = {
             "&e&9     &6__     __ &e ",
             "&e&9 /\\ &6/  |\\/||  \\&e|  &9Auto&6Commands &aVersion &e" + this.getDescription().getVersion(),
             "&e&9/--\\&6\\__|  ||__/&e|  &8running on bukkit - paper",
             ""};
 
+    /**
+     * Print the logo of the plugin
+     */
     private void printLogo() {
-        for (String s : Logo)//print the logo
+        for (String s : Logo)
             Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', s));
     }
 
-    /*
-     * modificationLock: This prevents the administrator to modify the plugin in the mean time, it could cause some issues/conflicts.
+    /**
+     * modificationLock: This prevents the administrator to modify the plugin in the meantime,
+     * it could cause some issues/conflicts.
      */
     ModificationLock modificationLock = new ModificationLock(this);
 
@@ -70,6 +73,14 @@ public final class Main extends JavaPlugin {
 
     CommandEditor acmdGUIEditor;
 
+    // Keep in "cache" last tag checked
+    static String lastTagMessage = "";
+    public static boolean isNewVersionAvailable() {
+        return !lastTagMessage.isEmpty();
+    }
+
+
+
     public CommandEditor getAcmdGUIEditor() {
         return acmdGUIEditor;
     }
@@ -88,13 +99,13 @@ public final class Main extends JavaPlugin {
         return commandsFile;
     }
 
-    public boolean saveCommandsFile() {
+    public void saveCommandsFile() {
         try {
             getCommandsConfig().save(getCommandsFile());
         } catch (IOException ignored) {
-            return false;
+            Bukkit.getConsoleSender().sendMessage(
+                    ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &cError saving commands.yml"));
         }
-        return true;
     }
 
 
@@ -195,6 +206,11 @@ public final class Main extends JavaPlugin {
     }
 
     public String VerifyPluginVersion() {
+        // check cached msg
+        if (!lastTagMessage.isEmpty()) {
+            return lastTagMessage;
+        }
+
         String spigotResponse = "";
         String currentVersion = this.getDescription().getVersion();
 
@@ -211,21 +227,25 @@ public final class Main extends JavaPlugin {
             }
         }
 
-        if (spigotResponse.equals("")) {
-            return "&cFailed to check for a new version on spigot.";
+        if (spigotResponse.isEmpty()) {
+            lastTagMessage = "&cFailed to check for a new version on spigot.";
         }
-
-        if (spigotResponse.equals(currentVersion)) {
-            return "&aYou are running the latest version of AutoCommands " + currentVersion + " !";
+        else if (spigotResponse.equals(currentVersion)) {
+            lastTagMessage = "&aYou are running the latest version of AutoCommands " + currentVersion + " !";
         }
-
-        return "&eAutoCommands &a&l" + spigotResponse + " &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
+        else {
+            lastTagMessage = "&eAutoCommands &a&l" + spigotResponse + " &eis available! &chttps://www.spigotmc.org/resources/acmd-%E2%8F%B0-%E2%8F%B3-autocommands-1-13-1-20-4.100090";
+        }
+        return lastTagMessage;
     }
 
+    /**
+     * This method is called when the plugin is enabled
+     */
     @Override
     public void onEnable() {
         printLogo();
-        // verify if the plugin is up to date and send a message to the admins
+        // verify if the plugin is up-to-date and send a message to the admins
         String broadcastMessage = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Prefix") + VerifyPluginVersion());
         Bukkit.broadcast(broadcastMessage, "bukkit.broadcast.admin");
 
@@ -246,6 +266,10 @@ public final class Main extends JavaPlugin {
         //getRessourceFile(getLangFile(), "lang.yml", this);
         boolean verified = Load();
 
+        // Registering the event
+        Bukkit.getPluginManager().registerEvents(new JoinServer(), this);
+
+        // End of the loading
         long exeTime = System.currentTimeMillis() - start;
         Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &aOn (took " + exeTime + " ms)"));
     }
@@ -313,7 +337,8 @@ public final class Main extends JavaPlugin {
         for (autocommand acmd : getcommandList()) {
             acmd.setRunning(false, getCommandsConfig());
         }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', config.getString("ConsolePrefix") + " &cUnloaded"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes(
+                '&', config.getString("ConsolePrefix") + " &cUnloaded"));
     }
 
 
