@@ -1,4 +1,4 @@
-package fr.autoplugins.Commands;
+package fr.autoplugins.CommandExecutors;
 
 import fr.autoplugins.Main;
 
@@ -10,11 +10,11 @@ import org.bukkit.command.TabCompleter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
+public class CommandExecutorAcmd implements CommandExecutor, TabCompleter {
 
     private Main plugin;
 
-    public CommandRunnerCommand(Main plg) {
+    public CommandExecutorAcmd(Main plg) {
         plugin = plg;
     }
 

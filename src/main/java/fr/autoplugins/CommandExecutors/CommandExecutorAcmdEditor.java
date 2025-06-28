@@ -1,4 +1,4 @@
-package fr.autoplugins.Commands;
+package fr.autoplugins.CommandExecutors;
 
 import fr.autoplugins.Main;
 import org.bukkit.command.Command;
@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
+public class CommandExecutorAcmdEditor implements CommandExecutor, TabCompleter {
 
     Main plugin;
 
-    public CommandRunnerEditor(Main plg) {
+    public CommandExecutorAcmdEditor(Main plg) {
         plugin = plg;
     }
 

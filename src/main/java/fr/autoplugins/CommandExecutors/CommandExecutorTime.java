@@ -1,4 +1,4 @@
-package fr.autoplugins.Commands;
+package fr.autoplugins.CommandExecutors;
 
 import fr.autoplugins.Main;
 import org.bukkit.Bukkit;
@@ -8,14 +8,12 @@ import org.bukkit.command.CommandSender;
 
 import java.time.ZoneId;
 import java.util.Date;
-import java.time.LocalDateTime;
 
-public class CommandRunnerTime implements CommandExecutor {
+public class CommandExecutorTime implements CommandExecutor {
 
     Main plugin;
 
-    public CommandRunnerTime(Main plg) {
-
+    public CommandExecutorTime(Main plg) {
         plugin = plg;
     }
 

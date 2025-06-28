@@ -1,17 +1,16 @@
-package fr.autoplugins.Commands;
+package fr.autoplugins.CommandExecutors;
 
 import fr.autoplugins.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 
-public class CommandRunnerReload implements CommandExecutor {
+public class CommandExecutorReload implements CommandExecutor {
 
     Main plugin;
 
-    public CommandRunnerReload(Main plg) {
+    public CommandExecutorReload(Main plg) {
         plugin = plg;
     }
 

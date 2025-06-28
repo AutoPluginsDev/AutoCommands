@@ -1,4 +1,4 @@
-package fr.autoplugins.Commands;
+package fr.autoplugins.CommandExecutors;
 
 import fr.autoplugins.Main;
 import org.bukkit.ChatColor;
@@ -6,17 +6,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import fr.autoplugins.Util.PluginVersionChecker;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
+public class CommandExecutorHelp implements CommandExecutor, TabCompleter {
 
 
     Main plugin;
 
-    public CommandRunnerHelp(Main plg) {
+    public CommandExecutorHelp(Main plg) {
 
         plugin = plg;
     }
@@ -41,7 +42,7 @@ public class CommandRunnerHelp implements CommandExecutor, TabCompleter {
 
             String message =
                     "§e-----------§aAutoCommands-Help§e--------------\n"
-                            + "§6" + ChatColor.translateAlternateColorCodes('&', plugin.VerifyPluginVersion()) + "\n"
+                            + "§6" + ChatColor.translateAlternateColorCodes('&', PluginVersionChecker.VerifyPluginVersion(plugin)) + "\n"
                             + "§6ACMD Version : " + plugin.getDescription().getVersion() + "\n"
                             + "§6  /acmd <params> §e-> §7The main command of the plugin\n"
                             + "§6  /acmd list [page] §e-> §7Displays the list of the AutoCommands\n"
