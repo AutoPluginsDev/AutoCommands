@@ -87,7 +87,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>fr.lumi</shadedPattern>
+                            <shadedPattern>fr.autoplugins</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

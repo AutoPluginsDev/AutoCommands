@@ -1,6 +1,6 @@
-package fr.lumi.Commandes;
+package fr.autoplugins.Commands;
 
-import fr.lumi.Main;
+import fr.autoplugins.Main;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

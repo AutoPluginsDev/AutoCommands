@@ -1,47 +1,40 @@
-package fr.lumi.Commandes;
+package fr.autoplugins.Commands;
 
-import fr.lumi.Main;
+import fr.autoplugins.Main;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
+public class CommandRunnerCommand implements CommandExecutor, TabCompleter {
 
-public class CommandRunnerConf implements CommandExecutor, TabCompleter {
+    private Main plugin;
 
-    Main plugin;
-
-    public CommandRunnerConf(Main plg) {
+    public CommandRunnerCommand(Main plg) {
         plugin = plg;
-
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
         List<String> l = new ArrayList<>();
 
-        if (cmd.getName().equalsIgnoreCase("acmdconf")) {
-            if (sender instanceof Player) {
-                List<String> list = new ArrayList<>();
-                l.add("prefix");
-            }
-        }
         return l;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args.length > 0) {
 
-            }
+        if (args.length == 0) {
+            sender.sendMessage(plugin.getUt().replacePlaceHolders("&7This commands require more arguments! Use /acmdhelp for more information."));
+            return true;
         }
+        CommandSender player = sender;
+
         return true;
     }
+
 }

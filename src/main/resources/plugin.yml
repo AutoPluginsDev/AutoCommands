@@ -1,11 +1,11 @@
 name: AutoCommands
-version: 1.6.0
-main: fr.lumi.Main
+version: 1.7.0
+main: fr.autoplugins.Main
 api-version: 1.15
 authors:
   - Lumi_
   - Adi_
-prefix: AutoCommands 1.5.10
+prefix: AutoCommands 1.7.0
 depends: [PlaceholderAPI]
 permissions:
   acmd.*:

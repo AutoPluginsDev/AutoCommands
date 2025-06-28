@@ -1,7 +1,6 @@
-package fr.lumi.Commandes;
+package fr.autoplugins.Commands;
 
-import fr.lumi.Main;
-import fr.lumi.Util.CommandEditor;
+import fr.autoplugins.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,11 +12,9 @@ import java.util.List;
 
 public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
 
-    CommandEditor acmdEditor;
     Main plugin;
 
-    public CommandRunnerEditor(Main plg, CommandEditor Editor) {
-        acmdEditor = Editor;
+    public CommandRunnerEditor(Main plg) {
         plugin = plg;
     }
 
@@ -40,13 +37,11 @@ public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
-
             valid = valid && openMenu((Player) sender);
             if (!valid) return false;
 
             valid = valid && SaveMenu();
             if (!valid) return false;
-
 
             valid = valid && closeMenu();
             if (!valid) return false;
@@ -56,7 +51,6 @@ public class CommandRunnerEditor implements CommandExecutor, TabCompleter {
     }
 
     private boolean openMenu(Player p) {
-        acmdEditor.openchoosing(p);
         return true;
     }
 

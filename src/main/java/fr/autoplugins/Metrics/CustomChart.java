@@ -1,4 +1,4 @@
-package fr.lumi.Metrics;
+package fr.autoplugins.Metrics;
 
 import java.util.function.BiConsumer;
 

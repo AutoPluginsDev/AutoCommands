@@ -1,4 +1,4 @@
-package fr.lumi.Util;
+package fr.autoplugins.Util;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

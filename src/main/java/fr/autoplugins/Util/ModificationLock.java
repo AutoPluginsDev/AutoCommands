@@ -1,6 +1,6 @@
-package fr.lumi.Util;
+package fr.autoplugins.Util;
 
-import fr.lumi.Main;
+import fr.autoplugins.Main;
 
 
 public class ModificationLock {

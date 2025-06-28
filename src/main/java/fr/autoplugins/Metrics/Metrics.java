@@ -12,7 +12,7 @@
  *
  * Violations will result in a ban of your plugin and account from bStats.
  */
-package fr.lumi.Metrics;
+package fr.autoplugins.Metrics;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
