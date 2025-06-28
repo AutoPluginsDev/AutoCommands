@@ -22,8 +22,6 @@ public class CommandRunnerTime implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Date dateInput = new Date();
-        LocalDateTime currentDateTime = LocalDateTime.now();
-        sender.sendMessage(plugin.getUt().replacePlaceHolders("full date: " + currentDateTime));
         int Hours = dateInput.toInstant().atZone(ZoneId.systemDefault()).getHour();
         int minutes = dateInput.toInstant().atZone(ZoneId.systemDefault()).getMinute();
         String hour;
