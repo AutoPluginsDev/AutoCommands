@@ -1,7 +1,10 @@
-#RELOAD THE SERVER TO SAVE THE CONFIG.
-ConfigVersion : 3 # MODIFY THIS LINE ONLY IF YOU KNOW WHAT YOU ARE DOING (eg : if you want to update the config to the last version)
-LangFileVersion : 1 # MODIFY THIS LINE ONLY IF YOU KNOW WHAT YOU ARE DOING (eg : if you want to update the lang file to the last version)
-ConsolePrefix : '&eAUTOCOMMANDS |'
-Prefix : '&eacmd | '
-DisplayAcmdInConsole : false
-MaxDisplayedCommandInList : 3
+# MODIFY THIS LINE ONLY IF YOU KNOW WHAT YOU ARE DOING
+config_version : 4
+# MODIFY THIS LINE ONLY IF YOU KNOW WHAT YOU ARE DOING (eg : if you want to update the lang file to the last version)
+lang_file_version : 1
+# Will be used to display the prefix in the console
+console_prefix : '&eAUTOCOMMANDS |'
+prefix : '&eacmd | '
+display_acmd_in_console : false
+# How many command will be displayed in the list of the acmds
+max_displayed_command_in_list : 3
