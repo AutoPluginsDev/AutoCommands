@@ -1,0 +1,7 @@
+#RELOAD THE SERVER TO SAVE THE CONFIG.
+ConfigVersion : 3 # MODIFY THIS LINE ONLY IF YOU KNOW WHAT YOU ARE DOING (eg : if you want to update the config to the last version)
+LangFileVersion : 1 # MODIFY THIS LINE ONLY IF YOU KNOW WHAT YOU ARE DOING (eg : if you want to update the lang file to the last version)
+ConsolePrefix : '&eAUTOCOMMANDS |'
+Prefix : '&eacmd | '
+DisplayAcmdInConsole : false
+MaxDisplayedCommandInList : 3
